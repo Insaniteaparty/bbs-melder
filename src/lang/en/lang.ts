@@ -2,6 +2,14 @@ import { AbilityName } from "../../model/Abilities.model";
 import { CommandName } from "../../model/Commands.model";
 
 export default {
+  labels: {
+    planner: "Planner",
+    recipes: "Recipes",
+    abilities: "Abilities",
+    discovered: "Discovered",
+    meld: "Meld",
+  },
+
   abilities: {
     [AbilityName.TreasureMagnet]: "Treasure Magnet",
     [AbilityName.HPPrizePlus]: "HP Prize Plus",
@@ -136,7 +144,7 @@ export default {
 
     // Shotlock Commands
     [CommandName.MeteorShower]: "Meteor Shower",
-    [CommandName.FlameBurst]: "Flame Burst",
+    [CommandName.FlameSalvo]: "Flame Salvo",
     [CommandName.ChaosSnake]: "Chaos Snake",
     [CommandName.DarkVolley]: "Dark Volley",
     [CommandName.Ragnarok]: "Ragnarok",

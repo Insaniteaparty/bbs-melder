@@ -82,50 +82,56 @@ const Discovered = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {Object.values(CommandType).map((type) => (
-        <Box key={type}>
-          <Typography variant="h6" gutterBottom>
-            {getCommandTypeLabel(type)}
-          </Typography>
-          <Grid container spacing={1}>
-            {commands
-              .filter((command) => command.type === type && command.availableTo.includes(character))
-              .map((command) => (
-                <Grid key={command.name}>
-                  <Tooltip
-                    title={t(`commands.${command.name}`)}
-                    arrow
-                    slotProps={{
-                      tooltip: {
-                        sx: {
-                          bgcolor: "primary.main",
-                          "& .MuiTooltip-arrow": {
-                            color: "primary.main",
+      {Object.values(CommandType)
+        .filter((type) => typeof type === "number")
+        .map((type) => (
+          <Box key={type}>
+            <Typography variant="h6" gutterBottom>
+              {getCommandTypeLabel(type)}
+            </Typography>
+            <Grid container spacing={1}>
+              {commands
+                .filter(
+                  (command) =>
+                    command.type === type &&
+                    command.availableTo.includes(character)
+                )
+                .map((command) => (
+                  <Grid key={command.name}>
+                    <Tooltip
+                      title={t(`commands.${command.name}`)}
+                      arrow
+                      slotProps={{
+                        tooltip: {
+                          sx: {
+                            bgcolor: "primary.main",
+                            "& .MuiTooltip-arrow": {
+                              color: "primary.main",
+                            },
                           },
                         },
-                      },
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src={getCommandTypeIcon(type)}
-                      alt={t(`commands.${command.name}`)}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        ...compute_color(
-                          isCommandDiscovered(command.name),
-                          type
-                        ),
                       }}
-                      onClick={() => toggleCommandDiscovered(command.name)}
-                    />
-                  </Tooltip>
-                </Grid>
-              ))}
-          </Grid>
-        </Box>
-      ))}
+                    >
+                      <Box
+                        component="img"
+                        src={getCommandTypeIcon(type)}
+                        alt={t(`commands.${command.name}`)}
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          ...compute_color(
+                            isCommandDiscovered(command.name),
+                            type
+                          ),
+                        }}
+                        onClick={() => toggleCommandDiscovered(command.name)}
+                      />
+                    </Tooltip>
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
+        ))}
     </Box>
   );
 };
