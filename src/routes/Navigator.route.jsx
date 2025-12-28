@@ -30,11 +30,13 @@ import dimensionLinkIcon from "../assets/dimensionLink.webp";
 import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import { useCharacter } from "../contexts/Character.context";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
 
 function Navigator() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const { character, setCharacter } = useCharacter();
@@ -159,7 +161,7 @@ function Navigator() {
                   onClick={() => navigate(route.name)}
                 >
                   <Tooltip
-                    title={open ? "" : route.name}
+                    title={open ? "" : t(`labels.${route.name}`)}
                     placement="right"
                     slotProps={{
                       tooltip: {
@@ -178,7 +180,7 @@ function Navigator() {
                       {open && (
                         <ListItemText
                           style={{ textTransform: "capitalize" }}
-                          primary={route.name}
+                          primary={t(`labels.${route.name}`)}
                         />
                       )}
                     </ListItemButton>
