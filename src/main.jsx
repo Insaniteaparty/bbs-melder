@@ -7,13 +7,16 @@ import { ThemeProvider } from "@emotion/react";
 import theme from "./theme/theme.js";
 import { AbilitiesProvider } from "./contexts/Abilities.context.jsx";
 import { CharacterProvider } from "./contexts/Character.context.jsx";
+import { CommandsProvider } from "./contexts/Commands.context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CharacterProvider>
         <AbilitiesProvider>
-          <App />
+          <CommandsProvider>
+            <App />
+          </CommandsProvider>
         </AbilitiesProvider>
       </CharacterProvider>
     </ThemeProvider>

@@ -4,7 +4,7 @@ const theme = createTheme({
   palette: {
     mode: "dark", // or "light"
     primary: {
-      main: "#007bff",
+      main: "#012f8d",
     },
     secondary: {
       main: "#6c757d",
@@ -25,10 +25,16 @@ const theme = createTheme({
       default: "#1a1a1a", // Main background color
       paper: "#2a2a2a", // Paper/card background color
     },
+    deactivated: {
+      main: "#555555",
+    },
   },
   typography: {
     fontFamily:
       '"KHFont", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    allVariants: {
+      color: "#ffffff",
+    },
   },
   shape: {
     borderRadius: 8,

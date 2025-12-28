@@ -35,3 +35,11 @@
   font-style: italic;
   font-display: swap;
 }
+@font-face {
+  font-family: "KHGummi";
+  src: url("/fonts/woff2/KHGummi.woff2") format("woff2"),
+    url("/fonts/otf/KHGummi.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
