@@ -35,6 +35,7 @@ const theme = createTheme({
       '"KHFont", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     allVariants: {
       color: "#ffffff",
+      textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
     },
   },
   shape: {

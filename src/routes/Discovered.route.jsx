@@ -90,7 +90,7 @@ const Discovered = () => {
               {getCommandTypeLabel(type)}
             </Typography>
             <Grid container spacing={1}>
-              {commands
+              {Object.values(commands)
                 .filter(
                   (command) =>
                     command.type === type &&

@@ -160,11 +160,15 @@ class Command {
   }
 }
 
-const commands: Command[] = [
+const commands: Record<CommandName, Command> = {
   // Attack Commands
-  new Command(CommandName.QuickBlitz, CommandType.Attack, [Character.Terra]),
+  [CommandName.QuickBlitz]: new Command(
+    CommandName.QuickBlitz,
+    CommandType.Attack,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.Blitz]: new Command(
     CommandName.Blitz,
     CommandType.Attack,
     [Character.Terra],
@@ -182,7 +186,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.MeteorCrash]: new Command(
     CommandName.MeteorCrash,
     CommandType.Attack,
     [Character.Terra],
@@ -195,9 +199,13 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.SlidingDash, CommandType.Attack, [Character.Terra]),
+  [CommandName.SlidingDash]: new Command(
+    CommandName.SlidingDash,
+    CommandType.Attack,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.FireDash]: new Command(
     CommandName.FireDash,
     CommandType.Attack,
     [Character.Terra],
@@ -208,7 +216,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.DarkHaze]: new Command(
     CommandName.DarkHaze,
     CommandType.Attack,
     [Character.Terra],
@@ -222,7 +230,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.SonicBlade]: new Command(
     CommandName.SonicBlade,
     CommandType.Attack,
     [Character.Terra],
@@ -236,7 +244,7 @@ const commands: Command[] = [
       new Recipe([CommandName.Blitz, CommandName.AirSlide], FamilyType.N, 90),
     ]
   ),
-  new Command(
+  [CommandName.ChaosBlade]: new Command(
     CommandName.ChaosBlade,
     CommandType.Attack,
     [Character.Terra],
@@ -249,7 +257,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Zantetsuken]: new Command(
     CommandName.Zantetsuken,
     CommandType.Attack,
     [Character.Terra],
@@ -263,7 +271,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.StrikeRaid]: new Command(
     CommandName.StrikeRaid,
     CommandType.Attack,
     [Character.Terra],
@@ -275,7 +283,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.FreezeRaid]: new Command(
     CommandName.FreezeRaid,
     CommandType.Attack,
     [Character.Terra],
@@ -288,7 +296,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.FireSurge]: new Command(
     CommandName.FireSurge,
     CommandType.Attack,
     [Character.Terra],
@@ -300,7 +308,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.ThunderSurge]: new Command(
     CommandName.ThunderSurge,
     CommandType.Attack,
     [Character.Terra],
@@ -316,7 +324,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.AerialSlam]: new Command(
     CommandName.AerialSlam,
     CommandType.Attack,
     [Character.Terra],
@@ -331,7 +339,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.ArsSolum]: new Command(
     CommandName.ArsSolum,
     CommandType.Attack,
     [Character.Terra],
@@ -370,7 +378,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.PoisonEdge]: new Command(
     CommandName.PoisonEdge,
     CommandType.Attack,
     [Character.Terra],
@@ -393,7 +401,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.BlizzardEdge]: new Command(
     CommandName.BlizzardEdge,
     CommandType.Attack,
     [Character.Terra],
@@ -421,7 +429,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.StunEdge]: new Command(
     CommandName.StunEdge,
     CommandType.Attack,
     [Character.Terra],
@@ -444,7 +452,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.SlotEdge]: new Command(
     CommandName.SlotEdge,
     CommandType.Attack,
     [Character.Terra],
@@ -468,7 +476,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.FireStrike]: new Command(
     CommandName.FireStrike,
     CommandType.Attack,
     [Character.Terra],
@@ -478,7 +486,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.ConfusionStrike]: new Command(
     CommandName.ConfusionStrike,
     CommandType.Attack,
     [Character.Terra],
@@ -492,7 +500,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.BindingStrike]: new Command(
     CommandName.BindingStrike,
     CommandType.Attack,
     [Character.Terra],
@@ -503,7 +511,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.BrutalBlast]: new Command(
     CommandName.BrutalBlast,
     CommandType.Attack,
     [Character.Terra],
@@ -521,7 +529,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.MagnetSpiral]: new Command(
     CommandName.MagnetSpiral,
     CommandType.Attack,
     [Character.Terra],
@@ -548,7 +556,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Windcutter]: new Command(
     CommandName.Windcutter,
     CommandType.Attack,
     [Character.Terra],
@@ -561,7 +569,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.LimitStorm]: new Command(
     CommandName.LimitStorm,
     CommandType.Attack,
     [Character.Terra],
@@ -577,7 +585,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.CollisionMagnet]: new Command(
     CommandName.CollisionMagnet,
     CommandType.Attack,
     [Character.Terra],
@@ -596,7 +604,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.GeoImpact]: new Command(
     CommandName.GeoImpact,
     CommandType.Attack,
     [Character.Terra],
@@ -609,7 +617,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Sacrifice]: new Command(
     CommandName.Sacrifice,
     CommandType.Attack,
     [Character.Terra],
@@ -619,7 +627,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.BreakTime]: new Command(
     CommandName.BreakTime,
     CommandType.Attack,
     [Character.Terra],
@@ -638,9 +646,11 @@ const commands: Command[] = [
   ),
 
   // Magic Commands
-  new Command(CommandName.Fire, CommandType.Magic, [Character.Terra]),
+  [CommandName.Fire]: new Command(CommandName.Fire, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.Fira]: new Command(
     CommandName.Fira,
     CommandType.Magic,
     [Character.Terra],
@@ -652,7 +662,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Firaga]: new Command(
     CommandName.Firaga,
     CommandType.Magic,
     [Character.Terra],
@@ -663,7 +673,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.DarkFiraga]: new Command(
     CommandName.DarkFiraga,
     CommandType.Magic,
     [Character.Terra],
@@ -673,7 +683,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.FissionFiraga]: new Command(
     CommandName.FissionFiraga,
     CommandType.Magic,
     [Character.Terra],
@@ -684,7 +694,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.CrawlingFire]: new Command(
     CommandName.CrawlingFire,
     CommandType.Magic,
     [Character.Terra],
@@ -695,9 +705,11 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Blizzard, CommandType.Magic, [Character.Terra]),
+  [CommandName.Blizzard]: new Command(CommandName.Blizzard, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.Blizzara]: new Command(
     CommandName.Blizzara,
     CommandType.Magic,
     [Character.Terra],
@@ -712,7 +724,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Blizzaga]: new Command(
     CommandName.Blizzaga,
     CommandType.Magic,
     [Character.Terra],
@@ -726,9 +738,11 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Thunder, CommandType.Magic, [Character.Terra]),
+  [CommandName.Thunder]: new Command(CommandName.Thunder, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.Thundara]: new Command(
     CommandName.Thundara,
     CommandType.Magic,
     [Character.Terra],
@@ -739,7 +753,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Thundaga]: new Command(
     CommandName.Thundaga,
     CommandType.Magic,
     [Character.Terra],
@@ -758,9 +772,11 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Cure, CommandType.Magic, [Character.Terra]),
+  [CommandName.Cure]: new Command(CommandName.Cure, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.Cura]: new Command(
     CommandName.Cura,
     CommandType.Magic,
     [Character.Terra],
@@ -771,7 +787,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Curaga]: new Command(
     CommandName.Curaga,
     CommandType.Magic,
     [Character.Terra],
@@ -781,9 +797,11 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Esuna, CommandType.Magic, [Character.Terra]),
+  [CommandName.Esuna]: new Command(CommandName.Esuna, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.MineShield]: new Command(
     CommandName.MineShield,
     CommandType.Magic,
     [Character.Terra],
@@ -795,7 +813,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.MineSquare]: new Command(
     CommandName.MineSquare,
     CommandType.Magic,
     [Character.Terra],
@@ -805,9 +823,13 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.ZeroGravity, CommandType.Magic, [Character.Terra]),
+  [CommandName.ZeroGravity]: new Command(
+    CommandName.ZeroGravity,
+    CommandType.Magic,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.ZeroGravira]: new Command(
     CommandName.ZeroGravira,
     CommandType.Magic,
     [Character.Terra],
@@ -826,7 +848,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.ZeroGraviga]: new Command(
     CommandName.ZeroGraviga,
     CommandType.Magic,
     [Character.Terra],
@@ -849,9 +871,14 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Magnet, CommandType.Magic, [Character.Terra], []),
+  [CommandName.Magnet]: new Command(
+    CommandName.Magnet,
+    CommandType.Magic,
+    [Character.Terra],
+    []
+  ),
 
-  new Command(
+  [CommandName.Magnera]: new Command(
     CommandName.Magnera,
     CommandType.Magic,
     [Character.Terra],
@@ -862,7 +889,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Magnega]: new Command(
     CommandName.Magnega,
     CommandType.Magic,
     [Character.Terra],
@@ -872,9 +899,14 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Aero, CommandType.Magic, [Character.Terra], []),
+  [CommandName.Aero]: new Command(
+    CommandName.Aero,
+    CommandType.Magic,
+    [Character.Terra],
+    []
+  ),
 
-  new Command(
+  [CommandName.Aerora]: new Command(
     CommandName.Aerora,
     CommandType.Magic,
     [Character.Terra],
@@ -885,7 +917,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Aeroga]: new Command(
     CommandName.Aeroga,
     CommandType.Magic,
     [Character.Terra],
@@ -900,7 +932,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Warp]: new Command(
     CommandName.Warp,
     CommandType.Magic,
     [Character.Terra],
@@ -934,7 +966,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.DeepFreeze]: new Command(
     CommandName.DeepFreeze,
     CommandType.Magic,
     [Character.Terra],
@@ -947,7 +979,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.MegaFlare]: new Command(
     CommandName.MegaFlare,
     CommandType.Magic,
     [Character.Terra],
@@ -959,7 +991,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Quake]: new Command(
     CommandName.Quake,
     CommandType.Magic,
     [Character.Terra],
@@ -992,7 +1024,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Meteor]: new Command(
     CommandName.Meteor,
     CommandType.Magic,
     [Character.Terra],
@@ -1011,7 +1043,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Transcendence]: new Command(
     CommandName.Transcendence,
     CommandType.Magic,
     [Character.Terra],
@@ -1023,7 +1055,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Mini]: new Command(
     CommandName.Mini,
     CommandType.Magic,
     [Character.Terra],
@@ -1034,7 +1066,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Blackout]: new Command(
     CommandName.Blackout,
     CommandType.Magic,
     [Character.Terra],
@@ -1045,7 +1077,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Ignite]: new Command(
     CommandName.Ignite,
     CommandType.Magic,
     [Character.Terra],
@@ -1055,17 +1087,27 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Confuse, CommandType.Magic, [Character.Terra]),
+  [CommandName.Confuse]: new Command(CommandName.Confuse, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(CommandName.Bind, CommandType.Magic, [Character.Terra]),
+  [CommandName.Bind]: new Command(CommandName.Bind, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(CommandName.Poison, CommandType.Magic, [Character.Terra]),
+  [CommandName.Poison]: new Command(CommandName.Poison, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(CommandName.Slow, CommandType.Magic, [Character.Terra]),
+  [CommandName.Slow]: new Command(CommandName.Slow, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(CommandName.Stop, CommandType.Magic, [Character.Terra]),
+  [CommandName.Stop]: new Command(CommandName.Stop, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
-  new Command(
+  [CommandName.Stopra]: new Command(
     CommandName.Stopra,
     CommandType.Magic,
     [Character.Terra],
@@ -1076,7 +1118,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.Stopga]: new Command(
     CommandName.Stopga,
     CommandType.Magic,
     [Character.Terra],
@@ -1086,16 +1128,31 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.Sleep, CommandType.Magic, [Character.Terra]),
+  [CommandName.Sleep]: new Command(CommandName.Sleep, CommandType.Magic, [
+    Character.Terra,
+  ]),
 
   // Movement Commands
-  new Command(CommandName.Jump, CommandType.Movement, [Character.Terra], []),
+  [CommandName.Jump]: new Command(
+    CommandName.Jump,
+    CommandType.Movement,
+    [Character.Terra],
+    []
+  ),
 
-  new Command(CommandName.HighJump, CommandType.Movement, [Character.Terra]),
+  [CommandName.HighJump]: new Command(
+    CommandName.HighJump,
+    CommandType.Movement,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.AirSlide, CommandType.Movement, [Character.Terra]),
+  [CommandName.AirSlide]: new Command(
+    CommandName.AirSlide,
+    CommandType.Movement,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.IceSlide]: new Command(
     CommandName.IceSlide,
     CommandType.Movement,
     [Character.Terra],
@@ -1108,14 +1165,28 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.SonicImpact, CommandType.Movement, [Character.Terra]),
+  [CommandName.SonicImpact]: new Command(
+    CommandName.SonicImpact,
+    CommandType.Movement,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.Slide, CommandType.Movement, [Character.Terra], []),
+  [CommandName.Slide]: new Command(
+    CommandName.Slide,
+    CommandType.Movement,
+    [Character.Terra],
+    []
+  ),
 
   // Defense Commands
-  new Command(CommandName.Block, CommandType.Defense, [Character.Terra], []),
+  [CommandName.Block]: new Command(
+    CommandName.Block,
+    CommandType.Defense,
+    [Character.Terra],
+    []
+  ),
 
-  new Command(
+  [CommandName.RenewalBlock]: new Command(
     CommandName.RenewalBlock,
     CommandType.Defense,
     [Character.Terra],
@@ -1125,9 +1196,13 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.FocusBlock, CommandType.Defense, [Character.Terra]),
+  [CommandName.FocusBlock]: new Command(
+    CommandName.FocusBlock,
+    CommandType.Defense,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.StunBlock]: new Command(
     CommandName.StunBlock,
     CommandType.Defense,
     [Character.Terra],
@@ -1137,7 +1212,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.PoisonBlock]: new Command(
     CommandName.PoisonBlock,
     CommandType.Defense,
     [Character.Terra],
@@ -1148,11 +1223,13 @@ const commands: Command[] = [
   ),
 
   // Reprisal Commands
-  new Command(CommandName.CounterHammer, CommandType.Reprisal, [
-    Character.Terra,
-  ]),
+  [CommandName.CounterHammer]: new Command(
+    CommandName.CounterHammer,
+    CommandType.Reprisal,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.PaybackFang]: new Command(
     CommandName.PaybackFang,
     CommandType.Reprisal,
     [Character.Terra],
@@ -1164,7 +1241,7 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(
+  [CommandName.AerialRecovery]: new Command(
     CommandName.AerialRecovery,
     CommandType.Reprisal,
     [Character.Terra],
@@ -1175,23 +1252,43 @@ const commands: Command[] = [
   ),
 
   // Shotlock Commands
-  new Command(CommandName.MeteorShower, CommandType.Shotlock, [
-    Character.Terra,
-  ]),
+  [CommandName.MeteorShower]: new Command(
+    CommandName.MeteorShower,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.FlameSalvo, CommandType.Shotlock, [Character.Terra]),
+  [CommandName.FlameSalvo]: new Command(
+    CommandName.FlameSalvo,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.ChaosSnake, CommandType.Shotlock, [Character.Terra]),
+  [CommandName.ChaosSnake]: new Command(
+    CommandName.ChaosSnake,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.DarkVolley, CommandType.Shotlock, [Character.Terra]),
+  [CommandName.DarkVolley]: new Command(
+    CommandName.DarkVolley,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.Ragnarok, CommandType.Shotlock, [Character.Terra]),
+  [CommandName.Ragnarok]: new Command(
+    CommandName.Ragnarok,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.Thunderstorm, CommandType.Shotlock, [
-    Character.Terra,
-  ]),
+  [CommandName.Thunderstorm]: new Command(
+    CommandName.Thunderstorm,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.BioBarrage]: new Command(
     CommandName.BioBarrage,
     CommandType.Shotlock,
     [Character.Terra],
@@ -1208,15 +1305,19 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.PhotonCharge, CommandType.Shotlock, [
-    Character.Terra,
-  ]),
+  [CommandName.PhotonCharge]: new Command(
+    CommandName.PhotonCharge,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.AbsoluteZero, CommandType.Shotlock, [
-    Character.Terra,
-  ]),
+  [CommandName.AbsoluteZero]: new Command(
+    CommandName.AbsoluteZero,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(
+  [CommandName.LightningRay]: new Command(
     CommandName.LightningRay,
     CommandType.Shotlock,
     [Character.Terra],
@@ -1242,11 +1343,17 @@ const commands: Command[] = [
     ]
   ),
 
-  new Command(CommandName.SonicShadow, CommandType.Shotlock, [Character.Terra]),
+  [CommandName.SonicShadow]: new Command(
+    CommandName.SonicShadow,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
 
-  new Command(CommandName.UltimaCannon, CommandType.Shotlock, [
-    Character.Terra,
-  ]),
-];
+  [CommandName.UltimaCannon]: new Command(
+    CommandName.UltimaCannon,
+    CommandType.Shotlock,
+    [Character.Terra]
+  ),
+};
 
 export { CommandName, CommandType, commands };
