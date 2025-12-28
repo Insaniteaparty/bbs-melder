@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
+    mode: "dark", // or "light"
     primary: {
       main: "#007bff",
     },
@@ -19,6 +20,10 @@ const theme = createTheme({
     },
     info: {
       main: "#17a2b8",
+    },
+    background: {
+      default: "#1a1a1a", // Main background color
+      paper: "#2a2a2a", // Paper/card background color
     },
   },
   typography: {

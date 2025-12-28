@@ -14,33 +14,42 @@ import {
   ListItemText,
   Divider,
   Tooltip,
+  Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-import {
-  Menu as MenuIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  Blender as BlenderIcon,
-  FitnessCenter as FitnessCenterIcon,
-  SavedSearch as SavedSearchIcon,
-} from "@mui/icons-material";
+
+import { Character } from "../model/Characters.model";
+
+import { Menu as MenuIcon } from "@mui/icons-material";
+import TerraAvatar from "../assets/terra.webp";
+import VentusAvatar from "../assets/ventus.webp";
+import AquaAvatar from "../assets/aqua.webp";
+import battleTicketIcon from "../assets/battleTicket.webp";
+import dimensionLinkIcon from "../assets/dimensionLink.webp";
+import abilityIcon from "../assets/ability.webp";
+import emblemIcon from "../assets/emblem.webp";
+import { useCharacter } from "../contexts/Character.context";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
 
 function Navigator() {
   const [open, setOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { character, setCharacter } = useCharacter();
   const navigate = useNavigate();
 
   const routes = [
-    { name: "planner", icon: <AssignmentTurnedInIcon /> },
-    { name: "recipes", icon: <BlenderIcon /> },
-    { name: "abilities", icon: <FitnessCenterIcon /> },
-    { name: "discovered", icon: <SavedSearchIcon /> },
+    { name: "planner", icon: battleTicketIcon },
+    { name: "recipes", icon: dimensionLinkIcon },
+    { name: "abilities", icon: abilityIcon },
+    { name: "discovered", icon: emblemIcon },
   ];
 
   const buttonCss = {
     minHeight: 48,
     justifyContent: open ? "initial" : "center",
-    px: 2.5,
   };
 
   const iconCss = {
@@ -49,12 +58,49 @@ function Navigator() {
     justifyContent: "center",
   };
 
+  const selectAvatar = (char) => {
+    switch (char) {
+      case Character.Terra:
+        return TerraAvatar;
+      case Character.Ventus:
+        return VentusAvatar;
+      case Character.Aqua:
+        return AquaAvatar;
+      default:
+        return null;
+    }
+  };
+
+  const getOtherCharacters = () => {
+    return Object.values(Character).filter((char) => char !== character);
+  };
+
+  const handleCharacterMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCharacterMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCharacterSelect = (newCharacter) => {
+    setCharacter(newCharacter);
+    handleCharacterMenuClose();
+  };
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        bgcolor: "background.default",
+      }}
+    >
       <AppBar
         position="fixed"
         sx={{
@@ -93,11 +139,13 @@ function Navigator() {
                 }),
               boxSizing: "border-box",
               overflowX: "hidden",
+              display: "flex",
+              flexDirection: "column",
             },
           }}
         >
           <Toolbar />
-          <Box sx={{ overflow: "auto" }}>
+          <Box sx={{ overflow: "auto", flexGrow: 1 }}>
             <List>
               {routes.map((route) => (
                 <ListItem
@@ -105,9 +153,23 @@ function Navigator() {
                   disablePadding
                   onClick={() => navigate(route.name)}
                 >
-                  <Tooltip title={open ? "" : route.name} placement="right">
+                  <Tooltip
+                    title={open ? "" : route.name}
+                    placement="right"
+                    slotProps={{
+                      tooltip: {
+                        sx: { textTransform: "capitalize" },
+                      },
+                    }}
+                  >
                     <ListItemButton sx={buttonCss}>
-                      <ListItemIcon sx={iconCss}>{route.icon}</ListItemIcon>
+                      <ListItemIcon sx={iconCss}>
+                        <Avatar
+                          src={route.icon}
+                          alt={route.name}
+                          sx={{ width: 32, height: 32 }}
+                        />
+                      </ListItemIcon>
                       {open && (
                         <ListItemText
                           style={{ textTransform: "capitalize" }}
@@ -120,35 +182,68 @@ function Navigator() {
               ))}
             </List>
           </Box>
+
+          <Divider />
+          <List>
+            <ListItem disablePadding>
+              <Tooltip title={open ? "" : "change character"} placement="right">
+                <ListItemButton
+                  sx={buttonCss}
+                  onClick={handleCharacterMenuOpen}
+                >
+                  <ListItemIcon sx={iconCss}>
+                    <Avatar
+                      src={selectAvatar(character)}
+                      alt={character}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                  </ListItemIcon>
+                  {open && <ListItemText primary={character} />}
+                </ListItemButton>
+              </Tooltip>
+            </ListItem>
+          </List>
         </Drawer>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleCharacterMenuClose}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{ vertical: "bottom", horizontal: "left" }}
+          slotProps={{
+            paper: {
+              sx: {
+                width: drawerWidth - 36,
+              },
+            },
+          }}
+        >
+          {getOtherCharacters().map((char) => (
+            <MenuItem key={char} onClick={() => handleCharacterSelect(char)}>
+              <Avatar
+                src={selectAvatar(char)}
+                sx={{ mr: 2, width: 32, height: 32 }}
+              />
+              {char}
+            </MenuItem>
+          ))}
+        </Menu>
 
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             p: 3,
+            bgcolor: "background.default",
           }}
         >
           <Toolbar />
           <Outlet />
         </Box>
-      </Box>
-
-      <Box
-        component="footer"
-        sx={{
-          py: 2,
-          px: 3,
-          mt: "auto",
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[200]
-              : theme.palette.grey[800],
-        }}
-      >
-        <Typography variant="body2" color="text.secondary" align="center">
-          © 2025 BBS Melder. All rights reserved.
-        </Typography>
       </Box>
     </Box>
   );
