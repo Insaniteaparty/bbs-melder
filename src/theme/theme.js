@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+const almostBlack = "#1a1a1a";
+
 const baseThemeConfig = {
   palette: {
     primary: {
@@ -44,7 +46,7 @@ const darkTheme = createTheme({
     ...baseThemeConfig.palette,
     mode: "dark",
     background: {
-      default: "#1a1a1a",
+      default: almostBlack,
       paper: "#2a2a2a",
     },
   },
@@ -52,6 +54,24 @@ const darkTheme = createTheme({
     ...baseThemeConfig.typography,
     onBackground: {
       ...baseThemeConfig.typography.allVariants,
+    },
+  },
+  components: {
+    MuiBadge: {
+      styleOverrides: {
+        badge: {
+          backgroundColor: "#ffffff",
+          color: "#012f8d",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          color: "#017bec",
+          borderColor: "#fff",
+        },
+      },
     },
   },
 });
@@ -69,8 +89,33 @@ const lightTheme = createTheme({
   typography: {
     ...baseThemeConfig.typography,
     onBackground: {
-      color: "#000000",
+      color: almostBlack,
       textShadow: "1px 1px 2px rgba(255,255,255,0.5)",
+    },
+  },
+  components: {
+    MuiBadge: {
+      styleOverrides: {
+        badge: {
+          backgroundColor: "#017bec",
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: almostBlack,
+          textShadow: "1px 1px 2px rgba(255,255,255,0.5)",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        option: {
+          color: almostBlack,
+          textShadow: "1px 1px 2px rgba(255,255,255,0.5)",
+        },
+      },
     },
   },
 });

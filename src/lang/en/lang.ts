@@ -8,6 +8,13 @@ export default {
     abilities: "Abilities",
     discovered: "Discovered",
     meld: "Meld",
+    searchCommands: "Search Commands...",
+    filters: "Filters",
+    filterByIngredient: "Filter by Ingredient",
+    filterByAbility: "Filter by Ability",
+    selectIngredient: "Select Ingredient...",
+    selectAbility: "Select Ability...",
+    clearFilters: "Clear Filters",
   },
 
   abilities: {

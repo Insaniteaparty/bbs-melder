@@ -66,7 +66,7 @@ const Recipe = ({ recipe }) => {
 
   // Generate crystal options based on family
   const crystalOptions =
-    family && familyMapper[family]
+    family !== null && familyMapper[family]
       ? Object.entries(familyMapper[family]).map(
           ([crystalName, abilityName]) => ({
             label: `${CrystalName[crystalName]} - ${t(
@@ -267,27 +267,11 @@ const Recipe = ({ recipe }) => {
                   },
                 }}
               >
-                <MenuItem
-                  value=""
-                  disabled
-                  sx={{
-                    color: (theme) => theme.typography.onBackground.color,
-                    textShadow: (theme) =>
-                      theme.typography.onBackground.textShadow,
-                  }}
-                >
+                <MenuItem value="" disabled>
                   ---
                 </MenuItem>
                 {crystalOptions.map((option) => (
-                  <MenuItem
-                    key={option.value}
-                    value={option.value}
-                    sx={{
-                      color: (theme) => theme.typography.onBackground.color,
-                      textShadow: (theme) =>
-                        theme.typography.onBackground.textShadow,
-                    }}
-                  >
+                  <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}

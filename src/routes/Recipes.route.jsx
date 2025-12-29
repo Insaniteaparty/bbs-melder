@@ -1,21 +1,71 @@
 import { Box } from "@mui/material";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Command from "../components/Command.component";
+import SearchBox from "../components/SearchBox.component";
+import Filters from "../components/Filters.component";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
+import { familyMapper } from "../model/Crystals.model";
 
 const Recipes = () => {
+  const { t } = useTranslation();
   const { character } = useCharacter();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState({ ingredient: null, ability: null });
 
   // Get all commands available for the current character
   const characterCommands = Object.values(commands).filter((command) =>
     command.availableTo.includes(character)
   );
 
+  // Filter commands based on search query and filters
+  const filteredCommands = characterCommands.filter((command) => {
+    // Search filter
+    const matchesSearch = t(`commands.${command.name}`)
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    // Ingredient filter - check if any recipe contains the ingredient
+    const matchesIngredient =
+      !filters.ingredient ||
+      command.recipes?.some(
+        (recipe) =>
+          recipe.ingredients?.[0] === filters.ingredient ||
+          recipe.ingredients?.[1] === filters.ingredient
+      );
+
+    // Ability filter - check if any recipe's family can produce the ability
+    const matchesAbility =
+      !filters.ability ||
+      command.recipes?.some((recipe) => {
+        const familyCrystals = familyMapper[recipe.family];
+        return (
+          familyCrystals &&
+          Object.values(familyCrystals).includes(filters.ability)
+        );
+      });
+
+    return matchesSearch && matchesIngredient && matchesAbility;
+  });
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {characterCommands.map((command) => (
-        <Command key={command.name} command={command} />
-      ))}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Box sx={{ flex: 1 }}>
+          <SearchBox
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder={t("labels.searchCommands")}
+          />
+        </Box>
+        <Filters onFilterChange={setFilters} />
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {filteredCommands.map((command) => (
+          <Command key={command.name} command={command} />
+        ))}
+      </Box>
     </Box>
   );
 };
