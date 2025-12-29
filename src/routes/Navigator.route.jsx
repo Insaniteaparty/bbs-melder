@@ -284,10 +284,21 @@ function Navigator() {
           }}
         >
           {getOtherCharacters().map((char) => (
-            <MenuItem key={char} onClick={() => handleCharacterSelect(char)}>
+            <MenuItem
+              key={char}
+              onClick={() => handleCharacterSelect(char)}
+              sx={{
+                color: (theme) => theme.typography.onBackground.color,
+                textShadow: (theme) => theme.typography.onBackground.textShadow,
+              }}
+            >
               <Avatar
                 src={selectAvatar(char)}
-                sx={{ mr: 2, width: 32, height: 32 }}
+                sx={{
+                  mr: 2,
+                  width: 32,
+                  height: 32,
+                }}
               />
               {char}
             </MenuItem>

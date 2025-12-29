@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { CrystalName, familyMapper } from "../model/Crystals.model";
 import { commands, CommandType } from "../model/Commands.model";
 import { useState } from "react";
-import { getCommandTypeIcon } from "../theme/icon.utils";
+import { getCommandTypeIcon } from "../theme/icon.theme";
 
 const accentColor = "#df961e";
 
@@ -257,12 +257,37 @@ const Recipe = ({ recipe }) => {
                     fontSize: "0.875rem",
                   },
                 }}
+                slotProps={{
+                  input: {
+                    sx: {
+                      color: (theme) => theme.typography.allVariants.color,
+                      textShadow: (theme) =>
+                        theme.typography.allVariants.textShadow,
+                    },
+                  },
+                }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem
+                  value=""
+                  disabled
+                  sx={{
+                    color: (theme) => theme.typography.onBackground.color,
+                    textShadow: (theme) =>
+                      theme.typography.onBackground.textShadow,
+                  }}
+                >
                   ---
                 </MenuItem>
                 {crystalOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    sx={{
+                      color: (theme) => theme.typography.onBackground.color,
+                      textShadow: (theme) =>
+                        theme.typography.onBackground.textShadow,
+                    }}
+                  >
                     {option.label}
                   </MenuItem>
                 ))}
