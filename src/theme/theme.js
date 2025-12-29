@@ -45,10 +45,6 @@ const darkTheme = createTheme({
   palette: {
     ...baseThemeConfig.palette,
     mode: "dark",
-    primary: {
-      main: "#017bec",
-      light: "#6babe7ff",
-    },
     background: {
       default: almostBlack,
       paper: "#2a2a2a",
@@ -66,6 +62,21 @@ const darkTheme = createTheme({
         badge: {
           backgroundColor: "#ffffff",
           color: "#012f8d",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          color: "#017bec",
+          borderColor: "#fff",
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "#017bec !important",
         },
       },
     },

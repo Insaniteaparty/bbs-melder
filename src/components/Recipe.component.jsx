@@ -40,6 +40,8 @@ const leftPortionSx = {
   flex: 1,
   bgcolor: "rgba(0,0,0,0.2)",
   borderRadius: 10,
+  borderTop: "2px solid rgba(255,255,255,0.3)",
+  borderBottom: "2px solid rgba(0,0,0,0.2)",
   clipPath:
     "polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%)",
 };
@@ -51,6 +53,8 @@ const rightPortionSx = {
   bgcolor: "rgba(0,0,0,0.3)",
   clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 20px 50%)",
   borderRadius: "0 100px 100px 0",
+  borderTop: "2px solid rgba(0,0,0,0.2)",
+  borderBottom: "2px solid rgba(255,255,255,0.2)",
   transform: "translateX(-16px)",
 };
 
@@ -84,6 +88,8 @@ const Recipe = ({ recipe }) => {
         clipPath: "polygon(0 0, 80% 0, 90% 15%, 100% 15%, 100% 100%, 0 100%)",
         bgcolor: "primary.light",
         borderBottomRightRadius: 0,
+        borderTop: "2px solid rgba(255,255,255,0.3)",
+        borderBottom: "2px solid rgba(0,0,0,0.2)",
       }}
     >
       <CardHeader
