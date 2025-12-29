@@ -40,7 +40,7 @@ const Discovered = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
       {Object.values(CommandType)
         .filter((type) => typeof type === "number")
         .map((type) => (

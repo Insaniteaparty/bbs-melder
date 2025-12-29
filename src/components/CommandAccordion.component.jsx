@@ -19,7 +19,7 @@ const clipPathStyle =
 const openedAccordionClipPathStyle =
   "polygon(0 30px, 30px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
 
-const Command = ({ command }) => {
+const CommandAccordion = ({ command }) => {
   const { t } = useTranslation();
   const hasRecipes = command.recipes && command.recipes.length > 0;
   const [expanded, setExpanded] = useState(false);
@@ -77,4 +77,4 @@ const Command = ({ command }) => {
   );
 };
 
-export default Command;
+export default CommandAccordion;

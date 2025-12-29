@@ -25,15 +25,15 @@ const STORAGE_KEY = "bbsMelder_commands";
  * Must be used within a CommandsProvider.
  *
  * @returns {Object} Commands context value containing:
- *   - discoveredCommands: Object mapping command names to their data for current character
- *   - discoverCommand: Function to mark a command as discovered and increment count
- *   - removeCommand: Function to decrement a command count
- *   - getCommandCount: Function to get the current count of a command
- *   - isCommandDiscovered: Function to check if a command is discovered
- *   - setCommandDiscovered: Function to set the discovered status of a command
- *   - resetCommands: Function to clear all commands for current character
+ *   - discoveredCommands: Object mapping command names to their data for the current character.
+ *   - addCommand: Function to mark a command as discovered and increment its count.
+ *   - removeCommand: Function to decrement a command's count, removing it if count reaches 0 and it is not discovered.
+ *   - getCommandCount: Function to retrieve the current count of a command.
+ *   - isCommandDiscovered: Function to check if a command is marked as discovered.
+ *   - toggleCommandDiscovered: Function to toggle the discovered status of a command.
+ *   - resetCommands: Function to clear all commands for the current character.
  *
- * @throws {Error} If used outside of CommandsProvider
+ * @throws {Error} If used outside of CommandsProvider.
  */
 export const useCommands = () => {
   const context = useContext(CommandsContext);
@@ -171,7 +171,7 @@ export const CommandsProvider = ({ children }) => {
           ...prevCharacterCommands,
           [commandName]: {
             ...current,
-            count: newCount,
+            count: current.count,
           },
         },
       };

@@ -19,6 +19,7 @@ export default {
     darkMode: "Switch to Dark Mode",
     hideDiscovered: "Hide Discovered",
     noCommandsFound: "No commands found.",
+    inventory: "Inventory",
   },
 
   abilities: {

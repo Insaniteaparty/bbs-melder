@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Command from "../components/Command.component";
+import CommandAccordion from "../components/CommandAccordion.component";
 import SearchBox from "../components/SearchBox.component";
 import Filters from "../components/Filters.component";
 import { commands } from "../model/Commands.model";
@@ -65,7 +65,7 @@ const Recipes = () => {
   });
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", p: 3 }}>
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <Box sx={{ flex: 1 }}>
           <SearchBox
@@ -79,7 +79,7 @@ const Recipes = () => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {filteredCommands.length > 0 ? (
           filteredCommands.map((command) => (
-            <Command key={command.name} command={command} />
+            <CommandAccordion key={command.name} command={command} />
           ))
         ) : (
           <Box

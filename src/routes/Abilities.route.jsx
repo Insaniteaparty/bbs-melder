@@ -72,7 +72,7 @@ const Abilities = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ p: 3 }}>
       <List>
         {abilities.map((ability) => (
           <ListItem key={ability.name} sx={() => tileCss(ability.type)}>
