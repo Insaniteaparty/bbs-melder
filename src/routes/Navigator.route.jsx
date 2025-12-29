@@ -137,25 +137,29 @@ function Navigator() {
             BBS Melder
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            color="inherit"
-            edge="end"
-            onClick={toggleDark}
-            disablePadding
+          <Tooltip
+            title={isDark ? t("labels.lightMode") : t("labels.darkMode")}
           >
-            <Avatar
-              src={isDark ? Nobody : Heartless}
-              alt={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              sx={{ width: 32, height: 32 }}
-              slotProps={{
-                img: {
-                  sx: {
-                    objectFit: "contain",
+            <IconButton
+              color="inherit"
+              edge="end"
+              onClick={toggleDark}
+              disablePadding
+            >
+              <Avatar
+                src={isDark ? Nobody : Heartless}
+                alt={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                sx={{ width: 32, height: 32 }}
+                slotProps={{
+                  img: {
+                    sx: {
+                      objectFit: "contain",
+                    },
                   },
-                },
-              }}
-            />
-          </IconButton>
+                }}
+              />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
 

@@ -15,6 +15,8 @@ export default {
     selectIngredient: "Select Ingredient...",
     selectAbility: "Select Ability...",
     clearFilters: "Clear Filters",
+    lightMode: "Switch to Light Mode",
+    darkMode: "Switch to Dark Mode",
   },
 
   abilities: {
