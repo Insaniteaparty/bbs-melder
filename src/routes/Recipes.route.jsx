@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Command from "../components/Command.component";
@@ -77,9 +77,22 @@ const Recipes = () => {
         <Filters onFilterChange={setFilters} />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {filteredCommands.map((command) => (
-          <Command key={command.name} command={command} />
-        ))}
+        {filteredCommands.length > 0 ? (
+          filteredCommands.map((command) => (
+            <Command key={command.name} command={command} />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "200px", // Optional: give it some height
+            }}
+          >
+            <Typography variant="h3">{t("labels.noCommandsFound")}</Typography>
+          </Box>
+        )}
       </Box>
     </Box>
   );
