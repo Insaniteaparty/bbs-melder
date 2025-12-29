@@ -18,8 +18,12 @@ export default {
     lightMode: "Switch to Light Mode",
     darkMode: "Switch to Dark Mode",
     hideDiscovered: "Hide Discovered",
-    noCommandsFound: "No commands found.",
     inventory: "Inventory",
+  },
+
+  messages: {
+    noCommandsFound: "No commands found.",
+    noMakableRecipes: "No makable recipes found.",
   },
 
   abilities: {

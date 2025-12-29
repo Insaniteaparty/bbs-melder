@@ -90,7 +90,9 @@ const Recipes = () => {
               minHeight: "200px", // Optional: give it some height
             }}
           >
-            <Typography variant="h3">{t("labels.noCommandsFound")}</Typography>
+            <Typography variant="h3">
+              {t("messages.noCommandsFound")}
+            </Typography>
           </Box>
         )}
       </Box>

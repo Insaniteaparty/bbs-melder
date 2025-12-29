@@ -6,6 +6,7 @@ import {
   IconButton,
   Avatar,
   Paper,
+  Grid,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -16,6 +17,7 @@ import { useCharacter } from "../contexts/Character.context";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import SearchBox from "../components/SearchBox.component";
 import { useCommands } from "../contexts/Commands.context";
+import CommandCard from "../components/CommandCard.component";
 
 const clipPathStyle =
   "polygon(0 10px, 10px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
@@ -36,6 +38,17 @@ const Planner = () => {
     [character]
   );
 
+  // Helper function to check if a recipe can be made
+  const canMakeRecipe = (recipe) => {
+    if (recipe.ingredients[0] === recipe.ingredients[1]) {
+      // Special case: if both ingredients are the same, need at least 2 of that command
+      return getCommandCount(recipe.ingredients[0]) >= 2;
+    }
+    return recipe.ingredients.every(
+      (ingredient) => getCommandCount(ingredient) > 0
+    );
+  };
+
   // Filter commands based on search query
   const filteredCommands = useMemo(
     () =>
@@ -45,6 +58,16 @@ const Planner = () => {
           .includes(searchQuery.toLowerCase())
       ),
     [characterCommands, searchQuery, t]
+  );
+
+  // Filter commands that have at least one makeable recipe
+  const makeableCommands = useMemo(
+    () =>
+      characterCommands.filter((command) => {
+        if (!command.recipes || command.recipes.length === 0) return false;
+        return command.recipes.some((recipe) => canMakeRecipe(recipe));
+      }),
+    [characterCommands, getCommandCount]
   );
 
   const handleIncrement = (commandName) => {
@@ -140,20 +163,45 @@ const Planner = () => {
         </List>
       </Paper>
 
-      {/* Right Column - Grid Area (Placeholder) */}
-      <Paper
+      {/* Right Column - Grid Area */}
+      <Box
         sx={{
           flex: 1,
           p: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          overflow: "auto",
         }}
       >
-        <Typography variant="h6" color="text.secondary">
-          Grid area - coming soon
+        <Typography
+          variant="h6"
+          gutterBottom
+          textAlign={"center"}
+          fontFamily={"KHGummi"}
+          mb={3}
+        >
+          {t("labels.recipes")}
         </Typography>
-      </Paper>
+        <Grid container spacing={2}>
+          {makeableCommands.map((command) => (
+            <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
+              <CommandCard command={command} canMakeRecipe={canMakeRecipe} />
+            </Grid>
+          ))}
+        </Grid>
+        {makeableCommands.length === 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "50%",
+            }}
+          >
+            <Typography variant="body1" color="text.secondary">
+              {t("messages.noMakeableRecipes")}
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

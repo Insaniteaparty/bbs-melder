@@ -1,23 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Card, CardContent, CardHeader, Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { CrystalName, familyMapper } from "../model/Crystals.model";
-import { commands, CommandType } from "../model/Commands.model";
-import { useState } from "react";
+import { commands } from "../model/Commands.model";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 
 const accentColor = "#df961e";
-
-const slotFontSize = "0.75rem";
-
-const numberFontSize = "1.5rem";
 
 const rowMaxHeight = "2rem";
 
@@ -34,52 +20,21 @@ const underline = {
   },
 };
 
-const leftPortionSx = {
-  px: 2,
-  py: 1,
-  flex: 1,
-  bgcolor: "rgba(0,0,0,0.2)",
-  borderRadius: 10,
-  borderTop: "2px solid rgba(255,255,255,0.3)",
-  borderBottom: "2px solid rgba(0,0,0,0.2)",
-  clipPath:
-    "polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%)",
-};
-
 const rightPortionSx = {
+  maxHeight: rowMaxHeight,
   px: 2,
-  py: 1,
   flex: 9,
   bgcolor: "rgba(0,0,0,0.3)",
-  clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 20px 50%)",
-  borderRadius: "0 100px 100px 0",
+  borderRadius: 10,
   borderTop: "2px solid rgba(0,0,0,0.2)",
   borderBottom: "2px solid rgba(255,255,255,0.2)",
-  transform: "translateX(-16px)",
 };
 
 const RecipeButton = ({ recipe, onClick }) => {
   const { t } = useTranslation();
-  //TODO: change to be mandatory prop
   const ingredient1 = recipe.ingredients[0];
   const ingredient2 = recipe.ingredients[1];
-  const family = recipe.family;
   const chance = recipe.chance;
-
-  const [selectedAbility, setSelectedAbility] = useState(null);
-
-  // Generate crystal options based on family
-  const crystalOptions =
-    family !== null && familyMapper[family]
-      ? Object.entries(familyMapper[family]).map(
-          ([crystalName, abilityName]) => ({
-            label: `${CrystalName[crystalName]} - ${t(
-              `abilities.${abilityName}`
-            )}`,
-            value: abilityName,
-          })
-        )
-      : [];
 
   return (
     <Box
@@ -152,24 +107,6 @@ const RecipeButton = ({ recipe, onClick }) => {
             >
               <Box
                 sx={{
-                  ...leftPortionSx,
-                  overflow: "hidden",
-                }}
-                display={"flex"}
-                justifyContent={"end"}
-                alignItems={"center"}
-              >
-                <Typography
-                  fontFamily={"KHGummi"}
-                  fontSize={numberFontSize}
-                  color={`${accentColor}`}
-                  sx={{ lineHeight: 1 }}
-                >
-                  1
-                </Typography>
-              </Box>
-              <Box
-                sx={{
                   ...rightPortionSx,
                   display: "flex",
                   alignItems: "center",
@@ -180,7 +117,7 @@ const RecipeButton = ({ recipe, onClick }) => {
                   component="img"
                   src={getCommandTypeIcon(commands[ingredient1]?.type)}
                   alt=""
-                  sx={{ width: 24, height: 24, ml: 1 }}
+                  sx={{ width: 24, height: 24 }}
                 />
                 <Typography variant="body2">
                   {t(`commands.${ingredient1}`) || "None"}
@@ -189,48 +126,24 @@ const RecipeButton = ({ recipe, onClick }) => {
             </Box>
 
             {/* Row 2 - Ingredient 2 */}
+
             <Box
               sx={{
+                ...rightPortionSx,
                 display: "flex",
-                maxHeight: rowMaxHeight,
+                alignItems: "center",
+                gap: 1,
               }}
             >
               <Box
-                sx={{
-                  ...leftPortionSx,
-                  overflow: "hidden",
-                }}
-                display={"flex"}
-                justifyContent={"end"}
-                alignItems={"center"}
-              >
-                <Typography
-                  fontFamily={"KHGummi"}
-                  fontSize={numberFontSize}
-                  color={`${accentColor}`}
-                  sx={{ lineHeight: 1 }}
-                >
-                  2
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  ...rightPortionSx,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <Box
-                  component="img"
-                  src={getCommandTypeIcon(commands[ingredient2]?.type)}
-                  alt=""
-                  sx={{ width: 24, height: 24, ml: 1 }}
-                />
-                <Typography variant="body2">
-                  {t(`commands.${ingredient2}`) || "None"}
-                </Typography>
-              </Box>
+                component="img"
+                src={getCommandTypeIcon(commands[ingredient2]?.type)}
+                alt=""
+                sx={{ width: 24, height: 24 }}
+              />
+              <Typography variant="body2">
+                {t(`commands.${ingredient2}`) || "None"}
+              </Typography>
             </Box>
           </Box>
         </CardContent>

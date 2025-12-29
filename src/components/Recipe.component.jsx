@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CrystalName, familyMapper } from "../model/Crystals.model";
-import { commands, CommandType } from "../model/Commands.model";
+import { commands } from "../model/Commands.model";
 import { useState } from "react";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 
@@ -58,7 +58,7 @@ const rightPortionSx = {
   transform: "translateX(-16px)",
 };
 
-const Recipe = ({ recipe }) => {
+const Recipe = ({ recipe, isPopup = false }) => {
   const { t } = useTranslation();
   //TODO: change to be mandatory prop
   const ingredient1 = recipe.ingredients[0];
@@ -73,9 +73,9 @@ const Recipe = ({ recipe }) => {
     family !== null && familyMapper[family]
       ? Object.entries(familyMapper[family]).map(
           ([crystalName, abilityName]) => ({
-            label: `${CrystalName[crystalName]} - ${t(
-              `abilities.${abilityName}`
-            )}`,
+            label:
+              `${CrystalName[crystalName]}` +
+              (!isPopup ? ` - ${t(`abilities.${abilityName}`)}` : ""),
             value: abilityName,
           })
         )
