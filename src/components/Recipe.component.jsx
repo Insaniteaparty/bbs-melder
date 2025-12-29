@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { CrystalName, familyMapper } from "../model/Crystals.model";
 import { commands, CommandType } from "../model/Commands.model";
 import { useState } from "react";
-import { getCommandTypeIcon } from "../utils/icon.utils";
+import { getCommandTypeIcon } from "../theme/icon.utils";
 
 const accentColor = "#df961e";
 

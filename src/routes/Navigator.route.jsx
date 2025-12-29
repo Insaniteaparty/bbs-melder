@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -30,51 +30,61 @@ import dimensionLinkIcon from "../assets/dimensionLink.webp";
 import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import { useCharacter } from "../contexts/Character.context";
+import { useDark } from "../contexts/Dark.context";
 import { useTranslation } from "react-i18next";
+
+// Add your light/dark theme icons
+import Nobody from "../assets/nobody.webp";
+import Heartless from "../assets/heartless.webp";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
+
+const routes = [
+  { name: "planner", icon: battleTicketIcon },
+  { name: "recipes", icon: dimensionLinkIcon },
+  { name: "abilities", icon: abilityIcon },
+  { name: "discovered", icon: emblemIcon },
+];
+
+const buttonCss = {
+  minHeight: 48,
+  justifyContent: open ? "initial" : "center",
+};
+
+const iconCss = {
+  minWidth: 0,
+  mr: open ? 3 : "auto",
+  justifyContent: "center",
+};
+
+const selectAvatar = (char) => {
+  switch (char) {
+    case Character.Terra:
+      return TerraAvatar;
+    case Character.Ventus:
+      return VentusAvatar;
+    case Character.Aqua:
+      return AquaAvatar;
+    default:
+      return null;
+  }
+};
 
 function Navigator() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const { character, setCharacter } = useCharacter();
+  const { isDark, toggleDark } = useDark();
   const navigate = useNavigate();
-
-  const routes = [
-    { name: "planner", icon: battleTicketIcon },
-    { name: "recipes", icon: dimensionLinkIcon },
-    { name: "abilities", icon: abilityIcon },
-    { name: "discovered", icon: emblemIcon },
-  ];
-
-  const buttonCss = {
-    minHeight: 48,
-    justifyContent: open ? "initial" : "center",
-  };
-
-  const iconCss = {
-    minWidth: 0,
-    mr: open ? 3 : "auto",
-    justifyContent: "center",
-  };
-
-  const selectAvatar = (char) => {
-    switch (char) {
-      case Character.Terra:
-        return TerraAvatar;
-      case Character.Ventus:
-        return VentusAvatar;
-      case Character.Aqua:
-        return AquaAvatar;
-      default:
-        return null;
-    }
-  };
 
   const getOtherCharacters = () => {
     return Object.values(Character).filter((char) => char !== character);
+  };
+
+  const toggleDrawer = () => {
+    setOpen(!open);
   };
 
   const handleCharacterMenuOpen = (event) => {
@@ -90,8 +100,8 @@ function Navigator() {
     handleCharacterMenuClose();
   };
 
-  const toggleDrawer = () => {
-    setOpen(!open);
+  const avatarSizing = () => {
+    return isDark ? { width: 32, height: 32 } : { width: 32, height: 32 };
   };
 
   return (
@@ -126,6 +136,26 @@ function Navigator() {
           >
             BBS Melder
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            color="inherit"
+            edge="end"
+            onClick={toggleDark}
+            disablePadding
+          >
+            <Avatar
+              src={isDark ? Nobody : Heartless}
+              alt={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              sx={{ width: 32, height: 32 }}
+              slotProps={{
+                img: {
+                  sx: {
+                    objectFit: "contain",
+                  },
+                },
+              }}
+            />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -181,6 +211,16 @@ function Navigator() {
                         <ListItemText
                           style={{ textTransform: "capitalize" }}
                           primary={t(`labels.${route.name}`)}
+                          slotProps={{
+                            primary: {
+                              sx: {
+                                color: (theme) =>
+                                  theme.typography.onBackground.color,
+                                textShadow: (theme) =>
+                                  theme.typography.onBackground.textShadow,
+                              },
+                            },
+                          }}
                         />
                       )}
                     </ListItemButton>
@@ -205,7 +245,21 @@ function Navigator() {
                       sx={{ width: 32, height: 32 }}
                     />
                   </ListItemIcon>
-                  {open && <ListItemText primary={character} />}
+                  {open && (
+                    <ListItemText
+                      primary={character}
+                      slotProps={{
+                        primary: {
+                          sx: {
+                            color: (theme) =>
+                              theme.typography.onBackground.color,
+                            textShadow: (theme) =>
+                              theme.typography.onBackground.textShadow,
+                          },
+                        },
+                      }}
+                    />
+                  )}
                 </ListItemButton>
               </Tooltip>
             </ListItem>

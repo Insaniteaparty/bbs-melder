@@ -6,25 +6,46 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
 import Recipe from "./Recipe.component";
-import { getCommandTypeIcon } from "../utils/icon.utils";
+import { getCommandTypeIcon } from "../theme/icon.theme";
+import { getGradientByCommandType } from "../theme/gradient.theme";
+
+const clipPathStyle =
+  "polygon(0 30px, 30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)";
+
+const openedAccordionClipPathStyle =
+  "polygon(0 30px, 30px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
 
 const Command = ({ command }) => {
   const { t } = useTranslation();
+  const hasRecipes = command.recipes && command.recipes.length > 0;
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <Accordion
+      expanded={expanded}
+      onChange={(e, isExpanded) => setExpanded(isExpanded)}
       sx={{
         minWidth: 300,
+        clipPath: expanded ? openedAccordionClipPathStyle : clipPathStyle,
+        "&.Mui-disabled": {
+          backgroundColor: "transparent",
+          opacity: 1,
+        },
+        "& .MuiAccordionSummary-root.Mui-disabled": {
+          opacity: 1,
+        },
       }}
+      disabled={!hasRecipes}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={hasRecipes ? <ExpandMoreIcon /> : null}
         sx={{
-          background: "linear-gradient(rgb(83, 37, 14), rgb(225, 126, 76))",
-          borderRadius: 1,
+          background: getGradientByCommandType(command.type),
+          clipPath: clipPathStyle,
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -39,15 +60,17 @@ const Command = ({ command }) => {
           </Typography>
         </Box>
       </AccordionSummary>
-      <AccordionDetails>
-        <Grid container spacing={2} columns={{ sm: 1, md: 2, xl: 3 }}>
-          {command.recipes?.map((recipe, index) => (
-            <Grid key={index} size={1}>
-              <Recipe recipe={recipe} />
-            </Grid>
-          ))}
-        </Grid>
-      </AccordionDetails>
+      {hasRecipes && (
+        <AccordionDetails>
+          <Grid container spacing={2} columns={{ sm: 1, md: 2, xl: 3 }}>
+            {command.recipes.map((recipe, index) => (
+              <Grid key={index} size={1}>
+                <Recipe recipe={recipe} />
+              </Grid>
+            ))}
+          </Grid>
+        </AccordionDetails>
+      )}
     </Accordion>
   );
 };

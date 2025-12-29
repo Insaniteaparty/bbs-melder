@@ -1,34 +1,17 @@
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { commands, CommandType } from "../model/Commands.model";
+
 import { useCommands } from "../contexts/Commands.context";
 import { useCharacter } from "../contexts/Character.context";
+import { commands, CommandType } from "../model/Commands.model";
 
-import { getCommandTypeIcon } from "../utils/icon.utils";
-
-const theRightGradient = (type) => {
-  switch (type) {
-    case CommandType.Attack:
-      return "linear-gradient(rgb(83, 37, 14), rgb(225, 126, 76))";
-    case CommandType.Magic:
-      return "linear-gradient(rgb(47, 25, 63), rgb(153, 99, 193))";
-    case CommandType.Movement:
-      return "linear-gradient(rgb(0, 0, 0), rgb(187, 143, 0))";
-    case CommandType.Defense:
-      return "linear-gradient(rgb(0, 0, 0), rgb(0, 0, 165))";
-    case CommandType.Reprisal:
-      return "linear-gradient(rgb(0, 0, 0), rgb(155, 0, 0))";
-    case CommandType.Shotlock:
-      return "linear-gradient(rgb(0, 0, 0), rgb(0, 165, 0))";
-    default:
-      return "";
-  }
-};
+import { getCommandTypeIcon } from "../theme/icon.theme";
+import { getGradientByCommandType } from "../theme/gradient.theme";
 
 const iconColor = (activated, type) => ({
   filter: activated ? "" : "grayscale(100%)",
   bgcolor: activated ? "" : "deactivated.main",
-  background: activated ? theRightGradient(type) : "",
+  background: activated ? getGradientByCommandType(type) : "",
 });
 
 const Discovered = () => {
@@ -62,7 +45,14 @@ const Discovered = () => {
         .filter((type) => typeof type === "number")
         .map((type) => (
           <Box key={type}>
-            <Typography variant="h6" gutterBottom>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: (theme) => theme.typography.onBackground.color,
+                textShadow: (theme) => theme.typography.onBackground.textShadow,
+              }}
+            >
               {getCommandTypeLabel(type)}
             </Typography>
             <Grid container spacing={1}>
