@@ -7,6 +7,8 @@ import {
   Typography,
   Divider,
   Badge,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useState } from "react";
@@ -19,13 +21,16 @@ const Filters = ({ onFilterChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [ingredientFilter, setIngredientFilter] = useState(null);
   const [abilityFilter, setAbilityFilter] = useState(null);
+  const [showOnlyUndiscovered, setShowOnlyUndiscovered] = useState(false);
 
   const open = Boolean(anchorEl);
 
   // Count active filters
-  const activeFiltersCount = [ingredientFilter, abilityFilter].filter(
-    (filter) => filter !== null
-  ).length;
+  const activeFiltersCount = [
+    ingredientFilter,
+    abilityFilter,
+    showOnlyUndiscovered,
+  ].filter((filter) => filter !== null && filter !== false).length;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,18 +42,41 @@ const Filters = ({ onFilterChange }) => {
 
   const handleIngredientChange = (event, newValue) => {
     setIngredientFilter(newValue);
-    onFilterChange({ ingredient: newValue, ability: abilityFilter });
+    onFilterChange({
+      ingredient: newValue,
+      ability: abilityFilter,
+      showOnlyUndiscovered,
+    });
   };
 
   const handleAbilityChange = (event, newValue) => {
     setAbilityFilter(newValue);
-    onFilterChange({ ingredient: ingredientFilter, ability: newValue });
+    onFilterChange({
+      ingredient: ingredientFilter,
+      ability: newValue,
+      showOnlyUndiscovered,
+    });
+  };
+
+  const handleUndiscoveredChange = (event) => {
+    const checked = event.target.checked;
+    setShowOnlyUndiscovered(checked);
+    onFilterChange({
+      ingredient: ingredientFilter,
+      ability: abilityFilter,
+      showOnlyUndiscovered: checked,
+    });
   };
 
   const handleClearFilters = () => {
     setIngredientFilter(null);
     setAbilityFilter(null);
-    onFilterChange({ ingredient: null, ability: null });
+    setShowOnlyUndiscovered(false);
+    onFilterChange({
+      ingredient: null,
+      ability: null,
+      showOnlyUndiscovered: false,
+    });
   };
 
   // Get all command names for autocomplete
@@ -139,6 +167,17 @@ const Filters = ({ onFilterChange }) => {
         />
 
         <Divider sx={{ my: 2 }} />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOnlyUndiscovered}
+              onChange={handleUndiscoveredChange}
+            />
+          }
+          label={t("labels.hideDiscovered")}
+          sx={{ mb: 2 }}
+        />
 
         <Button
           fullWidth

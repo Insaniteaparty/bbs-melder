@@ -17,6 +17,7 @@ export default {
     clearFilters: "Clear Filters",
     lightMode: "Switch to Light Mode",
     darkMode: "Switch to Dark Mode",
+    hideDiscovered: "Hide Discovered Commands",
   },
 
   abilities: {

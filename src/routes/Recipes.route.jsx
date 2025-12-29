@@ -6,13 +6,19 @@ import SearchBox from "../components/SearchBox.component";
 import Filters from "../components/Filters.component";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
+import { useCommands } from "../contexts/Commands.context";
 import { familyMapper } from "../model/Crystals.model";
 
 const Recipes = () => {
   const { t } = useTranslation();
   const { character } = useCharacter();
+  const { isCommandDiscovered } = useCommands();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({ ingredient: null, ability: null });
+  const [filters, setFilters] = useState({
+    ingredient: null,
+    ability: null,
+    showOnlyUndiscovered: false,
+  });
 
   // Get all commands available for the current character
   const characterCommands = Object.values(commands).filter((command) =>
@@ -46,7 +52,16 @@ const Recipes = () => {
         );
       });
 
-    return matchesSearch && matchesIngredient && matchesAbility;
+    // Undiscovered filter - check if command is NOT discovered
+    const matchesUndiscovered =
+      !filters.showOnlyUndiscovered || !isCommandDiscovered(command.name);
+
+    return (
+      matchesSearch &&
+      matchesIngredient &&
+      matchesAbility &&
+      matchesUndiscovered
+    );
   });
 
   return (
