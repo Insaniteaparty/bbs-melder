@@ -4,63 +4,39 @@ import { commands, CommandType } from "../model/Commands.model";
 import { useCommands } from "../contexts/Commands.context";
 import { useCharacter } from "../contexts/Character.context";
 
-import attackIcon from "../assets/attack.webp";
-import magicIcon from "../assets/magic.webp";
-import movementIcon from "../assets/movement.webp";
-import defenseIcon from "../assets/defense.webp";
-import reprisalIcon from "../assets/reprisal.webp";
-import shotlockIcon from "../assets/shotlock.webp";
+import { getCommandTypeIcon } from "../utils/icon.utils";
+
+const theRightGradient = (type) => {
+  switch (type) {
+    case CommandType.Attack:
+      return "linear-gradient(rgb(83, 37, 14), rgb(225, 126, 76))";
+    case CommandType.Magic:
+      return "linear-gradient(rgb(47, 25, 63), rgb(153, 99, 193))";
+    case CommandType.Movement:
+      return "linear-gradient(rgb(0, 0, 0), rgb(187, 143, 0))";
+    case CommandType.Defense:
+      return "linear-gradient(rgb(0, 0, 0), rgb(0, 0, 165))";
+    case CommandType.Reprisal:
+      return "linear-gradient(rgb(0, 0, 0), rgb(155, 0, 0))";
+    case CommandType.Shotlock:
+      return "linear-gradient(rgb(0, 0, 0), rgb(0, 165, 0))";
+    default:
+      return "";
+  }
+};
+
+const iconColor = (activated, type) => ({
+  filter: activated ? "" : "grayscale(100%)",
+  bgcolor: activated ? "" : "deactivated.main",
+  background: activated ? theRightGradient(type) : "",
+});
 
 const Discovered = () => {
   const { t } = useTranslation();
   const { character } = useCharacter();
   const { isCommandDiscovered, toggleCommandDiscovered } = useCommands();
 
-  const getCommandTypeIcon = (type) => {
-    switch (type) {
-      case CommandType.Attack:
-        return attackIcon;
-      case CommandType.Magic:
-        return magicIcon;
-      case CommandType.Movement:
-        return movementIcon;
-      case CommandType.Defense:
-        return defenseIcon;
-      case CommandType.Reprisal:
-        return reprisalIcon;
-      case CommandType.Shotlock:
-        return shotlockIcon;
-      default:
-        return null;
-    }
-  };
-
-  const theRightGradient = (type) => {
-    switch (type) {
-      case CommandType.Attack:
-        return "linear-gradient(rgb(83, 37, 14), rgb(225, 126, 76))";
-      case CommandType.Magic:
-        return "linear-gradient(rgb(47, 25, 63), rgb(153, 99, 193))";
-      case CommandType.Movement:
-        return "linear-gradient(rgb(0, 0, 0), rgb(187, 143, 0))";
-      case CommandType.Defense:
-        return "linear-gradient(rgb(0, 0, 0), rgb(0, 0, 165))";
-      case CommandType.Reprisal:
-        return "linear-gradient(rgb(0, 0, 0), rgb(155, 0, 0))";
-      case CommandType.Shotlock:
-        return "linear-gradient(rgb(0, 0, 0), rgb(0, 165, 0))";
-      default:
-        return "";
-    }
-  };
-
-  const compute_color = (activated, type) => ({
-    filter: activated ? "" : "grayscale(100%)",
-    cursor: "pointer",
-    bgcolor: activated ? "" : "deactivated.main",
-    background: activated ? theRightGradient(type) : "",
-  });
-
+  // TODO: translate command type labels
   const getCommandTypeLabel = (type) => {
     switch (type) {
       case CommandType.Attack:
@@ -119,10 +95,8 @@ const Discovered = () => {
                         sx={{
                           width: 40,
                           height: 40,
-                          ...compute_color(
-                            isCommandDiscovered(command.name),
-                            type
-                          ),
+                          cursor: "pointer",
+                          ...iconColor(isCommandDiscovered(command.name), type),
                         }}
                         onClick={() => toggleCommandDiscovered(command.name)}
                       />

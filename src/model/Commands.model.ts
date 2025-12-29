@@ -125,16 +125,16 @@ enum CommandType {
 }
 
 class Recipe {
-  ingedients: [CommandName, CommandName];
+  ingredients: [CommandName, CommandName];
   family: FamilyType;
   chance?: number;
 
   constructor(
-    ingedients: [CommandName, CommandName],
+    ingredients: [CommandName, CommandName],
     family: FamilyType,
     chance?: number
   ) {
-    this.ingedients = ingedients;
+    this.ingredients = ingredients;
     this.family = family;
     this.chance = chance;
   }
