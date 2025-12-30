@@ -9,6 +9,7 @@ import Planner from "./routes/Planner.route";
 import Recipes from "./routes/Recipes.route";
 import Abilities from "./routes/Abilities.route";
 import Discovered from "./routes/Discovered.route";
+import Wishlist from "./routes/Wishlist.route";
 import { useDark } from "./contexts/Dark.context.jsx";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="recipes" element={<Recipes />} />
             <Route path="abilities" element={<Abilities />} />
             <Route path="discovered" element={<Discovered />} />
+            <Route path="wishlist" element={<Wishlist />} />
             <Route path="*" element={<Planner />} />
           </Route>
         </Routes>

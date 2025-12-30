@@ -18,9 +18,9 @@ import { clip } from "../theme/shapes.theme";
 
 const clipPathStyle = clip.card;
 
-const CommandCard = ({ command, canMakeRecipe }) => {
+const CommandCard = ({ command, canMakeRecipe, isRecipeMakeable }) => {
   const { t } = useTranslation();
-  const { isCommandDiscovered, getCommandCount } = useCommands();
+  const { isCommandDiscovered } = useCommands();
 
   // Filter recipes to only show those that can be made
   const makeableRecipes =
@@ -80,7 +80,11 @@ const CommandCard = ({ command, canMakeRecipe }) => {
         <Grid container spacing={2} columns={{ sm: 1 }}>
           {makeableRecipes.map((recipe, index) => (
             <Grid key={index} size={1}>
-              <RecipeButton recipe={recipe} command={command} />
+              <RecipeButton
+                recipe={recipe}
+                command={command}
+                disabled={isRecipeMakeable ? !isRecipeMakeable(recipe) : false}
+              />
             </Grid>
           ))}
         </Grid>

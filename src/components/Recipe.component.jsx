@@ -15,6 +15,7 @@ import {
   Select,
   MenuItem,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { Star, StarBorder } from "@mui/icons-material";
 import { getCommandTypeIcon } from "../theme/icon.theme";
@@ -119,16 +120,26 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
       <CardHeader
         title={
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <IconButton
-              onClick={handleWishlistToggle}
-              size="small"
-              sx={{
-                color: isWishlisted ? accentColor : "rgba(255,255,255,0.3)",
-                p: 0,
-              }}
+            <Tooltip
+              title={
+                isWishlisted
+                  ? t("actions.removeFromWishlist")
+                  : t("actions.addToWishlist")
+              }
+              placement="top-start"
+              arrow
             >
-              {isWishlisted ? <Star /> : <StarBorder />}
-            </IconButton>
+              <IconButton
+                onClick={handleWishlistToggle}
+                size="small"
+                sx={{
+                  color: isWishlisted ? accentColor : "rgba(255,255,255,0.3)",
+                  p: 0,
+                }}
+              >
+                {isWishlisted ? <Star /> : <StarBorder />}
+              </IconButton>
+            </Tooltip>
             <Typography
               variant="subtitle1"
               fontFamily="KHGummi"
@@ -304,7 +315,8 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
                   if (selected === null) return "---";
 
                   const option = findOption(selected);
-                  if (typeof option !== "number") return "---";
+
+                  if (option === undefined) return "---";
                   // Show only crystal name when isPopup is true and item is selected
                   return isPopup
                     ? option.crystalLabel

@@ -29,6 +29,7 @@ import battleTicketIcon from "../assets/battleTicket.webp";
 import dimensionLinkIcon from "../assets/dimensionLink.webp";
 import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
+import bookIcon from "../assets/books.webp";
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
 import { useTranslation } from "react-i18next";
@@ -42,7 +43,8 @@ const closedDrawerWidth = 64;
 
 const routes = [
   { name: "planner", icon: battleTicketIcon },
-  { name: "recipes", icon: dimensionLinkIcon },
+  { name: "recipes", icon: bookIcon },
+  { name: "wishlist", icon: dimensionLinkIcon },
   { name: "abilities", icon: abilityIcon },
   { name: "discovered", icon: emblemIcon },
 ];

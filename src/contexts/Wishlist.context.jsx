@@ -1,10 +1,17 @@
 /**
  * @fileoverview Context provider for managing wishlist commands in the BBS Melder application.
  * Provides state management and persistence to localStorage for tracking commands the user
- * wants to meld with their specific recipes and counts the crystals needed.
+ * wants to meld with their specific recipes and counts the ingredients needed.
  */
 
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+} from "react";
 import { useCharacter } from "./Character.context";
 
 /**
@@ -25,7 +32,7 @@ const STORAGE_KEY = "bbsMelder_wishlist";
  *
  * @returns {Object} Wishlist context value containing:
  *   - wishlistCommands: Object mapping command names to arrays of recipes for the current character.
- *   - crystalCounts: Object mapping crystal names to their counts needed.
+ *   - ingredientCounts: Object mapping ingredient names to their counts needed.
  *   - addToWishlist: Function to add a command with a specific recipe to the wishlist.
  *   - removeFromWishlist: Function to remove a specific recipe by its ID.
  *   - isRecipeInWishlist: Function to check if a recipe is in the wishlist.
@@ -103,21 +110,20 @@ export const WishlistProvider = ({ children }) => {
 
   /**
    * Get the current character's wishlist.
-   * @returns {Object} Object mapping command names to arrays of recipes
+   * Memoized to only recalculate when character or wishlist changes.
    */
-  const getCharacterWishlist = () => {
+  const wishlistCommands = useMemo(() => {
     return allWishlists[character] || {};
-  };
+  }, [allWishlists, character]);
 
   /**
-   * Calculate crystal counts based on all wishlist recipes.
-   * @returns {Object} Object mapping crystal names to their counts
+   * Calculate ingredient counts based on all wishlist recipes.
+   * Memoized to only recalculate when wishlist changes.
    */
-  const calculateCrystalCounts = () => {
-    const wishlist = getCharacterWishlist();
+  const ingredientCounts = useMemo(() => {
     const counts = {};
 
-    Object.values(wishlist).forEach((recipes) => {
+    Object.values(wishlistCommands).forEach((recipes) => {
       recipes.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
           counts[ingredient] = (counts[ingredient] || 0) + 1;
@@ -126,7 +132,7 @@ export const WishlistProvider = ({ children }) => {
     });
 
     return counts;
-  };
+  }, [wishlistCommands]);
 
   /**
    * Add a command with a specific recipe to the wishlist.
@@ -229,16 +235,15 @@ export const WishlistProvider = ({ children }) => {
    * @returns {number} The count of all wishlist recipes
    */
   const getWishlistCount = () => {
-    const wishlist = getCharacterWishlist();
-    return Object.values(wishlist).reduce(
+    return Object.values(wishlistCommands).reduce(
       (total, recipes) => total + recipes.length,
       0
     );
   };
 
   const value = {
-    wishlistCommands: getCharacterWishlist(),
-    crystalCounts: calculateCrystalCounts(),
+    wishlistCommands,
+    ingredientCounts,
     addToWishlist,
     removeFromWishlist,
     isRecipeInWishlist,

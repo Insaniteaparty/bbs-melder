@@ -1,5 +1,6 @@
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const SearchBox = ({
   value,
@@ -18,6 +19,18 @@ const SearchBox = ({
         startAdornment: (
           <InputAdornment position="start">
             <SearchIcon fontSize={compact ? "small" : "medium"} />
+          </InputAdornment>
+        ),
+        endAdornment: value && (
+          <InputAdornment position="end">
+            <IconButton
+              size="small"
+              onClick={() => onChange("")}
+              edge="end"
+              aria-label="clear search"
+            >
+              <ClearIcon fontSize={compact ? "small" : "medium"} />
+            </IconButton>
           </InputAdornment>
         ),
       }}

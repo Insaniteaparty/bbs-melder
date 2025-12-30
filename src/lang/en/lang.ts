@@ -1,10 +1,12 @@
 import { AbilityName } from "../../model/Abilities.model";
 import { CommandName } from "../../model/Commands.model";
+import Wishlist from "../../routes/Wishlist.route";
 
 export default {
   labels: {
     planner: "Planner",
     recipes: "Recipes",
+    wishlist: "Wishlist",
     abilities: "Abilities",
     discovered: "Discovered",
     meld: "Meld",
@@ -21,6 +23,11 @@ export default {
     inventory: "Inventory",
     searchRecipes: "Search Recipes...",
     newCommand: "New Command",
+  },
+
+  actions: {
+    addToWishlist: "Add to Wishlist",
+    removeFromWishlist: "Remove from Wishlist",
   },
 
   messages: {
