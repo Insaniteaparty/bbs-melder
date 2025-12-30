@@ -2,12 +2,11 @@ import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { commands } from "../model/Commands.model";
-import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
 import { useWishlist } from "../contexts/Wishlist.context";
 
 import { canMakeRecipe } from "../utils/recipe.utils";
-import { useCommandFilters } from "../hooks/useCommandFilters";
+import { familyMapper } from "../model/Crystals.model";
 
 import {
   Box,
@@ -30,7 +29,6 @@ const clipPathStyle = clip.standard;
 
 const Wishlist = () => {
   const { t } = useTranslation();
-  const { character } = useCharacter();
   const { isCommandDiscovered, getCommandCount } = useCommands();
   const { ingredientCounts, wishlistCommands } = useWishlist();
 
@@ -45,13 +43,73 @@ const Wishlist = () => {
   // Memoize translated names for left panel (inventory)
   const localizedIngredientCounts = useMemo(
     () =>
-      Object.entries(ingredientCounts).map(([commandName, count]) => ({
-        name: t(`commands.${commandName}`).toLowerCase(),
-        type: commands[commandName]?.type,
-        count: count,
-      })),
-    [ingredientCounts, t]
+      Object.entries(ingredientCounts)
+        .map(([commandName, count]) => ({
+          commandName,
+          name: t(`commands.${commandName}`).toLowerCase(),
+          type: commands[commandName]?.type,
+          count: count,
+        }))
+        .filter((item) => item.name.includes(searchQuery.toLowerCase())),
+    [ingredientCounts, t, searchQuery]
   );
+
+  // Filter wishlist commands based on recipe search and filters
+  const filteredWishlistCommands = useMemo(() => {
+    const filtered = {};
+
+    Object.entries(wishlistCommands).forEach(([commandName, recipes]) => {
+      const commandTranslated = t(`commands.${commandName}`).toLowerCase();
+
+      // Check if command name matches recipe search
+      const matchesSearch =
+        !recipeSearchQuery ||
+        commandTranslated.includes(recipeSearchQuery.toLowerCase());
+
+      if (!matchesSearch) return;
+
+      // Filter recipes based on filters
+      const filteredRecipes = recipes.filter((recipe) => {
+        // Ingredient filter
+        if (
+          recipeFilters.ingredient !== null &&
+          !recipe.ingredients.includes(recipeFilters.ingredient)
+        ) {
+          return false;
+        }
+
+        // Ability filter
+        if (recipeFilters.ability !== null) {
+          const hasAbility = Object.values(
+            familyMapper[recipe.family] || {}
+          ).includes(recipeFilters.ability);
+          if (!hasAbility) return false;
+        }
+
+        // Show only undiscovered filter
+        if (
+          recipeFilters.showOnlyUndiscovered &&
+          isCommandDiscovered(commandName)
+        ) {
+          return false;
+        }
+
+        return true;
+      });
+
+      if (filteredRecipes.length > 0) {
+        filtered[commandName] = filteredRecipes;
+      }
+    });
+
+    return filtered;
+  }, [
+    wishlistCommands,
+    recipeSearchQuery,
+    recipeFilters,
+    isCommandDiscovered,
+    t,
+  ]);
 
   return (
     <Box sx={{ display: "flex", gap: 2, height: "calc(100vh - 4rem)" }}>
@@ -115,6 +173,15 @@ const Wishlist = () => {
                 <Typography variant="body2" fontSize={"0.8rem"}>
                   {name}
                 </Typography>
+                <Box flex={1} />
+                <Typography
+                  variant="body2"
+                  fontSize={"0.8rem"}
+                  color="rgba(255, 220, 0, 1)"
+                  pr={2}
+                >
+                  x{count}
+                </Typography>
               </Box>
             </ListItem>
           ))}
@@ -143,24 +210,26 @@ const Wishlist = () => {
         </Box>
 
         <Grid container spacing={2}>
-          {Object.entries(wishlistCommands).map(([commandName, recipes]) => (
-            <Grid key={commandName} size={{ xs: 12, md: 6, lg: 4 }}>
-              <CommandCard
-                command={commands[commandName]}
-                canMakeRecipe={(recipe) => {
-                  // Show recipe if it's in the wishlist (always return true)
-                  return recipes.some((r) => r.id === recipe.id);
-                }}
-                isRecipeMakeable={(recipe) => {
-                  // Check if we actually have the ingredients
-                  return canMakeRecipe(recipe, getCommandCount);
-                }}
-              />
-            </Grid>
-          ))}
+          {Object.entries(filteredWishlistCommands).map(
+            ([commandName, recipes]) => (
+              <Grid key={commandName} size={{ xs: 12, md: 6, lg: 4 }}>
+                <CommandCard
+                  command={commands[commandName]}
+                  canMakeRecipe={(recipe) => {
+                    // Show recipe if it's in the wishlist (always return true)
+                    return recipes.some((r) => r.id === recipe.id);
+                  }}
+                  isRecipeMakeable={(recipe) => {
+                    // Check if we actually have the ingredients
+                    return canMakeRecipe(recipe, getCommandCount);
+                  }}
+                />
+              </Grid>
+            )
+          )}
         </Grid>
-        {/* {filteredMakeableCommands.length === 0 &&
-          makeableCommands.length > 0 && (
+        {Object.keys(filteredWishlistCommands).length === 0 &&
+          Object.keys(wishlistCommands).length > 0 && (
             <Box
               sx={{
                 display: "flex",
@@ -180,7 +249,7 @@ const Wishlist = () => {
                 {t("messages.noMatchingRecipes")}
               </Typography>
             </Box>
-          )} */}
+          )}
         {Object.keys(wishlistCommands).length === 0 && (
           <Box
             sx={{

@@ -183,7 +183,6 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                       gap: 1,
                       flex: 4,
                       borderRadius: "0 2rem 2rem 0",
-                      // Method 1: Multiple backgrounds (recommended)
                       background: [
                         `linear-gradient(90deg, ${meldPaperColor} 0%, transparent 10%)`,
                         "linear-gradient(rgba(0,0,0,0.8), rgba(67,67,67,0.8))",

@@ -315,7 +315,8 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
                   if (selected === null) return "---";
 
                   const option = findOption(selected);
-                  if (typeof option !== "number") return "---";
+
+                  if (option === undefined) return "---";
                   // Show only crystal name when isPopup is true and item is selected
                   return isPopup
                     ? option.crystalLabel
