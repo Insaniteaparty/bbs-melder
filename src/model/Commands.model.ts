@@ -1840,11 +1840,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.AerialRecovery]: new Command(
     CommandName.AerialRecovery,
     CommandType.Reprisal,
-    [Character.Terra, Character.Ventus, Character.Aqua],
-    [
-      new Recipe([CommandName.Block, CommandName.AirSlide], FamilyType.I),
-      new Recipe([CommandName.Block, CommandName.Jump], FamilyType.I),
-    ]
+    [Character.Terra, Character.Ventus, Character.Aqua]
   ),
 
   // Shotlock Commands
