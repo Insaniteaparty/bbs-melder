@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import CommandAccordion from "../components/AltCommandAccordion.component";
 import SearchBox from "../components/SearchBox.component";
@@ -7,12 +7,12 @@ import Filters from "../components/Filters.component";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
-import { familyMapper } from "../model/Crystals.model";
+import { useCommandFilters } from "../hooks/useCommandFilters";
 
 const Recipes = () => {
   const { t } = useTranslation();
   const { character } = useCharacter();
-  const { isCommandDiscovered } = useCommands();
+  const { getCommandCount, isCommandDiscovered } = useCommands();
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     ingredient: null,
@@ -21,48 +21,23 @@ const Recipes = () => {
   });
 
   // Get all commands available for the current character
-  const characterCommands = Object.values(commands).filter((command) =>
-    command.availableTo.includes(character)
+  const characterCommands = useMemo(
+    () =>
+      Object.values(commands).filter((command) =>
+        command.availableTo.includes(character)
+      ),
+    [character]
   );
 
-  // Filter commands based on search query and filters
-  const filteredCommands = characterCommands.filter((command) => {
-    // Search filter
-    const matchesSearch = t(`commands.${command.name}`)
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-
-    // Ingredient filter - check if any recipe contains the ingredient
-    const matchesIngredient =
-      !filters.ingredient ||
-      command.recipes?.some(
-        (recipe) =>
-          recipe.ingredients?.[0] === filters.ingredient ||
-          recipe.ingredients?.[1] === filters.ingredient
-      );
-
-    // Ability filter - check if any recipe's family can produce the ability
-    const matchesAbility =
-      !filters.ability ||
-      command.recipes?.some((recipe) => {
-        const familyCrystals = familyMapper[recipe.family];
-        return (
-          familyCrystals &&
-          Object.values(familyCrystals).includes(filters.ability)
-        );
-      });
-
-    // Undiscovered filter - check if command is NOT discovered
-    const matchesUndiscovered =
-      !filters.showOnlyUndiscovered || !isCommandDiscovered(command.name);
-
-    return (
-      matchesSearch &&
-      matchesIngredient &&
-      matchesAbility &&
-      matchesUndiscovered
-    );
-  });
+  // Filter commands using shared hook
+  const filteredCommands = useCommandFilters(
+    characterCommands,
+    searchQuery,
+    filters,
+    getCommandCount,
+    isCommandDiscovered,
+    true
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", p: 3 }}>
@@ -87,7 +62,7 @@ const Recipes = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              minHeight: "200px", // Optional: give it some height
+              minHeight: "200px",
             }}
           >
             <Typography variant="h3">

@@ -4,7 +4,7 @@
  * the user has discovered and their quantities per character.
  */
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "./Character.context";
 
@@ -67,6 +67,12 @@ export const CommandsProvider = ({ children }) => {
   });
 
   /**
+   * Ref to track the timeout for debounced localStorage writes.
+   * @type {React.RefObject<number>}
+   */
+  const saveTimeoutRef = useRef();
+
+  /**
    * Helper function to remove a command entry and clean up empty character entries.
    * Removes command if discovered is false and count is 0.
    * Also removes character entry if no commands remain.
@@ -104,10 +110,20 @@ export const CommandsProvider = ({ children }) => {
   const characterCommands = allCommands[character] || {};
 
   /**
-   * Effect to persist commands to localStorage whenever they change.
+   * Effect to persist commands to localStorage with debouncing.
+   * Waits 500ms after the last change before writing to avoid excessive writes.
    */
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(allCommands));
+    // Cancel any pending write
+    clearTimeout(saveTimeoutRef.current);
+
+    // Schedule new write for 500ms from now
+    saveTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allCommands));
+    }, 500);
+
+    // Cleanup: cancel pending write on unmount
+    return () => clearTimeout(saveTimeoutRef.current);
   }, [allCommands]);
 
   /**

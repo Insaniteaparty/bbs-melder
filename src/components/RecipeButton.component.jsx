@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardContent, CardHeader, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -160,4 +161,4 @@ const RecipeButton = ({ recipe, command }) => {
   );
 };
 
-export default RecipeButton;
+export default React.memo(RecipeButton);

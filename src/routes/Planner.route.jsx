@@ -2,9 +2,10 @@ import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { commands } from "../model/Commands.model";
-import { familyMapper } from "../model/Crystals.model";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
+import { useCommandFilters } from "../hooks/useCommandFilters";
+import { canMakeRecipe } from "../utils/recipe.utils";
 
 import {
   Box,
@@ -18,13 +19,16 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { getCommandTypeIcon } from "../theme/icon.theme";
+
 import SearchBox from "../components/SearchBox.component";
 import CommandCard from "../components/CommandCard.component";
 import Filters from "../components/Filters.component";
 
-const clipPathStyle =
-  "polygon(0 10px, 10px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
+import { getCommandTypeIcon } from "../theme/icon.theme";
+import { clip } from "../theme/shapes.theme";
+
+const clipPathStyle = clip.standard;
+const countMinWidth = 15;
 
 const Planner = () => {
   const { t } = useTranslation();
@@ -49,59 +53,23 @@ const Planner = () => {
     [character]
   );
 
-  // Helper function to check if a recipe can be made
-  const canMakeRecipe = (recipe) => {
-    if (recipe.ingredients[0] === recipe.ingredients[1]) {
-      // Special case: if both ingredients are the same, need at least 2 of that command
-      return getCommandCount(recipe.ingredients[0]) >= 2;
-    }
-    return recipe.ingredients.every(
-      (ingredient) => getCommandCount(ingredient) > 0
-    );
-  };
+  // Memoize translated names for left panel (inventory)
+  const translatedCommands = useMemo(
+    () =>
+      characterCommands.map((cmd) => ({
+        ...cmd,
+        translatedName: t(`commands.${cmd.name}`).toLowerCase(),
+      })),
+    [characterCommands, t]
+  );
 
-  // Helper function to filter recipes based on filters
-  const getFilteredRecipes = (command) => {
-    if (!command.recipes) return [];
-
-    return command.recipes.filter((recipe) => {
-      // First check if recipe can be made
-      if (!canMakeRecipe(recipe)) return false;
-
-      // Ingredient filter
-      if (recipeFilters.ingredient !== null) {
-        const hasIngredient = recipe.ingredients.includes(
-          recipeFilters.ingredient
-        );
-        if (!hasIngredient) return false;
-      }
-
-      // Ability filter (check recipe family/ability)
-      if (recipeFilters.ability !== null) {
-        const hasAbility = Object.values(
-          familyMapper[recipe.family] || {}
-        ).includes(recipeFilters.ability);
-        if (!hasAbility) return false;
-      }
-
-      if (recipeFilters.showOnlyUndiscovered) {
-        const isDiscovered = isCommandDiscovered(command.name);
-        if (isDiscovered) return false;
-      }
-
-      return true;
-    });
-  };
-
-  // Filter commands based on search query
+  // Filter commands based on search query (left panel)
   const filteredCommands = useMemo(
     () =>
-      characterCommands.filter((command) =>
-        t(`commands.${command.name}`)
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
+      translatedCommands.filter((cmd) =>
+        cmd.translatedName.includes(searchQuery.toLowerCase())
       ),
-    [characterCommands, searchQuery, t]
+    [translatedCommands, searchQuery]
   );
 
   // Filter commands that have at least one makeable recipe
@@ -109,34 +77,20 @@ const Planner = () => {
     () =>
       characterCommands.filter((command) => {
         if (!command.recipes || command.recipes.length === 0) return false;
-        return command.recipes.some((recipe) => canMakeRecipe(recipe));
+        return command.recipes.some((recipe) =>
+          canMakeRecipe(recipe, getCommandCount)
+        );
       }),
     [characterCommands, getCommandCount]
   );
 
-  // Filter makeable commands based on search query for right panel
-  const filteredMakeableCommands = useMemo(
-    () =>
-      makeableCommands.filter((command) => {
-        // Search filter on command name
-        const matchesSearch = t(`commands.${command.name}`)
-          .toLowerCase()
-          .includes(recipeSearchQuery.toLowerCase());
-
-        if (!matchesSearch) return false;
-
-        // Check if command has any recipes that pass the filters
-        const filteredRecipes = getFilteredRecipes(command);
-        return filteredRecipes.length > 0;
-      }),
-    [
-      makeableCommands,
-      recipeSearchQuery,
-      recipeFilters,
-      t,
-      getCommandCount,
-      isCommandDiscovered,
-    ]
+  // Filter and process makeable commands with recipes for right panel
+  const filteredMakeableCommands = useCommandFilters(
+    makeableCommands,
+    recipeSearchQuery,
+    recipeFilters,
+    getCommandCount,
+    isCommandDiscovered
   );
 
   const handleIncrement = (commandName) => {
@@ -216,7 +170,7 @@ const Planner = () => {
                 </IconButton>
                 <Typography
                   variant="body2"
-                  sx={{ minWidth: 20, textAlign: "center" }}
+                  sx={{ minWidth: countMinWidth, textAlign: "center" }}
                 >
                   {getCommandCount(command.name)}
                 </Typography>
@@ -254,21 +208,17 @@ const Planner = () => {
         </Box>
 
         <Grid container spacing={2}>
-          {filteredMakeableCommands.map((command) => {
-            const filteredRecipes = getFilteredRecipes(command);
-            return (
-              <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
-                <CommandCard
-                  command={{
-                    ...command,
-                    recipes: filteredRecipes,
-                  }}
-                  canMakeRecipe={canMakeRecipe}
-                  filters={recipeFilters}
-                />
-              </Grid>
-            );
-          })}
+          {filteredMakeableCommands.map((command) => (
+            <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
+              <CommandCard
+                command={command}
+                canMakeRecipe={(recipe) =>
+                  canMakeRecipe(recipe, getCommandCount)
+                }
+                filters={recipeFilters}
+              />
+            </Grid>
+          ))}
         </Grid>
         {filteredMakeableCommands.length === 0 &&
           makeableCommands.length > 0 && (

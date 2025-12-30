@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import {
   Accordion,
   AccordionSummary,
@@ -6,18 +9,15 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useTranslation } from "react-i18next";
 import Recipe from "./Recipe.component";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { getGradientByCommandType } from "../theme/gradient.theme";
+import { clip } from "../theme/shapes.theme";
 
-const clipPathStyle =
-  "polygon(0 30px, 30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)";
+const clipPathStyle = clip.card;
 
-const openedAccordionClipPathStyle =
-  "polygon(0 30px, 30px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
+const openedAccordionClipPathStyle = clip.big;
 
 const CommandAccordion = ({ command }) => {
   const { t } = useTranslation();

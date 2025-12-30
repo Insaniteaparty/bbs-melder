@@ -1,3 +1,8 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+
+import { useCommands } from "../contexts/Commands.context";
+
 import {
   Card,
   CardHeader,
@@ -6,14 +11,12 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import RecipeButton from "./RecipeButton.component";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { getGradientByCommandType } from "../theme/gradient.theme";
-import { useCommands } from "../contexts/Commands.context";
+import { clip } from "../theme/shapes.theme";
 
-const clipPathStyle =
-  "polygon(0 30px, 30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)";
+const clipPathStyle = clip.card;
 
 const CommandCard = ({ command, canMakeRecipe }) => {
   const { t } = useTranslation();
@@ -22,13 +25,7 @@ const CommandCard = ({ command, canMakeRecipe }) => {
   // Filter recipes to only show those that can be made
   const makeableRecipes =
     command.recipes?.filter((recipe) => {
-      if (canMakeRecipe) {
-        return canMakeRecipe(recipe);
-      }
-      // Fallback logic if canMakeRecipe is not provided
-      return recipe.ingredients.every(
-        (ingredient) => getCommandCount(ingredient) > 0
-      );
+      return canMakeRecipe(recipe);
     }) || [];
 
   if (makeableRecipes.length === 0) {
@@ -92,4 +89,4 @@ const CommandCard = ({ command, canMakeRecipe }) => {
   );
 };
 
-export default CommandCard;
+export default React.memo(CommandCard);

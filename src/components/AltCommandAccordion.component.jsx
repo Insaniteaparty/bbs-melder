@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import {
   Accordion,
   AccordionSummary,
@@ -6,14 +9,12 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useTranslation } from "react-i18next";
 import Recipe from "./Recipe.component";
 import { getCommandTypeIcon } from "../theme/icon.theme";
+import { clip } from "../theme/shapes.theme";
 
-const clipPathStyle =
-  "polygon(0 30px, 30px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
+const clipPathStyle = clip.big;
 
 const CommandAccordion = ({ command }) => {
   const { t } = useTranslation();
@@ -23,12 +24,13 @@ const CommandAccordion = ({ command }) => {
   return (
     <Accordion
       expanded={expanded}
-      onChange={(e, isExpanded) => setExpanded(isExpanded)}
+      onChange={(_e, isExpanded) => setExpanded(isExpanded)}
       sx={{
         minWidth: 300,
         clipPath: clipPathStyle,
         borderRadius: expanded ? "0 2.3rem 0 0" : "0 8rem 8rem 0",
         backgroundImage: "none",
+        boxShadow: "none",
         "&.Mui-disabled": {
           backgroundColor: "transparent",
           opacity: 1,
