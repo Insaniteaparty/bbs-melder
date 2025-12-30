@@ -116,6 +116,10 @@ const Planner = () => {
           gutterBottom
           textAlign={"center"}
           fontFamily={"KHGummi"}
+          sx={{
+            color: (theme) => theme.typography.onBackground.color,
+            textShadow: (theme) => theme.typography.onBackground.textShadow,
+          }}
         >
           {t("labels.inventory")}
         </Typography>
@@ -170,7 +174,13 @@ const Planner = () => {
                 </IconButton>
                 <Typography
                   variant="body2"
-                  sx={{ minWidth: countMinWidth, textAlign: "center" }}
+                  sx={{
+                    minWidth: countMinWidth,
+                    textAlign: "center",
+                    color: (theme) => theme.typography.onBackground.color,
+                    textShadow: (theme) =>
+                      theme.typography.onBackground.textShadow,
+                  }}
                 >
                   {getCommandCount(command.name)}
                 </Typography>
@@ -230,7 +240,14 @@ const Planner = () => {
                 height: "50%",
               }}
             >
-              <Typography variant="body1" color="text.secondary">
+              <Typography
+                variant="body1"
+                sx={{
+                  color: (theme) => theme.typography.onBackground.color,
+                  textShadow: (theme) =>
+                    theme.typography.onBackground.textShadow,
+                }}
+              >
                 {t("messages.noMatchingRecipes")}
               </Typography>
             </Box>
@@ -244,7 +261,13 @@ const Planner = () => {
               height: "50%",
             }}
           >
-            <Typography variant="body1" color="text.secondary">
+            <Typography
+              variant="body1"
+              sx={{
+                color: (theme) => theme.typography.onBackground.color,
+                textShadow: (theme) => theme.typography.onBackground.textShadow,
+              }}
+            >
               {t("messages.noMakeableRecipes")}
             </Typography>
           </Box>

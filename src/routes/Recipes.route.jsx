@@ -65,7 +65,13 @@ const Recipes = () => {
               minHeight: "200px",
             }}
           >
-            <Typography variant="h3">
+            <Typography
+              variant="body1"
+              sx={{
+                color: (theme) => theme.typography.onBackground.color,
+                textShadow: (theme) => theme.typography.onBackground.textShadow,
+              }}
+            >
               {t("messages.noCommandsFound")}
             </Typography>
           </Box>

@@ -101,7 +101,7 @@ const lightTheme = createTheme({
     ...baseThemeConfig.typography,
     onBackground: {
       color: almostBlack,
-      textShadow: "2px 2px 0px rgba(255,255,255,0.5)",
+      textShadow: "2px 2px 0px rgba(190,190,190,0.7)",
     },
   },
   components: {
