@@ -39,7 +39,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
     addCommand(command.name);
     removeCommand(recipe.ingredients[0]);
     removeCommand(recipe.ingredients[1]);
-    if (selectedAbility) {
+    if (typeof selectedAbility === "number") {
       addAbility(selectedAbility);
     }
     // Close the modal after executing meld
@@ -186,7 +186,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                       ].join(", "),
                     }}
                   >
-                    {selectedAbility && (
+                    {typeof selectedAbility === "number" && (
                       <Box
                         component="img"
                         src={AbilityIcon}
@@ -195,7 +195,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                       />
                     )}
                     <Typography variant="body2">
-                      {selectedAbility
+                      {typeof selectedAbility === "number"
                         ? t(`abilities.${selectedAbility}`)
                         : "???"}
                     </Typography>

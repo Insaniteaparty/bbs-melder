@@ -262,14 +262,16 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
               }}
             >
               <Select
-                onChange={(event) => setSelectedAbility(event.target.value)}
-                value={selectedAbility || ""}
+                onChange={(event) => {
+                  setSelectedAbility(event.target.value);
+                }}
+                value={selectedAbility}
                 displayEmpty
                 renderValue={(selected) => {
-                  if (!selected) return "---";
-                  const option = findOption(selected);
-                  if (!option) return "---";
+                  if (selected === null) return "---";
 
+                  const option = findOption(selected);
+                  if (typeof option === "number") return "---";
                   // Show only crystal name when isPopup is true and item is selected
                   return isPopup
                     ? option.crystalLabel
