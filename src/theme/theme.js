@@ -32,7 +32,7 @@ const baseThemeConfig = {
       '"KHFont", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     allVariants: {
       color: "#ffffff",
-      textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+      textShadow: "2px 2px 0px rgba(0,0,0,0.7)",
     },
   },
   shape: {
@@ -57,6 +57,7 @@ const darkTheme = createTheme({
     },
   },
   components: {
+    ...baseThemeConfig.components,
     MuiBadge: {
       styleOverrides: {
         badge: {
@@ -67,6 +68,9 @@ const darkTheme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
+        root: {
+          textShadow: "none",
+        },
         outlined: {
           color: "#017bec",
           borderColor: "#fff",
@@ -97,10 +101,17 @@ const lightTheme = createTheme({
     ...baseThemeConfig.typography,
     onBackground: {
       color: almostBlack,
-      textShadow: "1px 1px 2px rgba(255,255,255,0.5)",
+      textShadow: "2px 2px 0px rgba(255,255,255,0.5)",
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textShadow: "none",
+        },
+      },
+    },
     MuiBadge: {
       styleOverrides: {
         badge: {

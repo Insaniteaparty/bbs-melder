@@ -19,11 +19,14 @@ export default {
     darkMode: "Switch to Dark Mode",
     hideDiscovered: "Hide Discovered",
     inventory: "Inventory",
+    searchRecipes: "Search Recipes...",
+    newCommand: "New Command",
   },
 
   messages: {
     noCommandsFound: "No commands found.",
-    noMakableRecipes: "No makable recipes found.",
+    noMakeableRecipes: "No makeable recipes found.",
+    noMatchingRecipes: "No matching recipes found.",
   },
 
   abilities: {
@@ -35,7 +38,6 @@ export default {
     [AbilityName.FireBoost]: "Fire Boost",
     [AbilityName.BlizzardBoost]: "Blizzard Boost",
     [AbilityName.ThunderBoost]: "Thunder Boost",
-    [AbilityName.DarkBoost]: "Dark Boost",
     [AbilityName.CureBoost]: "Cure Boost",
     [AbilityName.ItemBoost]: "Item Boost",
     [AbilityName.AttackHaste]: "Attack Haste",

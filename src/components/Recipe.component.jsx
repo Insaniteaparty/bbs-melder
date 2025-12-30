@@ -1,3 +1,11 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { CrystalName, familyMapper } from "../model/Crystals.model";
+import { commands } from "../model/Commands.model";
+import { abilities } from "../model/Abilities.model";
+import { useAbilities } from "../contexts/Abilities.context";
+
 import {
   Card,
   CardContent,
@@ -7,11 +15,8 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import { CrystalName, familyMapper } from "../model/Crystals.model";
-import { commands } from "../model/Commands.model";
-import { useState } from "react";
 import { getCommandTypeIcon } from "../theme/icon.theme";
+import { underline } from "../theme/shapes.theme";
 
 const accentColor = "#df961e";
 
@@ -20,19 +25,6 @@ const slotFontSize = "0.75rem";
 const numberFontSize = "1.5rem";
 
 const rowMaxHeight = "2rem";
-
-const underline = {
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    bottom: 8,
-    left: 16,
-    right: 16,
-    height: 2,
-    background: `linear-gradient(to right, transparent, ${accentColor} 5%, ${accentColor} 80%, transparent)`,
-    borderRadius: 10,
-  },
-};
 
 const leftPortionSx = {
   px: 2,
@@ -58,7 +50,7 @@ const rightPortionSx = {
   transform: "translateX(-16px)",
 };
 
-const Recipe = ({ recipe, isPopup = false }) => {
+const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
   const { t } = useTranslation();
   //TODO: change to be mandatory prop
   const ingredient1 = recipe.ingredients[0];
@@ -66,7 +58,18 @@ const Recipe = ({ recipe, isPopup = false }) => {
   const family = recipe.family;
   const chance = recipe.chance;
 
-  const [selectedAbility, setSelectedAbility] = useState(null);
+  // Use internal state only if parent doesn't provide value and onChange
+  const [internalSelectedAbility, setInternalSelectedAbility] = useState(null);
+  const { getAbilityCount } = useAbilities();
+
+  // Determine if this is a controlled component
+  const isControlled = value !== undefined && onChange !== undefined;
+
+  // Use parent state if controlled, otherwise use internal state
+  const selectedAbility = isControlled ? value : internalSelectedAbility;
+  const setSelectedAbility = isControlled
+    ? onChange
+    : setInternalSelectedAbility;
 
   // Generate crystal options based on family
   const crystalOptions =
@@ -95,11 +98,17 @@ const Recipe = ({ recipe, isPopup = false }) => {
       <CardHeader
         title={t("labels.meld") + (chance ? ` - ${chance}%` : "")}
         sx={{
-          py: 1,
+          py: 0,
           position: "relative",
-          ...underline,
+          "&::after": { ...underline(accentColor) },
         }}
-        slotProps={{ title: { variant: "subtitle1", fontFamily: "KHGummi" } }}
+        slotProps={{
+          title: {
+            variant: "subtitle1",
+            fontFamily: "KHGummi",
+            fontSize: "1.5rem",
+          },
+        }}
       />
       <CardContent sx={{ pt: 0, pb: "0.5rem!important" }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -277,7 +286,14 @@ const Recipe = ({ recipe, isPopup = false }) => {
                   ---
                 </MenuItem>
                 {crystalOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    disabled={
+                      getAbilityCount(option.value) >=
+                      abilities[option.value].limit
+                    }
+                  >
                     {option.label}
                   </MenuItem>
                 ))}

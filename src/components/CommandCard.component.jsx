@@ -83,7 +83,7 @@ const CommandCard = ({ command, canMakeRecipe }) => {
         <Grid container spacing={2} columns={{ sm: 1 }}>
           {makeableRecipes.map((recipe, index) => (
             <Grid key={index} size={1}>
-              <RecipeButton recipe={recipe} />
+              <RecipeButton recipe={recipe} command={command} />
             </Grid>
           ))}
         </Grid>

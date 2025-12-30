@@ -140,12 +140,7 @@ function Navigator() {
           <Tooltip
             title={isDark ? t("labels.lightMode") : t("labels.darkMode")}
           >
-            <IconButton
-              color="inherit"
-              edge="end"
-              onClick={toggleDark}
-              disablePadding
-            >
+            <IconButton color="inherit" edge="end" onClick={toggleDark}>
               <Avatar
                 src={isDark ? Nobody : Heartless}
                 alt={isDark ? "Switch to light mode" : "Switch to dark mode"}

@@ -87,7 +87,7 @@ export const AbilitiesProvider = ({ children }) => {
     setAllAbilities((prev) => {
       const characterAbilities = prev[character] || {};
       const currentCount = characterAbilities[abilityName] || 0;
-      const ability = abilities.find((a) => a.name === abilityName);
+      const ability = abilities[abilityName];
 
       if (currentCount < ability.limit) {
         return {

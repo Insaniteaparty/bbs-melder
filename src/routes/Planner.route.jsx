@@ -1,3 +1,11 @@
+import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
+import { commands } from "../model/Commands.model";
+import { familyMapper } from "../model/Crystals.model";
+import { useCharacter } from "../contexts/Character.context";
+import { useCommands } from "../contexts/Commands.context";
+
 import {
   Box,
   Typography,
@@ -10,14 +18,10 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { commands } from "../model/Commands.model";
-import { useCharacter } from "../contexts/Character.context";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import SearchBox from "../components/SearchBox.component";
-import { useCommands } from "../contexts/Commands.context";
 import CommandCard from "../components/CommandCard.component";
+import Filters from "../components/Filters.component";
 
 const clipPathStyle =
   "polygon(0 10px, 10px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
@@ -25,9 +29,16 @@ const clipPathStyle =
 const Planner = () => {
   const { t } = useTranslation();
   const { character } = useCharacter();
-  const { addCommand, removeCommand, getCommandCount } = useCommands();
+  const { addCommand, removeCommand, getCommandCount, isCommandDiscovered } =
+    useCommands();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [recipeSearchQuery, setRecipeSearchQuery] = useState("");
+  const [recipeFilters, setRecipeFilters] = useState({
+    ingredient: null,
+    ability: null,
+    showOnlyUndiscovered: false,
+  });
 
   // Memoize commands available for the current character
   const characterCommands = useMemo(
@@ -49,6 +60,39 @@ const Planner = () => {
     );
   };
 
+  // Helper function to filter recipes based on filters
+  const getFilteredRecipes = (command) => {
+    if (!command.recipes) return [];
+
+    return command.recipes.filter((recipe) => {
+      // First check if recipe can be made
+      if (!canMakeRecipe(recipe)) return false;
+
+      // Ingredient filter
+      if (recipeFilters.ingredient !== null) {
+        const hasIngredient = recipe.ingredients.includes(
+          recipeFilters.ingredient
+        );
+        if (!hasIngredient) return false;
+      }
+
+      // Ability filter (check recipe family/ability)
+      if (recipeFilters.ability !== null) {
+        const hasAbility = Object.values(
+          familyMapper[recipe.family] || {}
+        ).includes(recipeFilters.ability);
+        if (!hasAbility) return false;
+      }
+
+      if (recipeFilters.showOnlyUndiscovered) {
+        const isDiscovered = isCommandDiscovered(command.name);
+        if (isDiscovered) return false;
+      }
+
+      return true;
+    });
+  };
+
   // Filter commands based on search query
   const filteredCommands = useMemo(
     () =>
@@ -68,6 +112,31 @@ const Planner = () => {
         return command.recipes.some((recipe) => canMakeRecipe(recipe));
       }),
     [characterCommands, getCommandCount]
+  );
+
+  // Filter makeable commands based on search query for right panel
+  const filteredMakeableCommands = useMemo(
+    () =>
+      makeableCommands.filter((command) => {
+        // Search filter on command name
+        const matchesSearch = t(`commands.${command.name}`)
+          .toLowerCase()
+          .includes(recipeSearchQuery.toLowerCase());
+
+        if (!matchesSearch) return false;
+
+        // Check if command has any recipes that pass the filters
+        const filteredRecipes = getFilteredRecipes(command);
+        return filteredRecipes.length > 0;
+      }),
+    [
+      makeableCommands,
+      recipeSearchQuery,
+      recipeFilters,
+      t,
+      getCommandCount,
+      isCommandDiscovered,
+    ]
   );
 
   const handleIncrement = (commandName) => {
@@ -171,22 +240,51 @@ const Planner = () => {
           overflow: "auto",
         }}
       >
-        <Typography
-          variant="h6"
-          gutterBottom
-          textAlign={"center"}
-          fontFamily={"KHGummi"}
-          mb={3}
-        >
-          {t("labels.recipes")}
-        </Typography>
+        {/* Search and Filter Controls */}
+        <Box sx={{ display: "flex", gap: 2, mb: 3, alignItems: "flex-start" }}>
+          <Box sx={{ flex: 1 }}>
+            <SearchBox
+              value={recipeSearchQuery}
+              onChange={setRecipeSearchQuery}
+              placeholder={t("labels.searchRecipes")}
+              compact
+            />
+          </Box>
+          <Filters onFilterChange={setRecipeFilters} />
+        </Box>
+
         <Grid container spacing={2}>
-          {makeableCommands.map((command) => (
-            <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
-              <CommandCard command={command} canMakeRecipe={canMakeRecipe} />
-            </Grid>
-          ))}
+          {filteredMakeableCommands.map((command) => {
+            const filteredRecipes = getFilteredRecipes(command);
+            return (
+              <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
+                <CommandCard
+                  command={{
+                    ...command,
+                    recipes: filteredRecipes,
+                  }}
+                  canMakeRecipe={canMakeRecipe}
+                  filters={recipeFilters}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
+        {filteredMakeableCommands.length === 0 &&
+          makeableCommands.length > 0 && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "50%",
+              }}
+            >
+              <Typography variant="body1" color="text.secondary">
+                {t("messages.noMatchingRecipes")}
+              </Typography>
+            </Box>
+          )}
         {makeableCommands.length === 0 && (
           <Box
             sx={{

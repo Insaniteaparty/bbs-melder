@@ -1,24 +1,14 @@
 import { Card, CardContent, CardHeader, Box, Typography } from "@mui/material";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "../model/Commands.model";
 import { getCommandTypeIcon } from "../theme/icon.theme";
+import MeldModal from "./MeldModal.component";
+import { underline } from "../theme/shapes.theme";
 
 const accentColor = "#df961e";
 
 const rowMaxHeight = "2rem";
-
-const underline = {
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    bottom: 8,
-    left: 16,
-    right: 16,
-    height: 2,
-    background: `linear-gradient(to right, transparent, ${accentColor} 5%, ${accentColor} 80%, transparent)`,
-    borderRadius: 10,
-  },
-};
 
 const rightPortionSx = {
   maxHeight: rowMaxHeight,
@@ -30,11 +20,21 @@ const rightPortionSx = {
   borderBottom: "2px solid rgba(255,255,255,0.2)",
 };
 
-const RecipeButton = ({ recipe, onClick }) => {
+const RecipeButton = ({ recipe, command }) => {
   const { t } = useTranslation();
+  const [modalOpen, setModalOpen] = useState(false);
+
   const ingredient1 = recipe.ingredients[0];
   const ingredient2 = recipe.ingredients[1];
   const chance = recipe.chance;
+
+  const handleCardClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <Box
@@ -49,7 +49,7 @@ const RecipeButton = ({ recipe, onClick }) => {
       }}
     >
       <Card
-        onClick={onClick}
+        onClick={handleCardClick}
         sx={{
           minWidth: 100,
           clipPath: "polygon(0 0, 85% 0, 90% 10%, 100% 10%, 100% 100%, 0 100%)",
@@ -64,7 +64,7 @@ const RecipeButton = ({ recipe, onClick }) => {
           sx={{
             py: 1,
             position: "relative",
-            ...underline,
+            "&::after": { ...underline(accentColor) },
           }}
           slotProps={{ title: { variant: "subtitle1", fontFamily: "KHGummi" } }}
         />
@@ -148,6 +148,14 @@ const RecipeButton = ({ recipe, onClick }) => {
           </Box>
         </CardContent>
       </Card>
+
+      {/* Modal */}
+      <MeldModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        recipe={recipe}
+        command={command}
+      />
     </Box>
   );
 };

@@ -74,7 +74,7 @@ const Abilities = () => {
   return (
     <Box sx={{ p: 3 }}>
       <List>
-        {abilities.map((ability) => (
+        {Object.values(abilities).map((ability) => (
           <ListItem key={ability.name} sx={() => tileCss(ability.type)}>
             <Avatar
               src={getAbilityIcon(ability.type)}
