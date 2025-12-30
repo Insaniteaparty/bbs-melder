@@ -20,6 +20,7 @@ import Recipe from "./Recipe.component";
 
 import { useAbilities } from "../contexts/Abilities.context";
 import { useCommands } from "../contexts/Commands.context";
+import { useWishlist } from "../contexts/Wishlist.context";
 
 const rowMaxHeight = "2rem";
 
@@ -34,6 +35,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
 
   const { addAbility } = useAbilities();
   const { addCommand, removeCommand } = useCommands();
+  const { removeFromWishlist } = useWishlist();
 
   const executeMeld = () => {
     addCommand(command.name);
@@ -42,6 +44,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
     if (typeof selectedAbility === "number") {
       addAbility(selectedAbility);
     }
+    removeFromWishlist(command.name, recipe.id);
     // Close the modal after executing meld
     onClose();
   };
@@ -81,6 +84,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
         {/* Recipe Component */}
         <Recipe
           recipe={recipe}
+          commandName={command.name}
           value={selectedAbility}
           onChange={setSelectedAbility}
           isPopup

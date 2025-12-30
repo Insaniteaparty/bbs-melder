@@ -7,6 +7,7 @@ import { AbilitiesProvider } from "./contexts/Abilities.context.jsx";
 import { CharacterProvider } from "./contexts/Character.context.jsx";
 import { CommandsProvider } from "./contexts/Commands.context.jsx";
 import { DarkProvider } from "./contexts/Dark.context.jsx";
+import { WishlistProvider } from "./contexts/Wishlist.context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")).render(
       <CharacterProvider>
         <AbilitiesProvider>
           <CommandsProvider>
-            <App />
+            <WishlistProvider>
+              <App />
+            </WishlistProvider>
           </CommandsProvider>
         </AbilitiesProvider>
       </CharacterProvider>

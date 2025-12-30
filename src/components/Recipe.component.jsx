@@ -14,9 +14,12 @@ import {
   Typography,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
+import { Star, StarBorder } from "@mui/icons-material";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { underline } from "../theme/shapes.theme";
+import { useWishlist } from "../contexts/Wishlist.context";
 
 const accentColor = "#df961e";
 
@@ -50,16 +53,31 @@ const rightPortionSx = {
   transform: "translateX(-16px)",
 };
 
-const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
+const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
   const { t } = useTranslation();
   const ingredient1 = recipe.ingredients[0];
   const ingredient2 = recipe.ingredients[1];
   const family = recipe.family;
   const chance = recipe.chance;
 
+  const { getAbilityCount } = useAbilities();
+  const { isRecipeInWishlist, addToWishlist, removeFromWishlist } =
+    useWishlist();
+
+  // Check if recipe is in wishlist
+  const isWishlisted = isRecipeInWishlist(commandName, recipe.id);
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = () => {
+    if (isWishlisted) {
+      removeFromWishlist(commandName, recipe.id);
+    } else {
+      addToWishlist(commandName, recipe);
+    }
+  };
+
   // Use internal state only if parent doesn't provide value and onChange
   const [internalSelectedAbility, setInternalSelectedAbility] = useState(null);
-  const { getAbilityCount } = useAbilities();
 
   // Determine if this is a controlled component
   const isControlled = value !== undefined && onChange !== undefined;
@@ -99,18 +117,31 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
       }}
     >
       <CardHeader
-        title={t("labels.meld") + (chance ? ` - ${chance}%` : "")}
+        title={
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <IconButton
+              onClick={handleWishlistToggle}
+              size="small"
+              sx={{
+                color: isWishlisted ? accentColor : "rgba(255,255,255,0.3)",
+                p: 0,
+              }}
+            >
+              {isWishlisted ? <Star /> : <StarBorder />}
+            </IconButton>
+            <Typography
+              variant="subtitle1"
+              fontFamily="KHGummi"
+              fontSize="1.5rem"
+            >
+              {t("labels.meld") + (chance ? ` - ${chance}%` : "")}
+            </Typography>
+          </Box>
+        }
         sx={{
           py: 0,
           position: "relative",
           "&::after": { ...underline(accentColor) },
-        }}
-        slotProps={{
-          title: {
-            variant: "subtitle1",
-            fontFamily: "KHGummi",
-            fontSize: "1.5rem",
-          },
         }}
       />
       <CardContent sx={{ pt: 0, pb: "0.5rem!important" }}>
@@ -265,13 +296,15 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
                 onChange={(event) => {
                   setSelectedAbility(event.target.value);
                 }}
-                value={selectedAbility}
+                value={
+                  typeof selectedAbility === "number" ? selectedAbility : ""
+                }
                 displayEmpty
                 renderValue={(selected) => {
                   if (selected === null) return "---";
 
                   const option = findOption(selected);
-                  if (typeof option === "number") return "---";
+                  if (typeof option !== "number") return "---";
                   // Show only crystal name when isPopup is true and item is selected
                   return isPopup
                     ? option.crystalLabel

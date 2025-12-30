@@ -174,6 +174,7 @@ enum CommandType {
 }
 
 class Recipe {
+  id: string;
   ingredients: [CommandName, CommandName];
   family: FamilyType;
   chance?: number;
@@ -183,6 +184,8 @@ class Recipe {
     family: FamilyType,
     chance?: number
   ) {
+    // Generate a unique ID based on ingredients and family
+    this.id = `${ingredients[0]}_${ingredients[1]}_${family}_${chance || 100}`;
     this.ingredients = ingredients;
     this.family = family;
     this.chance = chance;

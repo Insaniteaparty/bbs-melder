@@ -68,7 +68,7 @@ const CommandAccordion = ({ command }) => {
           <Grid container spacing={2} columns={{ sm: 1, md: 2, xl: 3 }}>
             {command.recipes.map((recipe, index) => (
               <Grid key={index} size={1}>
-                <Recipe recipe={recipe} />
+                <Recipe recipe={recipe} commandName={command.name} />
               </Grid>
             ))}
           </Grid>
