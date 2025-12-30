@@ -87,7 +87,7 @@ const RecipeButton = ({ recipe, command }) => {
             >
               <Typography
                 fontFamily="KHGummi"
-                color={accentColor}
+                color={"rgba(255, 220, 0, 1)"}
                 fontSize="1rem"
                 fontWeight="bold"
                 sx={{ textShadow: "3px 3px 6px rgba(0,0,0,0.7)" }}

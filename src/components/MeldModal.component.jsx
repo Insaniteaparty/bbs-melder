@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Modal,
   Box,
@@ -11,11 +12,14 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
-import Recipe from "./Recipe.component";
+
 import AbilityIcon from "../assets/ability.webp";
 import { underline } from "../theme/shapes.theme";
 import { getCommandTypeIcon } from "../theme/icon.theme";
-import { useState } from "react";
+import Recipe from "./Recipe.component";
+
+import { useAbilities } from "../contexts/Abilities.context";
+import { useCommands } from "../contexts/Commands.context";
 
 const rowMaxHeight = "2rem";
 
@@ -27,6 +31,20 @@ const resultClipPathStyle =
 const MeldModal = ({ open, onClose, recipe, command }) => {
   const { t } = useTranslation();
   const [selectedAbility, setSelectedAbility] = useState(null);
+
+  const { addAbility } = useAbilities();
+  const { addCommand, removeCommand } = useCommands();
+
+  const executeMeld = () => {
+    addCommand(command.name);
+    removeCommand(recipe.ingredients[0]);
+    removeCommand(recipe.ingredients[1]);
+    if (selectedAbility) {
+      addAbility(selectedAbility);
+    }
+    // Close the modal after executing meld
+    onClose();
+  };
 
   return (
     <Modal
@@ -65,6 +83,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
           recipe={recipe}
           value={selectedAbility}
           onChange={setSelectedAbility}
+          isPopup
         />
 
         {/* Meld Section */}
@@ -167,14 +186,18 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                       ].join(", "),
                     }}
                   >
-                    <Box
-                      component="img"
-                      src={AbilityIcon}
-                      alt=""
-                      sx={{ width: 24, height: 24, ml: 1 }}
-                    />
+                    {selectedAbility && (
+                      <Box
+                        component="img"
+                        src={AbilityIcon}
+                        alt=""
+                        sx={{ width: 24, height: 24, ml: 1 }}
+                      />
+                    )}
                     <Typography variant="body2">
-                      {t(`abilities.${selectedAbility}`) || "---"}
+                      {selectedAbility
+                        ? t(`abilities.${selectedAbility}`)
+                        : "???"}
                     </Typography>
                   </Box>
                 </Box>
@@ -186,6 +209,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                   justifyContent={"flex-end"}
                 >
                   <Button
+                    onClick={executeMeld}
                     variant="contained"
                     sx={{
                       minWidth: "40%",

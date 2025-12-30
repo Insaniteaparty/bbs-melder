@@ -52,7 +52,6 @@ const rightPortionSx = {
 
 const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
   const { t } = useTranslation();
-  //TODO: change to be mandatory prop
   const ingredient1 = recipe.ingredients[0];
   const ingredient2 = recipe.ingredients[1];
   const family = recipe.family;
@@ -71,18 +70,22 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
     ? onChange
     : setInternalSelectedAbility;
 
-  // Generate crystal options based on family
+  // Generate crystal options - single source of truth
   const crystalOptions =
     family !== null && familyMapper[family]
       ? Object.entries(familyMapper[family]).map(
           ([crystalName, abilityName]) => ({
-            label:
-              `${CrystalName[crystalName]}` +
-              (!isPopup ? ` - ${t(`abilities.${abilityName}`)}` : ""),
-            value: abilityName,
+            crystalName,
+            crystalLabel: CrystalName[crystalName],
+            abilityName,
+            abilityLabel: t(`abilities.${abilityName}`),
           })
         )
       : [];
+
+  // Helper to find option by ability name
+  const findOption = (abilityName) =>
+    crystalOptions.find((opt) => opt.abilityName === abilityName);
 
   return (
     <Card
@@ -259,11 +262,19 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
               }}
             >
               <Select
-                onChange={(event) => {
-                  setSelectedAbility(event.target.value);
-                }}
-                value={selectedAbility !== null ? selectedAbility : ""}
+                onChange={(event) => setSelectedAbility(event.target.value)}
+                value={selectedAbility || ""}
                 displayEmpty
+                renderValue={(selected) => {
+                  if (!selected) return "---";
+                  const option = findOption(selected);
+                  if (!option) return "---";
+
+                  // Show only crystal name when isPopup is true and item is selected
+                  return isPopup
+                    ? option.crystalLabel
+                    : `${option.crystalLabel} - ${option.abilityLabel}`;
+                }}
                 sx={{
                   ml: "5%",
                   flex: 1,
@@ -282,19 +293,17 @@ const Recipe = ({ recipe, isPopup = false, value, onChange }) => {
                   },
                 }}
               >
-                <MenuItem value="" disabled>
-                  ---
-                </MenuItem>
                 {crystalOptions.map((option) => (
                   <MenuItem
-                    key={option.value}
-                    value={option.value}
+                    key={option.abilityName}
+                    value={option.abilityName}
                     disabled={
-                      getAbilityCount(option.value) >=
-                      abilities[option.value].limit
+                      getAbilityCount(option.abilityName) >=
+                      abilities[option.abilityName].limit
                     }
                   >
-                    {option.label}
+                    {/* Always show full label in dropdown */}
+                    {option.crystalLabel} - {option.abilityLabel}
                   </MenuItem>
                 ))}
               </Select>

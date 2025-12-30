@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import CommandAccordion from "../components/CommandAccordion.component";
+import CommandAccordion from "../components/AltCommandAccordion.component";
 import SearchBox from "../components/SearchBox.component";
 import Filters from "../components/Filters.component";
 import { commands } from "../model/Commands.model";
