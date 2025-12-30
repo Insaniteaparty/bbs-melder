@@ -14,10 +14,15 @@ enum CommandName {
   Zantetsuken,
   StrikeRaid,
   FreezeRaid,
+  TreasureRaid,
+  SparkRaid,
+  WindRaid,
   FireSurge,
   ThunderSurge,
   AerialSlam,
   ArsSolum,
+  ArsArcanum,
+  TimeSplicer,
   PoisonEdge,
   BlizzardEdge,
   StunEdge,
@@ -26,9 +31,11 @@ enum CommandName {
   ConfusionStrike,
   BindingStrike,
   BrutalBlast,
+  TornadoStrike,
   MagnetSpiral,
   Windcutter,
   LimitStorm,
+  Salvation,
   CollisionMagnet,
   GeoImpact,
   Sacrifice,
@@ -63,7 +70,9 @@ enum CommandName {
   Aerora,
   Aeroga,
   Warp,
+  Faith,
   DeepFreeze,
+  Tornado,
   MegaFlare,
   Quake,
   Meteor,
@@ -83,8 +92,15 @@ enum CommandName {
   // Movement Commands
   Jump,
   HighJump,
+  DodgeRoll,
+  ThunderRoll,
   AirSlide,
   IceSlide,
+  Reversal,
+  Glide,
+  Superglide,
+  FireGlide,
+  HomingSlide,
   SonicImpact,
   Slide,
 
@@ -97,7 +113,10 @@ enum CommandName {
 
   // Reprisal Commands
   CounterHammer,
+  CounterRush,
+  ReversalSlash,
   PaybackFang,
+  PaybackRaid,
   AerialRecovery,
 
   // Shotlock Commands
@@ -108,10 +127,12 @@ enum CommandName {
   Ragnarok,
   Thunderstorm,
   BioBarrage,
+  PulseBomb,
   PhotonCharge,
   AbsoluteZero,
   LightningRay,
   SonicShadow,
+  Multivortex,
   UltimaCannon,
 }
 
@@ -165,13 +186,13 @@ const commands: Record<CommandName, Command> = {
   [CommandName.QuickBlitz]: new Command(
     CommandName.QuickBlitz,
     CommandType.Attack,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.Blitz]: new Command(
     CommandName.Blitz,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.StunEdge, CommandName.SlotEdge],
@@ -202,13 +223,13 @@ const commands: Record<CommandName, Command> = {
   [CommandName.SlidingDash]: new Command(
     CommandName.SlidingDash,
     CommandType.Attack,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.FireDash]: new Command(
     CommandName.FireDash,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.SlidingDash, CommandName.Fira], FamilyType.C),
       new Recipe([CommandName.SlidingDash, CommandName.Fire], FamilyType.D),
@@ -233,7 +254,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.SonicBlade]: new Command(
     CommandName.SonicBlade,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Blitz, CommandName.DarkHaze], FamilyType.D, 90),
       new Recipe(
@@ -274,7 +295,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.StrikeRaid]: new Command(
     CommandName.StrikeRaid,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.QuickBlitz, CommandName.SlidingDash],
@@ -286,7 +307,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.FreezeRaid]: new Command(
     CommandName.FreezeRaid,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StrikeRaid, CommandName.Blizzara], FamilyType.I),
       new Recipe(
@@ -296,10 +317,56 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.TreasureRaid]: new Command(
+    CommandName.TreasureRaid,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.StrikeRaid, CommandName.SlotEdge], FamilyType.O),
+      new Recipe([CommandName.SlotEdge, CommandName.Magnet], FamilyType.D),
+      new Recipe([CommandName.SlotEdge, CommandName.Magnera], FamilyType.K),
+    ]
+  ),
+
+  [CommandName.SparkRaid]: new Command(
+    CommandName.SparkRaid,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.FreezeRaid, CommandName.Magnega], FamilyType.J),
+      new Recipe([CommandName.TreasureRaid, CommandName.Magnega], FamilyType.N),
+      new Recipe(
+        [CommandName.ThunderSurge, CommandName.DodgeRoll],
+        FamilyType.P,
+        20
+      ),
+      new Recipe(
+        [CommandName.Thundaga, CommandName.DodgeRoll],
+        FamilyType.L,
+        20
+      ),
+      new Recipe(
+        [CommandName.DodgeRoll, CommandName.StunBlock],
+        FamilyType.L,
+        20
+      ),
+    ]
+  ),
+
+  [CommandName.WindRaid]: new Command(
+    CommandName.WindRaid,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.FreezeRaid, CommandName.Aeroga], FamilyType.B),
+      new Recipe([CommandName.TreasureRaid, CommandName.Aeroga], FamilyType.F),
+    ]
+  ),
+
   [CommandName.FireSurge]: new Command(
     CommandName.FireSurge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FireStrike, CommandName.Fira], FamilyType.A),
       new Recipe([CommandName.FireDash, CommandName.Ignite], FamilyType.D),
@@ -311,7 +378,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.ThunderSurge]: new Command(
     CommandName.ThunderSurge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FireDash, CommandName.Thundara], FamilyType.D),
       new Recipe([CommandName.FreezeRaid, CommandName.Thundara], FamilyType.G),
@@ -327,7 +394,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.AerialSlam]: new Command(
     CommandName.AerialSlam,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FireDash, CommandName.HighJump], FamilyType.A),
       new Recipe(
@@ -378,10 +445,65 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.ArsArcanum]: new Command(
+    CommandName.ArsArcanum,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.Blitz, CommandName.AerialSlam], FamilyType.F),
+      new Recipe(
+        [CommandName.QuickBlitz, CommandName.SlotEdge],
+        FamilyType.O,
+        10
+      ),
+      new Recipe(
+        [CommandName.FireStrike, CommandName.Aerora],
+        FamilyType.C,
+        10
+      ),
+      new Recipe(
+        [CommandName.QuickBlitz, CommandName.Blizzard],
+        FamilyType.G,
+        5
+      ),
+      new Recipe(
+        [CommandName.QuickBlitz, CommandName.Blizzara],
+        FamilyType.H,
+        5
+      ),
+      new Recipe(
+        [CommandName.SlidingDash, CommandName.Blizzard],
+        FamilyType.E,
+        5
+      ),
+      new Recipe(
+        [CommandName.SlidingDash, CommandName.Blizzara],
+        FamilyType.G,
+        5
+      ),
+      new Recipe([CommandName.PoisonEdge, CommandName.Cura], FamilyType.P, 5),
+      new Recipe([CommandName.BlizzardEdge, CommandName.Cura], FamilyType.G, 5),
+    ]
+  ),
+
+  [CommandName.TimeSplicer]: new Command(
+    CommandName.TimeSplicer,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.AerialSlam, CommandName.Stopga], FamilyType.F),
+      new Recipe(
+        [CommandName.StunEdge, CommandName.SlotEdge],
+        FamilyType.K,
+        10
+      ),
+    ]
+  ),
+
   [CommandName.PoisonEdge]: new Command(
     CommandName.PoisonEdge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.QuickBlitz, CommandName.Poison],
@@ -404,7 +526,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.BlizzardEdge]: new Command(
     CommandName.BlizzardEdge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.QuickBlitz, CommandName.Blizzard],
@@ -432,7 +554,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.StunEdge]: new Command(
     CommandName.StunEdge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.SlidingDash, CommandName.Thunder],
@@ -455,7 +577,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.SlotEdge]: new Command(
     CommandName.SlotEdge,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.PoisonEdge, CommandName.Cura], FamilyType.P, 95),
       new Recipe(
@@ -479,7 +601,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.FireStrike]: new Command(
     CommandName.FireStrike,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.PoisonEdge, CommandName.Fira], FamilyType.D),
       new Recipe([CommandName.StunEdge, CommandName.Fire], FamilyType.K),
@@ -489,7 +611,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.ConfusionStrike]: new Command(
     CommandName.ConfusionStrike,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.QuickBlitz, CommandName.Confuse], FamilyType.O),
       new Recipe(
@@ -503,7 +625,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.BindingStrike]: new Command(
     CommandName.BindingStrike,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.QuickBlitz, CommandName.Bind], FamilyType.K),
       new Recipe([CommandName.StrikeRaid, CommandName.Bind], FamilyType.O),
@@ -529,10 +651,23 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.TornadoStrike]: new Command(
+    CommandName.TornadoStrike,
+    CommandType.Attack,
+    [Character.Ventus],
+    [
+      new Recipe(
+        [CommandName.ConfusionStrike, CommandName.Aeroga],
+        FamilyType.G
+      ),
+      new Recipe([CommandName.BindingStrike, CommandName.Aeroga], FamilyType.F),
+    ]
+  ),
+
   [CommandName.MagnetSpiral]: new Command(
     CommandName.MagnetSpiral,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.BindingStrike, CommandName.CollisionMagnet],
@@ -585,10 +720,17 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.Salvation]: new Command(
+    CommandName.Salvation,
+    CommandType.Attack,
+    [Character.Ventus],
+    [new Recipe([CommandName.WindRaid, CommandName.Curaga], FamilyType.N)]
+  ),
+
   [CommandName.CollisionMagnet]: new Command(
     CommandName.CollisionMagnet,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.QuickBlitz, CommandName.Magnera],
@@ -630,7 +772,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.BreakTime]: new Command(
     CommandName.BreakTime,
     CommandType.Attack,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.Curaga, CommandName.RenewalBlock],
@@ -648,12 +790,13 @@ const commands: Record<CommandName, Command> = {
   // Magic Commands
   [CommandName.Fire]: new Command(CommandName.Fire, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Fira]: new Command(
     CommandName.Fira,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FireDash, CommandName.Fire], FamilyType.D),
       new Recipe([CommandName.FireStrike, CommandName.Fire], FamilyType.D),
@@ -665,7 +808,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Firaga]: new Command(
     CommandName.Firaga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FireDash, CommandName.Fira], FamilyType.D, 90),
       new Recipe([CommandName.Fire, CommandName.Fira], FamilyType.A, 90),
@@ -686,7 +829,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.FissionFiraga]: new Command(
     CommandName.FissionFiraga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Fira, CommandName.Aeroga], FamilyType.A, 80),
       new Recipe([CommandName.Firaga, CommandName.Aerora], FamilyType.A, 80),
@@ -697,7 +840,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.CrawlingFire]: new Command(
     CommandName.CrawlingFire,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Firaga, CommandName.Slow], FamilyType.A, 80),
       new Recipe([CommandName.Firaga, CommandName.Stopra], FamilyType.D, 80),
@@ -707,12 +850,13 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Blizzard]: new Command(CommandName.Blizzard, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Blizzara]: new Command(
     CommandName.Blizzara,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StrikeRaid, CommandName.Blizzard], FamilyType.G),
       new Recipe(
@@ -727,7 +871,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Blizzaga]: new Command(
     CommandName.Blizzaga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.BlizzardEdge, CommandName.Blizzara],
@@ -740,12 +884,13 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Thunder]: new Command(CommandName.Thunder, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Thundara]: new Command(
     CommandName.Thundara,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StunEdge, CommandName.Thunder], FamilyType.K),
       new Recipe([CommandName.Thunder, CommandName.Thunder], FamilyType.I),
@@ -756,7 +901,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Thundaga]: new Command(
     CommandName.Thundaga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.BindingStrike, CommandName.Thundara],
@@ -774,12 +919,13 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Cure]: new Command(CommandName.Cure, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Cura]: new Command(
     CommandName.Cura,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Thunder, CommandName.Cure], FamilyType.I),
       new Recipe([CommandName.Cure, CommandName.Cure], FamilyType.M),
@@ -790,7 +936,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Curaga]: new Command(
     CommandName.Curaga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Cure, CommandName.Cura], FamilyType.M),
       new Recipe([CommandName.Cura, CommandName.Cura], FamilyType.N),
@@ -799,12 +945,13 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Esuna]: new Command(CommandName.Esuna, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.MineShield]: new Command(
     CommandName.MineShield,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Fira, CommandName.ZeroGravity], FamilyType.A),
       new Recipe([CommandName.Fira, CommandName.Block], FamilyType.C),
@@ -816,7 +963,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.MineSquare]: new Command(
     CommandName.MineSquare,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Fira, CommandName.Stop], FamilyType.A),
       new Recipe([CommandName.Aerora, CommandName.Ignite], FamilyType.D),
@@ -826,13 +973,13 @@ const commands: Record<CommandName, Command> = {
   [CommandName.ZeroGravity]: new Command(
     CommandName.ZeroGravity,
     CommandType.Magic,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.ZeroGravira]: new Command(
     CommandName.ZeroGravira,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.Thunder, CommandName.ZeroGravity],
@@ -851,7 +998,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.ZeroGraviga]: new Command(
     CommandName.ZeroGraviga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.Thundara, CommandName.ZeroGravira],
@@ -874,14 +1021,14 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Magnet]: new Command(
     CommandName.Magnet,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     []
   ),
 
   [CommandName.Magnera]: new Command(
     CommandName.Magnera,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StunEdge, CommandName.Magnet], FamilyType.K),
       new Recipe([CommandName.Thunder, CommandName.Magnet], FamilyType.I),
@@ -892,7 +1039,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Magnega]: new Command(
     CommandName.Magnega,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Magnet, CommandName.Magnera], FamilyType.I),
       new Recipe([CommandName.Magnera, CommandName.Magnera], FamilyType.J),
@@ -902,14 +1049,14 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Aero]: new Command(
     CommandName.Aero,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     []
   ),
 
   [CommandName.Aerora]: new Command(
     CommandName.Aerora,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.QuickBlitz, CommandName.Aero], FamilyType.G, 95),
       new Recipe([CommandName.Thunder, CommandName.Aero], FamilyType.I, 95),
@@ -920,7 +1067,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Aeroga]: new Command(
     CommandName.Aeroga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.QuickBlitz, CommandName.Aerora],
@@ -966,10 +1113,17 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.Faith]: new Command(
+    CommandName.Faith,
+    CommandType.Magic,
+    [Character.Ventus],
+    [new Recipe([CommandName.WindRaid, CommandName.BreakTime], FamilyType.N)]
+  ),
+
   [CommandName.DeepFreeze]: new Command(
     CommandName.DeepFreeze,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.FreezeRaid, CommandName.Blizzaga], FamilyType.G),
       new Recipe(
@@ -979,10 +1133,29 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.Tornado]: new Command(
+    CommandName.Tornado,
+    CommandType.Magic,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.Magnega, CommandName.Aeroga], FamilyType.N),
+      new Recipe(
+        [CommandName.QuickBlitz, CommandName.Aerora],
+        FamilyType.O,
+        10
+      ),
+      new Recipe([CommandName.Aero, CommandName.Aerora], FamilyType.M, 10),
+      new Recipe([CommandName.Aerora, CommandName.Aerora], FamilyType.N, 10),
+      new Recipe([CommandName.QuickBlitz, CommandName.Aero], FamilyType.G, 5),
+      new Recipe([CommandName.Thunder, CommandName.Aero], FamilyType.I, 5),
+      new Recipe([CommandName.Aero, CommandName.Aero], FamilyType.E, 5),
+    ]
+  ),
+
   [CommandName.MegaFlare]: new Command(
     CommandName.MegaFlare,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.FissionFiraga, CommandName.CrawlingFire],
@@ -1046,7 +1219,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Transcendence]: new Command(
     CommandName.Transcendence,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.MagnetSpiral, CommandName.ZeroGraviga],
@@ -1058,7 +1231,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Mini]: new Command(
     CommandName.Mini,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Magnera, CommandName.Warp], FamilyType.N),
       new Recipe([CommandName.Magnega, CommandName.Magnega], FamilyType.J),
@@ -1069,7 +1242,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Blackout]: new Command(
     CommandName.Blackout,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.ZeroGravity, CommandName.Confuse], FamilyType.M),
       new Recipe([CommandName.ZeroGravira, CommandName.Confuse], FamilyType.N),
@@ -1080,7 +1253,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Ignite]: new Command(
     CommandName.Ignite,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Fire, CommandName.Bind], FamilyType.A),
       new Recipe([CommandName.Fira, CommandName.Bind], FamilyType.C),
@@ -1089,28 +1262,33 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Confuse]: new Command(CommandName.Confuse, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Bind]: new Command(CommandName.Bind, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Poison]: new Command(CommandName.Poison, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Slow]: new Command(CommandName.Slow, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Stop]: new Command(CommandName.Stop, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   [CommandName.Stopra]: new Command(
     CommandName.Stopra,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Slow, CommandName.Slow], FamilyType.L),
       new Recipe([CommandName.Slow, CommandName.Stop], FamilyType.K),
@@ -1121,7 +1299,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Stopga]: new Command(
     CommandName.Stopga,
     CommandType.Magic,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Stop, CommandName.Stopra], FamilyType.I),
       new Recipe([CommandName.Stopra, CommandName.Stopra], FamilyType.J),
@@ -1130,38 +1308,105 @@ const commands: Record<CommandName, Command> = {
 
   [CommandName.Sleep]: new Command(CommandName.Sleep, CommandType.Magic, [
     Character.Terra,
+    Character.Ventus,
   ]),
 
   // Movement Commands
   [CommandName.Jump]: new Command(
     CommandName.Jump,
     CommandType.Movement,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     []
   ),
 
   [CommandName.HighJump]: new Command(
     CommandName.HighJump,
     CommandType.Movement,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
+  ),
+
+  [CommandName.DodgeRoll]: new Command(
+    CommandName.DodgeRoll,
+    CommandType.Movement,
+    [Character.Ventus]
+  ),
+
+  [CommandName.ThunderRoll]: new Command(
+    CommandName.ThunderRoll,
+    CommandType.Movement,
+    [Character.Ventus],
+    [
+      new Recipe(
+        [CommandName.ThunderSurge, CommandName.DodgeRoll],
+        FamilyType.P,
+        80
+      ),
+      new Recipe(
+        [CommandName.Thundaga, CommandName.DodgeRoll],
+        FamilyType.L,
+        80
+      ),
+      new Recipe(
+        [CommandName.StunBlock, CommandName.DodgeRoll],
+        FamilyType.L,
+        80
+      ),
+    ]
   ),
 
   [CommandName.AirSlide]: new Command(
     CommandName.AirSlide,
     CommandType.Movement,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.IceSlide]: new Command(
     CommandName.IceSlide,
     CommandType.Movement,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe(
         [CommandName.BlizzardEdge, CommandName.AirSlide],
         FamilyType.F
       ),
       new Recipe([CommandName.Blizzaga, CommandName.AirSlide], FamilyType.H),
+    ]
+  ),
+
+  [CommandName.Reversal]: new Command(
+    CommandName.Reversal,
+    CommandType.Movement,
+    [Character.Ventus]
+  ),
+
+  [CommandName.Glide]: new Command(CommandName.Glide, CommandType.Movement, [
+    Character.Ventus,
+  ]),
+
+  [CommandName.Superglide]: new Command(
+    CommandName.Superglide,
+    CommandType.Movement,
+    [Character.Ventus]
+  ),
+
+  [CommandName.FireGlide]: new Command(
+    CommandName.FireGlide,
+    CommandType.Movement,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.FireSurge, CommandName.Glide], FamilyType.C),
+      new Recipe([CommandName.Firaga, CommandName.Glide], FamilyType.B),
+    ]
+  ),
+
+  [CommandName.HomingSlide]: new Command(
+    CommandName.HomingSlide,
+    CommandType.Movement,
+    [Character.Ventus],
+    [
+      new Recipe([CommandName.SlidingDash, CommandName.Magnera], FamilyType.P),
+      new Recipe([CommandName.SlidingDash, CommandName.AirSlide], FamilyType.C),
+      new Recipe([CommandName.Magnet, CommandName.AirSlide], FamilyType.L),
     ]
   ),
 
@@ -1182,14 +1427,14 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Block]: new Command(
     CommandName.Block,
     CommandType.Defense,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     []
   ),
 
   [CommandName.RenewalBlock]: new Command(
     CommandName.RenewalBlock,
     CommandType.Defense,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Curaga, CommandName.Block], FamilyType.P),
       new Recipe([CommandName.Esuna, CommandName.Block], FamilyType.C),
@@ -1199,13 +1444,13 @@ const commands: Record<CommandName, Command> = {
   [CommandName.FocusBlock]: new Command(
     CommandName.FocusBlock,
     CommandType.Defense,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.StunBlock]: new Command(
     CommandName.StunBlock,
     CommandType.Defense,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StunEdge, CommandName.Block], FamilyType.L),
       new Recipe([CommandName.Thundaga, CommandName.Block], FamilyType.I),
@@ -1215,7 +1460,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.PoisonBlock]: new Command(
     CommandName.PoisonBlock,
     CommandType.Defense,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.PoisonEdge, CommandName.Block], FamilyType.H, 80),
       new Recipe([CommandName.Poison, CommandName.Block], FamilyType.P, 80),
@@ -1227,6 +1472,18 @@ const commands: Record<CommandName, Command> = {
     CommandName.CounterHammer,
     CommandType.Reprisal,
     [Character.Terra]
+  ),
+
+  [CommandName.CounterRush]: new Command(
+    CommandName.CounterRush,
+    CommandType.Reprisal,
+    [Character.Ventus]
+  ),
+
+  [CommandName.ReversalSlash]: new Command(
+    CommandName.ReversalSlash,
+    CommandType.Reprisal,
+    [Character.Ventus]
   ),
 
   [CommandName.PaybackFang]: new Command(
@@ -1241,10 +1498,22 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.PaybackRaid]: new Command(
+    CommandName.PaybackRaid,
+    CommandType.Reprisal,
+    [Character.Ventus],
+    [
+      new Recipe(
+        [CommandName.SlidingDash, CommandName.StrikeRaid],
+        FamilyType.P
+      ),
+    ]
+  ),
+
   [CommandName.AerialRecovery]: new Command(
     CommandName.AerialRecovery,
     CommandType.Reprisal,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Block, CommandName.AirSlide], FamilyType.I),
       new Recipe([CommandName.Block, CommandName.Jump], FamilyType.I),
@@ -1255,19 +1524,19 @@ const commands: Record<CommandName, Command> = {
   [CommandName.MeteorShower]: new Command(
     CommandName.MeteorShower,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.FlameSalvo]: new Command(
     CommandName.FlameSalvo,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.ChaosSnake]: new Command(
     CommandName.ChaosSnake,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.DarkVolley]: new Command(
@@ -1279,19 +1548,19 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Ragnarok]: new Command(
     CommandName.Ragnarok,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.Thunderstorm]: new Command(
     CommandName.Thunderstorm,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.BioBarrage]: new Command(
     CommandName.BioBarrage,
     CommandType.Shotlock,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.PoisonEdge, CommandName.Block], FamilyType.P, 20),
       new Recipe([CommandName.Poison, CommandName.Block], FamilyType.P, 20),
@@ -1305,22 +1574,28 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.PulseBomb]: new Command(
+    CommandName.PulseBomb,
+    CommandType.Shotlock,
+    [Character.Ventus]
+  ),
+
   [CommandName.PhotonCharge]: new Command(
     CommandName.PhotonCharge,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.AbsoluteZero]: new Command(
     CommandName.AbsoluteZero,
     CommandType.Shotlock,
-    [Character.Terra]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.LightningRay]: new Command(
     CommandName.LightningRay,
     CommandType.Shotlock,
-    [Character.Terra],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Blitz, CommandName.DarkHaze], FamilyType.L, 10),
       new Recipe([CommandName.Blitz, CommandName.AirSlide], FamilyType.L, 10),
@@ -1347,6 +1622,12 @@ const commands: Record<CommandName, Command> = {
     CommandName.SonicShadow,
     CommandType.Shotlock,
     [Character.Terra]
+  ),
+
+  [CommandName.Multivortex]: new Command(
+    CommandName.Multivortex,
+    CommandType.Shotlock,
+    [Character.Ventus]
   ),
 
   [CommandName.UltimaCannon]: new Command(
