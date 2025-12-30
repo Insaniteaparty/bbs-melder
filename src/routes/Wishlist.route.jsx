@@ -4,21 +4,20 @@ import { useTranslation } from "react-i18next";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
-import { useCommandFilters } from "../hooks/useCommandFilters";
+import { useWishlist } from "../contexts/Wishlist.context";
+
 import { canMakeRecipe } from "../utils/recipe.utils";
+import { useCommandFilters } from "../hooks/useCommandFilters";
 
 import {
   Box,
   Typography,
   List,
   ListItem,
-  IconButton,
   Avatar,
   Paper,
   Grid,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 
 import SearchBox from "../components/SearchBox.component";
 import CommandCard from "../components/CommandCard.component";
@@ -28,13 +27,12 @@ import { getCommandTypeIcon } from "../theme/icon.theme";
 import { clip } from "../theme/shapes.theme";
 
 const clipPathStyle = clip.standard;
-const countMinWidth = 15;
 
-const Planner = () => {
+const Wishlist = () => {
   const { t } = useTranslation();
   const { character } = useCharacter();
-  const { addCommand, removeCommand, getCommandCount, isCommandDiscovered } =
-    useCommands();
+  const { isCommandDiscovered, getCommandCount } = useCommands();
+  const { ingredientCounts, wishlistCommands } = useWishlist();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [recipeSearchQuery, setRecipeSearchQuery] = useState("");
@@ -44,62 +42,16 @@ const Planner = () => {
     showOnlyUndiscovered: false,
   });
 
-  // Memoize commands available for the current character
-  const characterCommands = useMemo(
-    () =>
-      Object.values(commands).filter((command) =>
-        command.availableTo.includes(character)
-      ),
-    [character]
-  );
-
   // Memoize translated names for left panel (inventory)
-  const translatedCommands = useMemo(
+  const localizedIngredientCounts = useMemo(
     () =>
-      characterCommands.map((cmd) => ({
-        ...cmd,
-        translatedName: t(`commands.${cmd.name}`).toLowerCase(),
+      Object.entries(ingredientCounts).map(([commandName, count]) => ({
+        name: t(`commands.${commandName}`).toLowerCase(),
+        type: commands[commandName]?.type,
+        count: count,
       })),
-    [characterCommands, t]
+    [ingredientCounts, t]
   );
-
-  // Filter commands based on search query (left panel)
-  const filteredCommands = useMemo(
-    () =>
-      translatedCommands.filter((cmd) =>
-        cmd.translatedName.includes(searchQuery.toLowerCase())
-      ),
-    [translatedCommands, searchQuery]
-  );
-
-  // Filter commands that have at least one makeable recipe
-  const makeableCommands = useMemo(
-    () =>
-      characterCommands.filter((command) => {
-        if (!command.recipes || command.recipes.length === 0) return false;
-        return command.recipes.some((recipe) =>
-          canMakeRecipe(recipe, getCommandCount)
-        );
-      }),
-    [characterCommands, getCommandCount]
-  );
-
-  // Filter and process makeable commands with recipes for right panel
-  const filteredMakeableCommands = useCommandFilters(
-    makeableCommands,
-    recipeSearchQuery,
-    recipeFilters,
-    getCommandCount,
-    isCommandDiscovered
-  );
-
-  const handleIncrement = (commandName) => {
-    addCommand(commandName);
-  };
-
-  const handleDecrement = (commandName) => {
-    removeCommand(commandName);
-  };
 
   return (
     <Box sx={{ display: "flex", gap: 2, height: "calc(100vh - 4rem)" }}>
@@ -121,7 +73,7 @@ const Planner = () => {
             textShadow: (theme) => theme.typography.onBackground.textShadow,
           }}
         >
-          {t("labels.inventory")}
+          {t("labels.wishlist")}
         </Typography>
         <SearchBox
           value={searchQuery}
@@ -130,9 +82,9 @@ const Planner = () => {
           compact
         />
         <List sx={{ p: 0 }}>
-          {filteredCommands.map((command) => (
+          {localizedIngredientCounts.map(({ name, type, count }) => (
             <ListItem
-              key={command.name}
+              key={name}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -156,40 +108,13 @@ const Planner = () => {
                 }}
               >
                 <Avatar
-                  src={getCommandTypeIcon(command.type)}
+                  src={getCommandTypeIcon(type)}
                   alt=""
                   sx={{ width: 24, height: 24 }}
                 />
                 <Typography variant="body2" fontSize={"0.8rem"}>
-                  {t(`commands.${command.name}`)}
+                  {name}
                 </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <IconButton
-                  size="small"
-                  onClick={() => handleDecrement(command.name)}
-                  disabled={getCommandCount(command.name) === 0}
-                >
-                  <RemoveIcon fontSize="small" />
-                </IconButton>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    minWidth: countMinWidth,
-                    textAlign: "center",
-                    color: (theme) => theme.typography.onBackground.color,
-                    textShadow: (theme) =>
-                      theme.typography.onBackground.textShadow,
-                  }}
-                >
-                  {getCommandCount(command.name)}
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => handleIncrement(command.name)}
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
               </Box>
             </ListItem>
           ))}
@@ -218,18 +143,23 @@ const Planner = () => {
         </Box>
 
         <Grid container spacing={2}>
-          {filteredMakeableCommands.map((command) => (
-            <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
+          {Object.entries(wishlistCommands).map(([commandName, recipes]) => (
+            <Grid key={commandName} size={{ xs: 12, md: 6, lg: 4 }}>
               <CommandCard
-                command={command}
-                canMakeRecipe={(recipe) =>
-                  canMakeRecipe(recipe, getCommandCount)
-                }
+                command={commands[commandName]}
+                canMakeRecipe={(recipe) => {
+                  // Show recipe if it's in the wishlist (always return true)
+                  return recipes.some((r) => r.id === recipe.id);
+                }}
+                isRecipeMakeable={(recipe) => {
+                  // Check if we actually have the ingredients
+                  return canMakeRecipe(recipe, getCommandCount);
+                }}
               />
             </Grid>
           ))}
         </Grid>
-        {filteredMakeableCommands.length === 0 &&
+        {/* {filteredMakeableCommands.length === 0 &&
           makeableCommands.length > 0 && (
             <Box
               sx={{
@@ -250,8 +180,8 @@ const Planner = () => {
                 {t("messages.noMatchingRecipes")}
               </Typography>
             </Box>
-          )}
-        {makeableCommands.length === 0 && (
+          )} */}
+        {Object.keys(wishlistCommands).length === 0 && (
           <Box
             sx={{
               display: "flex",
@@ -276,4 +206,4 @@ const Planner = () => {
   );
 };
 
-export default Planner;
+export default Wishlist;

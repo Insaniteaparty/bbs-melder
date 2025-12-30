@@ -21,7 +21,7 @@ const rightPortionSx = {
   borderBottom: "2px solid rgba(255,255,255,0.2)",
 };
 
-const RecipeButton = ({ recipe, command }) => {
+const RecipeButton = ({ recipe, command, disabled = false }) => {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -30,7 +30,9 @@ const RecipeButton = ({ recipe, command }) => {
   const chance = recipe.chance;
 
   const handleCardClick = () => {
-    setModalOpen(true);
+    if (!disabled) {
+      setModalOpen(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -41,12 +43,14 @@ const RecipeButton = ({ recipe, command }) => {
     <Box
       sx={{
         p: 0.3,
-        "&:hover": {
-          transform: "scale(1.02)",
-          transition: "transform 0.2s",
-          borderRadius: 1,
-          background: "rgba(255,0,0,0.3)",
-        },
+        ...(!disabled && {
+          "&:hover": {
+            transform: "scale(1.02)",
+            transition: "transform 0.2s",
+            borderRadius: 1,
+            background: "rgba(255,0,0,0.3)",
+          },
+        }),
       }}
     >
       <Card
@@ -58,7 +62,7 @@ const RecipeButton = ({ recipe, command }) => {
           borderBottomRightRadius: 0,
           borderTop: "2px solid rgba(255,255,255,0.3)",
           borderBottom: "2px solid rgba(0,0,0,0.2)",
-          cursor: "pointer",
+          cursor: disabled ? "default" : "pointer",
         }}
       >
         <CardHeader
