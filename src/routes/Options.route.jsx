@@ -96,7 +96,7 @@ const Options = () => {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: "75%", mx: "auto" }}>
+    <Box sx={{ p: 3, maxWidth: "60%", mx: "auto" }}>
       <Typography
         variant="h4"
         gutterBottom
@@ -150,6 +150,7 @@ const Options = () => {
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {buttonsData.map((button) => (
               <Button
+                key={button.type}
                 variant="contained"
                 color="error"
                 onClick={() => handleResetClick(character, button.type)}
@@ -157,6 +158,11 @@ const Options = () => {
                   justifyContent: "flex-start",
                   clipPath: clip.menuItem,
                   borderRadius: "2px",
+                  borderTop: "2px solid rgba(255,255,255,0.3)",
+                  borderBottom: "2px solid rgba(0,0,0,0.3)",
+                  textTransform: "none",
+                  textShadow: (theme) =>
+                    theme.typography.onBackground.textShadow,
                 }}
               >
                 {button.label}
@@ -184,7 +190,12 @@ const Options = () => {
           <Button onClick={handleCancelReset} color="primary">
             {t("labels.cancel")}
           </Button>
-          <Button onClick={handleConfirmReset} color="error" autoFocus>
+          <Button
+            variant="contained"
+            onClick={handleConfirmReset}
+            color="error"
+            autoFocus
+          >
             {t("labels.reset")}
           </Button>
         </DialogActions>

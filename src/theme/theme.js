@@ -15,7 +15,7 @@ const baseThemeConfig = {
       main: "#28a745",
     },
     error: {
-      main: "#dc3545",
+      main: "#af0000",
     },
     warning: {
       main: "#ffc107",
