@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import munnyIcon from "../assets/munny.webp";
 
 import SearchBox from "../components/SearchBox.component";
 import CommandCard from "../components/CommandCard.component";
@@ -26,6 +27,7 @@ import Filters from "../components/Filters.component";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { clip } from "../theme/shapes.theme";
+import { useWishlist } from "../contexts/Wishlist.context";
 
 const clipPathStyle = clip.standard;
 const countMinWidth = 15;
@@ -35,6 +37,7 @@ const Planner = () => {
   const { character } = useCharacter();
   const { addCommand, removeCommand, getCommandCount, isCommandDiscovered } =
     useCommands();
+  const { ingredientCounts } = useWishlist();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [recipeSearchQuery, setRecipeSearchQuery] = useState("");
@@ -141,28 +144,49 @@ const Planner = () => {
                 px: 1,
               }}
             >
-              <Box
-                flex={1}
-                display={"flex"}
-                flexDirection={"row"}
-                alignItems={"center"}
-                sx={{
-                  bgcolor: (theme) => theme.palette.primary.main,
-                  borderRadius: "0 2rem 2rem 0",
-                  borderTop: "1px solid rgba(255,255,255,0.2)",
-                  borderBottom: "1px solid rgba(0,0,0,0.2)",
-                  clipPath: clipPathStyle,
-                  pl: 1,
-                }}
-              >
-                <Avatar
-                  src={getCommandTypeIcon(command.type)}
-                  alt=""
-                  sx={{ width: 24, height: 24 }}
-                />
-                <Typography variant="body2" fontSize={"0.8rem"}>
-                  {t(`commands.${command.name}`)}
-                </Typography>
+              <Box position={"relative"} display={"flex"} flex={1}>
+                <Box
+                  flex={1}
+                  display={"flex"}
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  sx={{
+                    bgcolor: (theme) => theme.palette.primary.main,
+                    borderRadius: "0 2rem 2rem 0",
+                    borderTop: "1px solid rgba(255,255,255,0.2)",
+                    borderBottom: "1px solid rgba(0,0,0,0.2)",
+                    clipPath: clipPathStyle,
+                    pl: 1,
+                  }}
+                >
+                  <Avatar
+                    src={getCommandTypeIcon(command.type)}
+                    alt=""
+                    sx={{ width: 24, height: 24 }}
+                  />
+                  <Typography variant="body2" fontSize={"0.8rem"}>
+                    {t(`commands.${command.name}`)}
+                  </Typography>
+                </Box>
+                {/* munny icon if in not enough to complete a wishlisted recipe */}
+                {ingredientCounts &&
+                  Object.keys(ingredientCounts).includes(
+                    String(command.name)
+                  ) && (
+                    <Box
+                      position={"absolute"}
+                      left={"-20px"}
+                      height={"100%"}
+                      display={"flex"}
+                      alignItems={"center"}
+                    >
+                      <Avatar
+                        src={munnyIcon}
+                        alt=""
+                        sx={{ width: 20, height: 20 }}
+                      />
+                    </Box>
+                  )}
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <IconButton
