@@ -13,6 +13,7 @@ import {
   useMemo,
 } from "react";
 import { useCharacter } from "./Character.context";
+import { useCommands } from "./Commands.context";
 
 /**
  * Context object for wishlist state and actions.
@@ -68,6 +69,7 @@ export const useWishlist = () => {
  */
 export const WishlistProvider = ({ children }) => {
   const { character } = useCharacter();
+  const { getCommandCount } = useCommands();
 
   /**
    * State tracking all characters' wishlist data.
@@ -131,8 +133,18 @@ export const WishlistProvider = ({ children }) => {
       });
     });
 
+    /* Subtract existing inventory counts from total counts
+     * if count goes to zero or below, remove the ingredient from counts
+     */
+    Object.keys(counts).forEach((commandName) => {
+      counts[commandName] -= getCommandCount(commandName);
+      if (counts[commandName] <= 0) {
+        delete counts[commandName];
+      }
+    });
+
     return counts;
-  }, [wishlistCommands]);
+  }, [wishlistCommands, getCommandCount]);
 
   /**
    * Add a command with a specific recipe to the wishlist.
