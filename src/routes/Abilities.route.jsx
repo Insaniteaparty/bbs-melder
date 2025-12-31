@@ -36,6 +36,7 @@ const Abilities = () => {
     color: "primary.contrastText",
     background: "linear-gradient(rgb(51, 51, 51), rgb(170, 170, 170))",
     position: "relative",
+    maxHeight: "50px",
     "&::after": {
       content: '""',
       position: "absolute",
@@ -72,7 +73,7 @@ const Abilities = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, maxWidth: "75%", mx: "auto" }}>
       <List>
         {Object.values(abilities).map((ability) => (
           <ListItem key={ability.name} sx={() => tileCss(ability.type)}>
@@ -96,7 +97,7 @@ const Abilities = () => {
                       : inactiveAbility
                   }
                   alt=""
-                  sx={{ width: 28, height: 28, cursor: "pointer", zIndex: 2 }}
+                  sx={{ width: 40, height: 40, cursor: "pointer", zIndex: 2 }}
                 />
               ))}
             </Box>
