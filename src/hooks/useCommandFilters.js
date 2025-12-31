@@ -58,6 +58,15 @@ export const useCommandFilters = (
           return false;
         }
 
+        // Remove empty commands only when actually filtering
+        if (
+          Object.values(filters).some(
+            (value) => value !== null && value !== false
+          ) &&
+          command.recipes.length === 0
+        )
+          return false;
+
         return true;
       });
   }, [
