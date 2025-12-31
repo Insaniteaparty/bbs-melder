@@ -29,7 +29,7 @@ const STORAGE_KEY = "bbsMelder_abilities";
  *   - addAbility: Function to increment an ability count
  *   - removeAbility: Function to decrement an ability count
  *   - getAbilityCount: Function to get the current count of an ability
- *   - resetAbilities: Function to clear all abilities for current character
+ *   - resetAbilities: Function to clear all abilities for a specific character
  *
  * @throws {Error} If used outside of AbilitiesProvider
  */
@@ -149,6 +149,18 @@ export const AbilitiesProvider = ({ children }) => {
   };
 
   /**
+   * Resets the abilities for the provided character
+   *
+   * @param {Character} char
+   */
+  const resetAbilities = (char) => {
+    setAllAbilities((prev) => ({
+      ...prev,
+      [char]: {},
+    }));
+  };
+
+  /**
    * Context value object containing all state and actions.
    * @type {Object}
    */
@@ -157,6 +169,7 @@ export const AbilitiesProvider = ({ children }) => {
     addAbility,
     removeAbility,
     getAbilityCount,
+    resetAbilities,
   };
 
   return (

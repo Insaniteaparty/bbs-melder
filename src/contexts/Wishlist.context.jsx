@@ -37,7 +37,7 @@ const STORAGE_KEY = "bbsMelder_wishlist";
  *   - addToWishlist: Function to add a command with a specific recipe to the wishlist.
  *   - removeFromWishlist: Function to remove a specific recipe by its ID.
  *   - isRecipeInWishlist: Function to check if a recipe is in the wishlist.
- *   - clearWishlist: Function to clear all wishlist entries for current character.
+ *   - clearWishlist: Function to clear all wishlist entries for a specific character.
  *   - getWishlistCount: Function to get the total number of wishlist recipes.
  *
  * @throws {Error} If used outside of WishlistProvider.
@@ -234,9 +234,9 @@ export const WishlistProvider = ({ children }) => {
   /**
    * Clear all wishlist entries for the current character.
    */
-  const clearWishlist = () => {
+  const clearWishlist = (char) => {
     setAllWishlists((prev) => {
-      const { [character]: _, ...rest } = prev;
+      const { [char]: _, ...rest } = prev;
       return rest;
     });
   };
