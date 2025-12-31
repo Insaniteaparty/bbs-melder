@@ -6,5 +6,3 @@
 # options
 
 - [] clear sections
-
-(test)
