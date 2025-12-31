@@ -266,7 +266,7 @@ const Wishlist = () => {
                 textShadow: (theme) => theme.typography.onBackground.textShadow,
               }}
             >
-              {t("messages.noMakeableRecipes")}
+              {t("messages.noWishlistItems")}
             </Typography>
           </Box>
         )}

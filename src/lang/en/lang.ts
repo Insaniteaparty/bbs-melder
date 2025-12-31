@@ -34,6 +34,7 @@ export default {
     noCommandsFound: "No commands found.",
     noMakeableRecipes: "No makeable recipes found.",
     noMatchingRecipes: "No matching recipes found.",
+    noWishlistItems: "Your wishlist is empty.",
   },
 
   abilities: {
