@@ -18,3 +18,19 @@ export const getGradientByCommandType = (type) => {
       return "";
   }
 };
+
+export const getSolidColorByCommandType = (type, theme) => {
+  if ([CommandType.Attack, CommandType.Magic].includes(type)) {
+    return theme.palette.primary.main;
+  } else if (
+    [CommandType.Movement, CommandType.Defense, CommandType.Reprisal].includes(
+      type
+    )
+  ) {
+    return theme.palette.error.light;
+  } else if (type === CommandType.Shotlock) {
+    return theme.palette.success.light;
+  } else {
+    return "rgb(100, 100, 100)";
+  }
+};
