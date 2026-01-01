@@ -84,6 +84,7 @@ function Navigator() {
   const { character, setCharacter } = useCharacter();
   const { isDark, toggleDark } = useDark();
   const navigate = useNavigate();
+  const [focused, setFocused] = useState(null);
 
   const getOtherCharacters = () => {
     return Object.values(Character).filter((char) => char !== character);
@@ -200,7 +201,15 @@ function Navigator() {
                       },
                     }}
                   >
-                    <ListItemButton sx={buttonCss}>
+                    <ListItemButton
+                      sx={buttonCss}
+                      onMouseEnter={() => {
+                        setFocused(route.name);
+                      }}
+                      onMouseLeave={() => {
+                        setFocused(null);
+                      }}
+                    >
                       <ListItemIcon sx={iconCss}>
                         <Avatar
                           src={route.icon}
@@ -222,14 +231,14 @@ function Navigator() {
                           <Box
                             flex={1}
                             sx={{
-                              pl: 1,
+                              pl: 2,
                               clipPath: clip.menuItem,
                               backgroundColor: (theme) =>
                                 theme.palette.background.paper,
-                              "&:hover": {
+                              ...(focused === route.name && {
                                 background:
                                   "linear-gradient(rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%,  rgba(255,0,0,1) 100%)",
-                              },
+                              }),
                             }}
                           >
                             <ListItemText
