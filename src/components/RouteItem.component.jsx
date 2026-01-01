@@ -8,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 
 import { clip } from "../theme/shapes.theme";
+import { hoverGradient } from "../theme/gradient.theme";
 
 const buttonCss = {
   minHeight: 48,
@@ -72,8 +73,7 @@ const RouteItem = ({ route, open, focused, setFocused }) => {
                   clipPath: clip.menuItem,
                   backgroundColor: (theme) => theme.palette.background.paper,
                   ...(focused === route.name && {
-                    background: (theme) =>
-                      `linear-gradient(#000 0%, #000 20%,  ${theme.palette.error.light} 100%)`,
+                    background: hoverGradient,
                   }),
                 }}
               >

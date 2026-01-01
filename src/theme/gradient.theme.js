@@ -1,5 +1,8 @@
 import { CommandType } from "../model/Commands.model";
 
+export const hoverGradient = (theme) =>
+  `linear-gradient(#000 0%, #000 20%,  ${theme.palette.error.light} 100%)`;
+
 export const getGradientByCommandType = (type) => {
   switch (type) {
     case CommandType.Attack:
