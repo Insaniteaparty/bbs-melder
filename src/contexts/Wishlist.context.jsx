@@ -144,7 +144,7 @@ export const WishlistProvider = ({ children }) => {
     });
 
     return counts;
-  }, [wishlistCommands]);
+  }, [wishlistCommands, getCommandCount]);
 
   /**
    * Add a command with a specific recipe to the wishlist.

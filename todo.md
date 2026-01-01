@@ -5,4 +5,5 @@
 
 # options
 
-- [] clear sections
+- [x] clear sections
+- [ ] change options icon
