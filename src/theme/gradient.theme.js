@@ -1,5 +1,8 @@
 import { CommandType } from "../model/Commands.model";
 
+export const hoverGradient = (theme) =>
+  `linear-gradient(#000 0%, #000 20%,  ${theme.palette.error.light} 100%)`;
+
 export const getGradientByCommandType = (type) => {
   switch (type) {
     case CommandType.Attack:
@@ -16,5 +19,21 @@ export const getGradientByCommandType = (type) => {
       return "linear-gradient(rgb(0, 0, 0), rgb(0, 165, 0))";
     default:
       return "";
+  }
+};
+
+export const getSolidColorByCommandType = (type, theme) => {
+  if ([CommandType.Attack, CommandType.Magic].includes(type)) {
+    return theme.palette.primary.main;
+  } else if (
+    [CommandType.Movement, CommandType.Defense, CommandType.Reprisal].includes(
+      type
+    )
+  ) {
+    return theme.palette.error.light;
+  } else if (type === CommandType.Shotlock) {
+    return theme.palette.success.light;
+  } else {
+    return "rgb(100, 100, 100)";
   }
 };

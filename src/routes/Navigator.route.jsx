@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Outlet } from "react-router-dom";
+
 import {
   Box,
   Drawer,
@@ -18,10 +20,14 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+
+import RouteItem from "../components/RouteItem.component.jsx";
 
 import { Character } from "../model/Characters.model";
 
-import { Menu as MenuIcon } from "@mui/icons-material";
+import Heartless from "../assets/heartless.webp";
+import Nobody from "../assets/nobody.webp";
 import TerraAvatar from "../assets/terra.webp";
 import VentusAvatar from "../assets/ventus.webp";
 import AquaAvatar from "../assets/aqua.webp";
@@ -31,35 +37,16 @@ import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import bookIcon from "../assets/books.webp";
 import optionsIcon from "../assets/betterSTT.webp";
+
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
-import { useTranslation } from "react-i18next";
-
-// Add your light/dark theme icons
-import Nobody from "../assets/nobody.webp";
-import Heartless from "../assets/heartless.webp";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
 
-const routes = [
-  { name: "planner", icon: battleTicketIcon },
-  { name: "recipes", icon: bookIcon },
-  { name: "wishlist", icon: dimensionLinkIcon },
-  { name: "abilities", icon: abilityIcon },
-  { name: "discovered", icon: emblemIcon },
-  { name: "options", icon: optionsIcon },
-];
-
 const buttonCss = {
   minHeight: 48,
   justifyContent: open ? "initial" : "center",
-};
-
-const iconCss = {
-  minWidth: 0,
-  mr: open ? 3 : "auto",
-  justifyContent: "center",
 };
 
 const selectAvatar = (char) => {
@@ -81,7 +68,50 @@ function Navigator() {
   const [anchorEl, setAnchorEl] = useState(null);
   const { character, setCharacter } = useCharacter();
   const { isDark, toggleDark } = useDark();
-  const navigate = useNavigate();
+  const [focused, setFocused] = useState(null);
+
+  const routes = useMemo(
+    () => [
+      {
+        name: "planner",
+        icon: battleTicketIcon,
+        label: t("labels.planner"),
+      },
+      {
+        name: "recipes",
+        icon: bookIcon,
+        label: t("labels.recipes"),
+      },
+      {
+        name: "wishlist",
+        icon: dimensionLinkIcon,
+        label: t("labels.wishlist"),
+      },
+      {
+        name: "abilities",
+        icon: abilityIcon,
+        label: t("labels.abilities"),
+      },
+      {
+        name: "discovered",
+        icon: emblemIcon,
+        label: t("labels.discovered"),
+      },
+      {
+        name: "options",
+        icon: optionsIcon,
+
+        label: t("labels.options"),
+      },
+    ],
+    [t]
+  );
+
+  const iconCss = {
+    minWidth: 0,
+    mr: open ? 3 : "auto",
+    justifyContent: "center",
+  };
 
   const getOtherCharacters = () => {
     return Object.values(Character).filter((char) => char !== character);
@@ -102,10 +132,6 @@ function Navigator() {
   const handleCharacterSelect = (newCharacter) => {
     setCharacter(newCharacter);
     handleCharacterMenuClose();
-  };
-
-  const avatarSizing = () => {
-    return isDark ? { width: 32, height: 32 } : { width: 32, height: 32 };
   };
 
   return (
@@ -188,89 +214,25 @@ function Navigator() {
           <Box sx={{ overflow: "auto", flexGrow: 1 }}>
             <List>
               {routes.slice(0, -1).map((route) => (
-                <ListItem
+                <RouteItem
                   key={route.name}
-                  disablePadding
-                  onClick={() => navigate(route.name)}
-                >
-                  <Tooltip
-                    title={open ? "" : t(`labels.${route.name}`)}
-                    placement="right"
-                    slotProps={{
-                      tooltip: {
-                        sx: { textTransform: "capitalize" },
-                      },
-                    }}
-                  >
-                    <ListItemButton sx={buttonCss}>
-                      <ListItemIcon sx={iconCss}>
-                        <Avatar
-                          src={route.icon}
-                          alt={route.name}
-                          sx={{ width: 32, height: 32 }}
-                        />
-                      </ListItemIcon>
-                      {open && (
-                        <ListItemText
-                          style={{ textTransform: "capitalize" }}
-                          primary={t(`labels.${route.name}`)}
-                          slotProps={{
-                            primary: {
-                              sx: {
-                                color: (theme) =>
-                                  theme.typography.onBackground.color,
-                                textShadow: (theme) =>
-                                  theme.typography.onBackground.textShadow,
-                              },
-                            },
-                          }}
-                        />
-                      )}
-                    </ListItemButton>
-                  </Tooltip>
-                </ListItem>
+                  route={route}
+                  open={open}
+                  focused={focused}
+                  setFocused={setFocused}
+                />
               ))}
             </List>
           </Box>
 
           <List>
-            <ListItem
-              disablePadding
-              onClick={() => navigate(routes[routes.length - 1].name)}
-            >
-              <Tooltip
-                title={
-                  open ? "" : t(`labels.${routes[routes.length - 1].name}`)
-                }
-                placement="right"
-              >
-                <ListItemButton sx={buttonCss}>
-                  <ListItemIcon sx={iconCss}>
-                    <Avatar
-                      src={routes[routes.length - 1].icon}
-                      alt={routes[routes.length - 1].name}
-                      sx={{ width: 32, height: 32 }}
-                    />
-                  </ListItemIcon>
-                  {open && (
-                    <ListItemText
-                      style={{ textTransform: "capitalize" }}
-                      primary={t(`labels.${routes[routes.length - 1].name}`)}
-                      slotProps={{
-                        primary: {
-                          sx: {
-                            color: (theme) =>
-                              theme.typography.onBackground.color,
-                            textShadow: (theme) =>
-                              theme.typography.onBackground.textShadow,
-                          },
-                        },
-                      }}
-                    />
-                  )}
-                </ListItemButton>
-              </Tooltip>
-            </ListItem>
+            <RouteItem
+              key={routes[routes.length - 1].name}
+              route={routes[routes.length - 1]}
+              open={open}
+              focused={focused}
+              setFocused={setFocused}
+            />
           </List>
 
           <Divider />

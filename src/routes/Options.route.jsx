@@ -19,6 +19,7 @@ import { useCommands } from "../contexts/Commands.context";
 import { useWishlist } from "../contexts/Wishlist.context";
 
 import { clip } from "../theme/shapes.theme";
+import { hoverGradient } from "../theme/gradient.theme";
 
 import TerraAvatar from "../assets/terra.webp";
 import VentusAvatar from "../assets/ventus.webp";
@@ -163,6 +164,13 @@ const Options = () => {
                   textTransform: "none",
                   textShadow: (theme) =>
                     theme.typography.onBackground.textShadow,
+
+                  "&:hover": {
+                    my: "1px",
+                    borderTop: "1px solid rgba(255,255,255,0.3)",
+                    borderBottom: "1px solid rgba(0,0,0,0.3)",
+                    background: hoverGradient,
+                  },
                 }}
               >
                 {button.label}

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
+import { useWishlist } from "../contexts/Wishlist.context";
 import { useCommandFilters } from "../hooks/useCommandFilters";
 import { canMakeRecipe } from "../utils/recipe.utils";
 
@@ -27,7 +28,7 @@ import Filters from "../components/Filters.component";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { clip } from "../theme/shapes.theme";
-import { useWishlist } from "../contexts/Wishlist.context";
+import { getSolidColorByCommandType } from "../theme/gradient.theme";
 
 const clipPathStyle = clip.standard;
 const countMinWidth = 15;
@@ -151,7 +152,8 @@ const Planner = () => {
                   flexDirection={"row"}
                   alignItems={"center"}
                   sx={{
-                    bgcolor: (theme) => theme.palette.primary.main,
+                    bgcolor: (theme) =>
+                      getSolidColorByCommandType(command.type, theme),
                     borderRadius: "0 2rem 2rem 0",
                     borderTop: "1px solid rgba(255,255,255,0.2)",
                     borderBottom: "1px solid rgba(0,0,0,0.2)",
