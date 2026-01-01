@@ -30,7 +30,7 @@ import dimensionLinkIcon from "../assets/dimensionLink.webp";
 import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import bookIcon from "../assets/books.webp";
-import munnyIcon from "../assets/munny.webp";
+import optionsIcon from "../assets/betterSTT.webp";
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
 import { useTranslation } from "react-i18next";
@@ -48,7 +48,7 @@ const routes = [
   { name: "wishlist", icon: dimensionLinkIcon },
   { name: "abilities", icon: abilityIcon },
   { name: "discovered", icon: emblemIcon },
-  { name: "options", icon: munnyIcon },
+  { name: "options", icon: optionsIcon },
 ];
 
 const buttonCss = {
