@@ -9,6 +9,7 @@ import {
   Typography,
   Paper,
   Button,
+  useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
@@ -24,7 +25,6 @@ import { useWishlist } from "../contexts/Wishlist.context";
 
 const rowMaxHeight = "2rem";
 
-const meldColor = "#cf0000";
 const meldPaperColor = "#fec600";
 const resultClipPathStyle =
   "polygon(0 10px, 10px 0, 100% 0, 100% 0, 100% 100%, 0 100%)";
@@ -36,6 +36,10 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
   const { addAbility } = useAbilities();
   const { addCommand, removeCommand } = useCommands();
   const { removeFromWishlist } = useWishlist();
+
+  const theme = useTheme();
+  const meldColor = theme.palette.error.main;
+  const meldColorLight = theme.palette.error.light;
 
   const executeMeld = () => {
     addCommand(command.name);
@@ -102,7 +106,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
               height: 0,
               borderLeft: "73px solid transparent",
               borderRight: "73px solid transparent",
-              borderTop: "20px solid red",
+              borderTop: `20px solid ${meldColorLight}`,
               zIndex: 10,
             }}
           />
@@ -129,7 +133,7 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                   variant: "subtitle1",
                   fontFamily: "KHGummi",
                   fontSize: "1.5rem",
-                  color: meldColor,
+                  color: meldColorLight,
                 },
               }}
             />
@@ -219,7 +223,6 @@ const MeldModal = ({ open, onClose, recipe, command }) => {
                       bgcolor: meldColor,
                       borderRadius: "2rem",
                       "&:hover": {
-                        bgcolor: meldColor,
                         filter: "brightness(1.1)",
                       },
                     }}
