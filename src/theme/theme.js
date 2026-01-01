@@ -12,7 +12,8 @@ const baseThemeConfig = {
       main: "#6c757d",
     },
     success: {
-      main: "#28a745",
+      main: "#018e5e",
+      light: "#26be01",
     },
     error: {
       main: "#af0000",

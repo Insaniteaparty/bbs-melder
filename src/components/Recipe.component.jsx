@@ -274,7 +274,7 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
                 ...leftPortionSx,
                 overflow: "hidden",
 
-                bgcolor: "#26be01",
+                bgcolor: "success.light",
               }}
               display={"flex"}
               justifyContent={"end"}
@@ -298,7 +298,7 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
             <Box
               sx={{
                 ...rightPortionSx,
-                bgcolor: "#018e5e",
+                bgcolor: "success.main",
                 display: "flex",
                 alignItems: "center",
               }}
