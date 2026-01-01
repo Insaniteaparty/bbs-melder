@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import {
   Box,
@@ -22,6 +22,8 @@ import {
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 
+import RouteItem from "../components/RouteItem.component.jsx";
+
 import { Character } from "../model/Characters.model";
 
 import Heartless from "../assets/heartless.webp";
@@ -39,29 +41,12 @@ import optionsIcon from "../assets/betterSTT.webp";
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
 
-import { clip } from "../theme/shapes.theme";
-
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
-
-const routes = [
-  { name: "planner", icon: battleTicketIcon },
-  { name: "recipes", icon: bookIcon },
-  { name: "wishlist", icon: dimensionLinkIcon },
-  { name: "abilities", icon: abilityIcon },
-  { name: "discovered", icon: emblemIcon },
-  { name: "options", icon: optionsIcon },
-];
 
 const buttonCss = {
   minHeight: 48,
   justifyContent: open ? "initial" : "center",
-};
-
-const iconCss = {
-  minWidth: 0,
-  mr: open ? 3 : "auto",
-  justifyContent: "center",
 };
 
 const selectAvatar = (char) => {
@@ -83,8 +68,50 @@ function Navigator() {
   const [anchorEl, setAnchorEl] = useState(null);
   const { character, setCharacter } = useCharacter();
   const { isDark, toggleDark } = useDark();
-  const navigate = useNavigate();
   const [focused, setFocused] = useState(null);
+
+  const routes = useMemo(
+    () => [
+      {
+        name: "planner",
+        icon: battleTicketIcon,
+        label: t("labels.planner"),
+      },
+      {
+        name: "recipes",
+        icon: bookIcon,
+        label: t("labels.recipes"),
+      },
+      {
+        name: "wishlist",
+        icon: dimensionLinkIcon,
+        label: t("labels.wishlist"),
+      },
+      {
+        name: "abilities",
+        icon: abilityIcon,
+        label: t("labels.abilities"),
+      },
+      {
+        name: "discovered",
+        icon: emblemIcon,
+        label: t("labels.discovered"),
+      },
+      {
+        name: "options",
+        icon: optionsIcon,
+
+        label: t("labels.options"),
+      },
+    ],
+    [t]
+  );
+
+  const iconCss = {
+    minWidth: 0,
+    mr: open ? 3 : "auto",
+    justifyContent: "center",
+  };
 
   const getOtherCharacters = () => {
     return Object.values(Character).filter((char) => char !== character);
@@ -187,122 +214,25 @@ function Navigator() {
           <Box sx={{ overflow: "auto", flexGrow: 1 }}>
             <List>
               {routes.slice(0, -1).map((route) => (
-                <ListItem
+                <RouteItem
                   key={route.name}
-                  disablePadding
-                  onClick={() => navigate(route.name)}
-                >
-                  <Tooltip
-                    title={open ? "" : t(`labels.${route.name}`)}
-                    placement="right"
-                    slotProps={{
-                      tooltip: {
-                        sx: { textTransform: "capitalize" },
-                      },
-                    }}
-                  >
-                    <ListItemButton
-                      sx={buttonCss}
-                      onMouseEnter={() => {
-                        setFocused(route.name);
-                      }}
-                      onMouseLeave={() => {
-                        setFocused(null);
-                      }}
-                    >
-                      <ListItemIcon sx={iconCss}>
-                        <Avatar
-                          src={route.icon}
-                          alt={route.name}
-                          sx={{ width: 32, height: 32 }}
-                        />
-                      </ListItemIcon>
-                      {open && (
-                        <Box
-                          display={"flex"}
-                          flex={1}
-                          sx={{
-                            py: "1px",
-                            clipPath: clip.menuItem,
-                            background:
-                              "linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.2))",
-                          }}
-                        >
-                          <Box
-                            flex={1}
-                            sx={{
-                              pl: 2,
-                              clipPath: clip.menuItem,
-                              backgroundColor: (theme) =>
-                                theme.palette.background.paper,
-                              ...(focused === route.name && {
-                                background:
-                                  "linear-gradient(rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%,  rgba(255,0,0,1) 100%)",
-                              }),
-                            }}
-                          >
-                            <ListItemText
-                              style={{ textTransform: "capitalize" }}
-                              primary={t(`labels.${route.name}`)}
-                              slotProps={{
-                                primary: {
-                                  sx: {
-                                    color: (theme) =>
-                                      theme.typography.onBackground.color,
-                                    textShadow: (theme) =>
-                                      theme.typography.onBackground.textShadow,
-                                  },
-                                },
-                              }}
-                            />
-                          </Box>
-                        </Box>
-                      )}
-                    </ListItemButton>
-                  </Tooltip>
-                </ListItem>
+                  route={route}
+                  open={open}
+                  focused={focused}
+                  setFocused={setFocused}
+                />
               ))}
             </List>
           </Box>
 
           <List>
-            <ListItem
-              disablePadding
-              onClick={() => navigate(routes[routes.length - 1].name)}
-            >
-              <Tooltip
-                title={
-                  open ? "" : t(`labels.${routes[routes.length - 1].name}`)
-                }
-                placement="right"
-              >
-                <ListItemButton sx={buttonCss}>
-                  <ListItemIcon sx={iconCss}>
-                    <Avatar
-                      src={routes[routes.length - 1].icon}
-                      alt={routes[routes.length - 1].name}
-                      sx={{ width: 32, height: 32 }}
-                    />
-                  </ListItemIcon>
-                  {open && (
-                    <ListItemText
-                      style={{ textTransform: "capitalize" }}
-                      primary={t(`labels.${routes[routes.length - 1].name}`)}
-                      slotProps={{
-                        primary: {
-                          sx: {
-                            color: (theme) =>
-                              theme.typography.onBackground.color,
-                            textShadow: (theme) =>
-                              theme.typography.onBackground.textShadow,
-                          },
-                        },
-                      }}
-                    />
-                  )}
-                </ListItemButton>
-              </Tooltip>
-            </ListItem>
+            <RouteItem
+              key={routes[routes.length - 1].name}
+              route={routes[routes.length - 1]}
+              open={open}
+              focused={focused}
+              setFocused={setFocused}
+            />
           </List>
 
           <Divider />
