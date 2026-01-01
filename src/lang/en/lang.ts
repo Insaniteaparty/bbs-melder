@@ -9,6 +9,7 @@ export default {
     wishlist: "Wishlist",
     abilities: "Abilities",
     discovered: "Discovered",
+    options: "Options",
     meld: "Meld",
     searchCommands: "Search Commands...",
     filters: "Filters",
@@ -23,6 +24,12 @@ export default {
     inventory: "Inventory",
     searchRecipes: "Search Recipes...",
     newCommand: "New Command",
+    resetAbilities: "Reset Abilities",
+    resetCommands: "Reset Commands",
+    resetWishlist: "Reset Wishlist",
+    confirmReset: "Confirm Reset",
+    cancel: "Cancel",
+    reset: "Reset",
   },
 
   actions: {
@@ -35,6 +42,8 @@ export default {
     noMakeableRecipes: "No makeable recipes found.",
     noMatchingRecipes: "No matching recipes found.",
     noWishlistItems: "Your wishlist is empty.",
+    confirmReset:
+      "Are you sure you want to reset {{type}} for {{character}}? This action cannot be undone.",
   },
 
   abilities: {

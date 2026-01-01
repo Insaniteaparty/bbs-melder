@@ -30,6 +30,7 @@ import dimensionLinkIcon from "../assets/dimensionLink.webp";
 import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import bookIcon from "../assets/books.webp";
+import optionsIcon from "../assets/betterSTT.webp";
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
 import { useTranslation } from "react-i18next";
@@ -47,6 +48,7 @@ const routes = [
   { name: "wishlist", icon: dimensionLinkIcon },
   { name: "abilities", icon: abilityIcon },
   { name: "discovered", icon: emblemIcon },
+  { name: "options", icon: optionsIcon },
 ];
 
 const buttonCss = {
@@ -185,7 +187,7 @@ function Navigator() {
           <Toolbar />
           <Box sx={{ overflow: "auto", flexGrow: 1 }}>
             <List>
-              {routes.map((route) => (
+              {routes.slice(0, -1).map((route) => (
                 <ListItem
                   key={route.name}
                   disablePadding
@@ -230,6 +232,46 @@ function Navigator() {
               ))}
             </List>
           </Box>
+
+          <List>
+            <ListItem
+              disablePadding
+              onClick={() => navigate(routes[routes.length - 1].name)}
+            >
+              <Tooltip
+                title={
+                  open ? "" : t(`labels.${routes[routes.length - 1].name}`)
+                }
+                placement="right"
+              >
+                <ListItemButton sx={buttonCss}>
+                  <ListItemIcon sx={iconCss}>
+                    <Avatar
+                      src={routes[routes.length - 1].icon}
+                      alt={routes[routes.length - 1].name}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                  </ListItemIcon>
+                  {open && (
+                    <ListItemText
+                      style={{ textTransform: "capitalize" }}
+                      primary={t(`labels.${routes[routes.length - 1].name}`)}
+                      slotProps={{
+                        primary: {
+                          sx: {
+                            color: (theme) =>
+                              theme.typography.onBackground.color,
+                            textShadow: (theme) =>
+                              theme.typography.onBackground.textShadow,
+                          },
+                        },
+                      }}
+                    />
+                  )}
+                </ListItemButton>
+              </Tooltip>
+            </ListItem>
+          </List>
 
           <Divider />
           <List>

@@ -31,7 +31,7 @@ const STORAGE_KEY = "bbsMelder_commands";
  *   - getCommandCount: Function to retrieve the current count of a command.
  *   - isCommandDiscovered: Function to check if a command is marked as discovered.
  *   - toggleCommandDiscovered: Function to toggle the discovered status of a command.
- *   - resetCommands: Function to clear all commands for the current character.
+ *   - resetCommands: Function to clear all commands for a specific character.
  *
  * @throws {Error} If used outside of CommandsProvider.
  */
@@ -256,10 +256,10 @@ export const CommandsProvider = ({ children }) => {
    * Resets all commands for the current character, clearing their state.
    * This will also update localStorage to reflect the cleared state.
    */
-  const resetCommands = () => {
+  const resetCommands = (char) => {
     setAllCommands((prev) => ({
       ...prev,
-      [character]: {},
+      [char]: {},
     }));
   };
 
