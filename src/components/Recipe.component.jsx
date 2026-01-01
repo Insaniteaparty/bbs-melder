@@ -37,7 +37,7 @@ const leftPortionSx = {
   bgcolor: "rgba(0,0,0,0.2)",
   borderRadius: 10,
   borderTop: "2px solid rgba(255,255,255,0.3)",
-  borderBottom: "2px solid rgba(0,0,0,0.2)",
+  borderBottom: "2px solid rgba(0,0,0,0.3)",
   clipPath:
     "polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%)",
 };

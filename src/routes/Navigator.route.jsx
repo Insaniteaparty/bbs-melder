@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
+
 import {
   Box,
   Drawer,
@@ -18,10 +20,12 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 
 import { Character } from "../model/Characters.model";
 
-import { Menu as MenuIcon } from "@mui/icons-material";
+import Heartless from "../assets/heartless.webp";
+import Nobody from "../assets/nobody.webp";
 import TerraAvatar from "../assets/terra.webp";
 import VentusAvatar from "../assets/ventus.webp";
 import AquaAvatar from "../assets/aqua.webp";
@@ -31,13 +35,11 @@ import abilityIcon from "../assets/ability.webp";
 import emblemIcon from "../assets/emblem.webp";
 import bookIcon from "../assets/books.webp";
 import optionsIcon from "../assets/betterSTT.webp";
+
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
-import { useTranslation } from "react-i18next";
 
-// Add your light/dark theme icons
-import Nobody from "../assets/nobody.webp";
-import Heartless from "../assets/heartless.webp";
+import { clip } from "../theme/shapes.theme";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
@@ -102,10 +104,6 @@ function Navigator() {
   const handleCharacterSelect = (newCharacter) => {
     setCharacter(newCharacter);
     handleCharacterMenuClose();
-  };
-
-  const avatarSizing = () => {
-    return isDark ? { width: 32, height: 32 } : { width: 32, height: 32 };
   };
 
   return (
@@ -211,20 +209,45 @@ function Navigator() {
                         />
                       </ListItemIcon>
                       {open && (
-                        <ListItemText
-                          style={{ textTransform: "capitalize" }}
-                          primary={t(`labels.${route.name}`)}
-                          slotProps={{
-                            primary: {
-                              sx: {
-                                color: (theme) =>
-                                  theme.typography.onBackground.color,
-                                textShadow: (theme) =>
-                                  theme.typography.onBackground.textShadow,
-                              },
-                            },
+                        <Box
+                          display={"flex"}
+                          flex={1}
+                          sx={{
+                            py: "1px",
+                            clipPath: clip.menuItem,
+                            background:
+                              "linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.2))",
                           }}
-                        />
+                        >
+                          <Box
+                            flex={1}
+                            sx={{
+                              pl: 1,
+                              clipPath: clip.menuItem,
+                              backgroundColor: (theme) =>
+                                theme.palette.background.paper,
+                              "&:hover": {
+                                background:
+                                  "linear-gradient(rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%,  rgba(255,0,0,1) 100%)",
+                              },
+                            }}
+                          >
+                            <ListItemText
+                              style={{ textTransform: "capitalize" }}
+                              primary={t(`labels.${route.name}`)}
+                              slotProps={{
+                                primary: {
+                                  sx: {
+                                    color: (theme) =>
+                                      theme.typography.onBackground.color,
+                                    textShadow: (theme) =>
+                                      theme.typography.onBackground.textShadow,
+                                  },
+                                },
+                              }}
+                            />
+                          </Box>
+                        </Box>
                       )}
                     </ListItemButton>
                   </Tooltip>
