@@ -11,7 +11,7 @@ import { clip } from "../theme/shapes.theme";
 import { hoverGradient } from "../theme/gradient.theme";
 
 const buttonCss = {
-  minHeight: 48,
+  minHeight: 50,
   justifyContent: open ? "initial" : "center",
 };
 
