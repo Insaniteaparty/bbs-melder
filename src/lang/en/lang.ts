@@ -32,6 +32,15 @@ export default {
     reset: "Reset",
   },
 
+  titles: {
+    attackCommands: "Attack Commands",
+    magicCommands: "Magic Commands",
+    movementCommands: "Movement Commands",
+    defenseCommands: "Defense Commands",
+    reprisalCommands: "Reprisal Commands",
+    shotlockCommands: "Shotlock Commands",
+  },
+
   actions: {
     addToWishlist: "Add to Wishlist",
     removeFromWishlist: "Remove from Wishlist",
@@ -78,6 +87,7 @@ export default {
     [AbilityName.Scan]: "Scan",
     [AbilityName.LeafBracer]: "Leaf Bracer",
   },
+
   commands: {
     // Attack Commands
     [CommandName.QuickBlitz]: "Quick Blitz",

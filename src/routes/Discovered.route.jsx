@@ -7,6 +7,7 @@ import { commands, CommandType } from "../model/Commands.model";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { getGradientByCommandType } from "../theme/gradient.theme";
+import { useMemo } from "react";
 
 const iconColor = (activated, type) => ({
   filter: activated ? "" : "grayscale(100%)",
@@ -19,25 +20,27 @@ const Discovered = () => {
   const { character } = useCharacter();
   const { isCommandDiscovered, toggleCommandDiscovered } = useCommands();
 
-  // TODO: translate command type labels
-  const getCommandTypeLabel = (type) => {
-    switch (type) {
-      case CommandType.Attack:
-        return "Attack Commands";
-      case CommandType.Magic:
-        return "Magic Commands";
-      case CommandType.Movement:
-        return "Movement Commands";
-      case CommandType.Defense:
-        return "Defense Commands";
-      case CommandType.Reprisal:
-        return "Reprisal Commands";
-      case CommandType.Shotlock:
-        return "Shotlock Commands";
-      default:
-        return "";
-    }
-  };
+  const getCommandTypeLabel = useMemo(
+    () => (type) => {
+      switch (type) {
+        case CommandType.Attack:
+          return t("titles.attackCommands");
+        case CommandType.Magic:
+          return t("titles.magicCommands");
+        case CommandType.Movement:
+          return t("titles.movementCommands");
+        case CommandType.Defense:
+          return t("titles.defenseCommands");
+        case CommandType.Reprisal:
+          return t("titles.reprisalCommands");
+        case CommandType.Shotlock:
+          return t("titles.shotlockCommands");
+        default:
+          return "";
+      }
+    },
+    [t]
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
