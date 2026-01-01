@@ -16,6 +16,7 @@ const baseThemeConfig = {
     },
     error: {
       main: "#af0000",
+      light: "#db0000",
     },
     warning: {
       main: "#ffc107",
