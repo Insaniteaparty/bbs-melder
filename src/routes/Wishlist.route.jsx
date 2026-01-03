@@ -224,6 +224,7 @@ const Wishlist = () => {
                     // Check if we actually have the ingredients
                     return canMakeRecipe(recipe, getCommandCount);
                   }}
+                  isDiscovered={isCommandDiscovered(commandName)}
                 />
               </Grid>
             )

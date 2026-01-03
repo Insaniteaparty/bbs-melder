@@ -54,7 +54,11 @@ const Recipes = () => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {filteredCommands.length > 0 ? (
           filteredCommands.map((command) => (
-            <CommandAccordion key={command.name} command={command} />
+            <CommandAccordion
+              key={command.name}
+              command={command}
+              isDiscovered={isCommandDiscovered(command.name)}
+            />
           ))
         ) : (
           <Box
