@@ -1,8 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { useCommands } from "../contexts/Commands.context";
-
 import {
   Card,
   CardHeader,
@@ -15,12 +13,17 @@ import RecipeButton from "./RecipeButton.component";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { getGradientByCommandType } from "../theme/gradient.theme";
 import { clip } from "../theme/shapes.theme";
+import NotDiscovered from "./NotDiscovered.component";
 
 const clipPathStyle = clip.card;
 
-const CommandCard = ({ command, canMakeRecipe, isRecipeMakeable }) => {
+const CommandCard = ({
+  command,
+  canMakeRecipe,
+  isRecipeMakeable,
+  isDiscovered,
+}) => {
   const { t } = useTranslation();
-  const { isCommandDiscovered } = useCommands();
 
   // Filter recipes to only show those that can be made
   const makeableRecipes =
@@ -59,20 +62,7 @@ const CommandCard = ({ command, canMakeRecipe, isRecipeMakeable }) => {
             <Typography variant="h6" fontFamily="KHGummi" flex={1}>
               {t(`commands.${command.name}`)}
             </Typography>
-            {!isCommandDiscovered(command.name) && (
-              <Typography
-                variant="h6"
-                fontFamily="KHGummi"
-                sx={{
-                  color: "rgba(255, 255, 0, 0.5)",
-                  WebkitTextStroke: "1px rgba(255, 165, 0, 0.5)",
-                  textShadow:
-                    "1px 1px 0 rgba(255, 165, 0, 0.5), -1px -1px 0 rgba(255, 165, 0, 0.5), 1px -1px 0 rgba(255, 165, 0, 0.5), -1px 1px 0 rgba(255, 165, 0, 0.5)",
-                }}
-              >
-                NEW
-              </Typography>
-            )}
+            {!isDiscovered && <NotDiscovered />}
           </Box>
         }
       />

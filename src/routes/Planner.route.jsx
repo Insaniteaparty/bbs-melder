@@ -251,6 +251,7 @@ const Planner = () => {
                 canMakeRecipe={(recipe) =>
                   canMakeRecipe(recipe, getCommandCount)
                 }
+                isDiscovered={isCommandDiscovered(command.name)}
               />
             </Grid>
           ))}
