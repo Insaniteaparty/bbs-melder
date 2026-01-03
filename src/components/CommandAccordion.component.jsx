@@ -12,14 +12,12 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Recipe from "./Recipe.component";
 import { getCommandTypeIcon } from "../theme/icon.theme";
-import { getGradientByCommandType } from "../theme/gradient.theme";
 import { clip } from "../theme/shapes.theme";
+import NotDiscovered from "./NotDiscovered.component";
 
-const clipPathStyle = clip.card;
+const clipPathStyle = clip.big;
 
-const openedAccordionClipPathStyle = clip.big;
-
-const CommandAccordion = ({ command }) => {
+const CommandAccordion = ({ command, isDiscovered }) => {
   const { t } = useTranslation();
   const hasRecipes = command.recipes && command.recipes.length > 0;
   const [expanded, setExpanded] = useState(false);
@@ -27,10 +25,13 @@ const CommandAccordion = ({ command }) => {
   return (
     <Accordion
       expanded={expanded}
-      onChange={(e, isExpanded) => setExpanded(isExpanded)}
+      onChange={(_e, isExpanded) => setExpanded(isExpanded)}
       sx={{
         minWidth: 300,
-        clipPath: expanded ? openedAccordionClipPathStyle : clipPathStyle,
+        clipPath: clipPathStyle,
+        borderRadius: expanded ? "0 2.3rem 0 0" : "0 8rem 8rem 0",
+        backgroundImage: "none",
+        boxShadow: "none",
         "&.Mui-disabled": {
           backgroundColor: "transparent",
           opacity: 1,
@@ -44,13 +45,14 @@ const CommandAccordion = ({ command }) => {
       <AccordionSummary
         expandIcon={hasRecipes ? <ExpandMoreIcon /> : null}
         sx={{
-          background: getGradientByCommandType(command.type),
+          background: (theme) => theme.palette.primary.main,
+          borderRadius: "0 8rem 8rem 0",
           borderTop: "1px solid rgba(255,255,255,0.1)",
           borderBottom: "1px solid rgba(0,0,0,0.1)",
           clipPath: clipPathStyle,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, flex: 1 }}>
           <Box
             component="img"
             src={getCommandTypeIcon(command.type)}
@@ -60,6 +62,8 @@ const CommandAccordion = ({ command }) => {
           <Typography variant="h6" fontFamily="KHGummi">
             {t(`commands.${command.name}`)}
           </Typography>
+          <Box flex={1} />
+          {!isDiscovered && <NotDiscovered sx={{ mr: hasRecipes ? 1 : 4 }} />}
         </Box>
       </AccordionSummary>
       {hasRecipes && (
@@ -67,7 +71,7 @@ const CommandAccordion = ({ command }) => {
           <Grid container spacing={2} columns={{ sm: 1, md: 2, xl: 3 }}>
             {command.recipes.map((recipe, index) => (
               <Grid key={index} size={1}>
-                <Recipe recipe={recipe} />
+                <Recipe recipe={recipe} commandName={command.name} />
               </Grid>
             ))}
           </Grid>

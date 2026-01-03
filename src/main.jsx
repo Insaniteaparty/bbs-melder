@@ -7,20 +7,23 @@ import { AbilitiesProvider } from "./contexts/Abilities.context.jsx";
 import { CharacterProvider } from "./contexts/Character.context.jsx";
 import { CommandsProvider } from "./contexts/Commands.context.jsx";
 import { DarkProvider } from "./contexts/Dark.context.jsx";
+import { DrawerProvider } from "./contexts/Drawer.context.jsx";
 import { WishlistProvider } from "./contexts/Wishlist.context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <DarkProvider>
-      <CharacterProvider>
-        <AbilitiesProvider>
-          <CommandsProvider>
-            <WishlistProvider>
-              <App />
-            </WishlistProvider>
-          </CommandsProvider>
-        </AbilitiesProvider>
-      </CharacterProvider>
+      <DrawerProvider>
+        <CharacterProvider>
+          <AbilitiesProvider>
+            <CommandsProvider>
+              <WishlistProvider>
+                <App />
+              </WishlistProvider>
+            </CommandsProvider>
+          </AbilitiesProvider>
+        </CharacterProvider>
+      </DrawerProvider>
     </DarkProvider>
   </StrictMode>
 );
