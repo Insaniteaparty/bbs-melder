@@ -40,6 +40,7 @@ import optionsIcon from "../assets/betterSTT.webp";
 
 import { useCharacter } from "../contexts/Character.context";
 import { useDark } from "../contexts/Dark.context";
+import { useDrawer } from "../contexts/Drawer.context";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
@@ -64,7 +65,7 @@ const selectAvatar = (char) => {
 
 function Navigator() {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(true);
+  const { isDrawerOpen, setIsDrawerOpen } = useDrawer();
   const [anchorEl, setAnchorEl] = useState(null);
   const { character, setCharacter } = useCharacter();
   const { isDark, toggleDark } = useDark();
@@ -109,7 +110,7 @@ function Navigator() {
 
   const iconCss = {
     minWidth: 0,
-    mr: open ? 3 : "auto",
+    mr: isDrawerOpen ? 3 : "auto",
     justifyContent: "center",
   };
 
@@ -118,7 +119,7 @@ function Navigator() {
   };
 
   const toggleDrawer = () => {
-    setOpen(!open);
+    setIsDrawerOpen(!isDrawerOpen);
   };
 
   const handleCharacterMenuOpen = (event) => {
@@ -191,13 +192,13 @@ function Navigator() {
       <Box sx={{ display: "flex", flex: 1 }}>
         <Drawer
           variant="permanent"
-          open={open}
+          open={isDrawerOpen}
           sx={{
-            width: open ? drawerWidth : closedDrawerWidth,
+            width: isDrawerOpen ? drawerWidth : closedDrawerWidth,
             flexShrink: 0,
             whiteSpace: "nowrap",
             "& .MuiDrawer-paper": {
-              width: open ? drawerWidth : closedDrawerWidth,
+              width: isDrawerOpen ? drawerWidth : closedDrawerWidth,
               transition: (theme) =>
                 theme.transitions.create("width", {
                   easing: theme.transitions.easing.sharp,
@@ -217,7 +218,7 @@ function Navigator() {
                 <RouteItem
                   key={route.name}
                   route={route}
-                  open={open}
+                  open={isDrawerOpen}
                   focused={focused}
                   setFocused={setFocused}
                 />
@@ -229,7 +230,7 @@ function Navigator() {
             <RouteItem
               key={routes[routes.length - 1].name}
               route={routes[routes.length - 1]}
-              open={open}
+              open={isDrawerOpen}
               focused={focused}
               setFocused={setFocused}
             />
@@ -238,7 +239,10 @@ function Navigator() {
           <Divider />
           <List>
             <ListItem disablePadding>
-              <Tooltip title={open ? "" : "change character"} placement="right">
+              <Tooltip
+                title={isDrawerOpen ? "" : "change character"}
+                placement="right"
+              >
                 <ListItemButton
                   sx={buttonCss}
                   onClick={handleCharacterMenuOpen}
@@ -250,7 +254,7 @@ function Navigator() {
                       sx={{ width: 32, height: 32 }}
                     />
                   </ListItemIcon>
-                  {open && (
+                  {isDrawerOpen && (
                     <ListItemText
                       primary={character}
                       slotProps={{

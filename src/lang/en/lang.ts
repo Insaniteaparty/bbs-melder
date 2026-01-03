@@ -1,6 +1,5 @@
 import { AbilityName } from "../../model/Abilities.model";
 import { CommandName } from "../../model/Commands.model";
-import Wishlist from "../../routes/Wishlist.route";
 
 export default {
   labels: {

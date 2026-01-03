@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { commands } from "../model/Commands.model";
+import { useDrawer } from "../contexts/Drawer.context";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
 import { useWishlist } from "../contexts/Wishlist.context";
@@ -35,6 +36,7 @@ const countMinWidth = 15;
 
 const Planner = () => {
   const { t } = useTranslation();
+  const { isDrawerOpen } = useDrawer();
   const { character } = useCharacter();
   const { addCommand, removeCommand, getCommandCount, isCommandDiscovered } =
     useCommands();
@@ -245,7 +247,10 @@ const Planner = () => {
 
         <Grid container spacing={2}>
           {filteredMakeableCommands.map((command) => (
-            <Grid key={command.name} size={{ xs: 12, md: 6, lg: 4 }}>
+            <Grid
+              key={command.name}
+              size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 4 }}
+            >
               <CommandCard
                 command={command}
                 canMakeRecipe={(recipe) =>
