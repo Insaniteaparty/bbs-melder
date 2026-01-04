@@ -9,16 +9,15 @@ import { useWishlist } from "../contexts/Wishlist.context";
 import { useCommandFilters } from "../hooks/useCommandFilters";
 import { canMakeRecipe } from "../utils/recipe.utils";
 
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  IconButton,
-  Avatar,
-  Paper,
-  Grid,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import munnyIcon from "../assets/munny.webp";
@@ -26,6 +25,7 @@ import munnyIcon from "../assets/munny.webp";
 import SearchBox from "../components/SearchBox.component";
 import CommandCard from "../components/CommandCard.component";
 import Filters from "../components/Filters.component";
+import FilterNew from "../components/FilterNew.component";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { clip } from "../theme/shapes.theme";
@@ -49,6 +49,13 @@ const Planner = () => {
     ability: null,
     showOnlyUndiscovered: false,
   });
+
+  const toggleOnlyNew = () => {
+    setRecipeFilters((prevFilters) => ({
+      ...prevFilters,
+      showOnlyUndiscovered: !prevFilters.showOnlyUndiscovered,
+    }));
+  };
 
   // Memoize commands available for the current character
   const characterCommands = useMemo(
@@ -233,7 +240,7 @@ const Planner = () => {
         }}
       >
         {/* Search and Filter Controls */}
-        <Box sx={{ display: "flex", gap: 2, mb: 3, alignItems: "flex-start" }}>
+        <Box sx={{ display: "flex", gap: 4, mb: 3, alignItems: "flex-start" }}>
           <Box sx={{ flex: 1 }}>
             <SearchBox
               value={recipeSearchQuery}
@@ -242,6 +249,10 @@ const Planner = () => {
               compact
             />
           </Box>
+          <FilterNew
+            isFiltering={recipeFilters.showOnlyUndiscovered}
+            onToggle={toggleOnlyNew}
+          />
           <Filters onFilterChange={setRecipeFilters} />
         </Box>
 

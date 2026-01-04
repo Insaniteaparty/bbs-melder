@@ -1,36 +1,31 @@
-import {
-  Box,
-  Button,
-  Popover,
-  Autocomplete,
-  TextField,
-  Typography,
-  Divider,
-  Badge,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Badge from "@mui/material/Badge";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommandName } from "../model/Commands.model";
 import { AbilityName } from "../model/Abilities.model";
+import { Box } from "@mui/material";
 
 const Filters = ({ onFilterChange }) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [ingredientFilter, setIngredientFilter] = useState(null);
   const [abilityFilter, setAbilityFilter] = useState(null);
-  const [showOnlyUndiscovered, setShowOnlyUndiscovered] = useState(false);
 
   const open = Boolean(anchorEl);
 
   // Count active filters
-  const activeFiltersCount = [
-    ingredientFilter,
-    abilityFilter,
-    showOnlyUndiscovered,
-  ].filter((filter) => filter !== null && filter !== false).length;
+  const activeFiltersCount = [ingredientFilter, abilityFilter].filter(
+    (filter) => filter !== null && filter !== false
+  ).length;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,41 +37,30 @@ const Filters = ({ onFilterChange }) => {
 
   const handleIngredientChange = (event, newValue) => {
     setIngredientFilter(newValue);
-    onFilterChange({
+    onFilterChange((prev) => ({
       ingredient: newValue,
-      ability: abilityFilter,
-      showOnlyUndiscovered,
-    });
+      ability: prev.ability,
+      showOnlyUndiscovered: prev.showOnlyUndiscovered,
+    }));
   };
 
   const handleAbilityChange = (event, newValue) => {
     setAbilityFilter(newValue);
-    onFilterChange({
-      ingredient: ingredientFilter,
+    onFilterChange((prev) => ({
+      ingredient: prev.ingredient,
       ability: newValue,
-      showOnlyUndiscovered,
-    });
-  };
-
-  const handleUndiscoveredChange = (event) => {
-    const checked = event.target.checked;
-    setShowOnlyUndiscovered(checked);
-    onFilterChange({
-      ingredient: ingredientFilter,
-      ability: abilityFilter,
-      showOnlyUndiscovered: checked,
-    });
+      showOnlyUndiscovered: prev.showOnlyUndiscovered,
+    }));
   };
 
   const handleClearFilters = () => {
     setIngredientFilter(null);
     setAbilityFilter(null);
-    setShowOnlyUndiscovered(false);
-    onFilterChange({
+    onFilterChange((prev) => ({
       ingredient: null,
       ability: null,
-      showOnlyUndiscovered: false,
-    });
+      showOnlyUndiscovered: prev.showOnlyUndiscovered,
+    }));
   };
 
   // Get all command names for autocomplete
@@ -163,28 +147,10 @@ const Filters = ({ onFilterChange }) => {
           renderInput={(params) => (
             <TextField {...params} placeholder={t("labels.selectAbility")} />
           )}
-          sx={{ mb: 2 }}
+          sx={{ mb: 3 }}
         />
 
-        <Divider sx={{ my: 2 }} />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showOnlyUndiscovered}
-              onChange={handleUndiscoveredChange}
-            />
-          }
-          label={t("labels.hideDiscovered")}
-          sx={{ mb: 2 }}
-        />
-
-        <Button
-          fullWidth
-          variant="outlined"
-          color="secondary"
-          onClick={handleClearFilters}
-        >
+        <Button fullWidth variant="outlined" onClick={handleClearFilters}>
           {t("labels.clearFilters")}
         </Button>
       </Popover>
