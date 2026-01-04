@@ -60,6 +60,7 @@ export const useCommandFilters = (
 
         // Remove empty commands only when actually filtering
         if (
+          (filters.ingredient || filters.ability) &&
           Object.values(filters).some(
             (value) => value !== null && value !== false
           ) &&

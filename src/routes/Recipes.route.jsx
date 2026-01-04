@@ -8,6 +8,7 @@ import { commands } from "../model/Commands.model";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
 import { useCommandFilters } from "../hooks/useCommandFilters";
+import FilterNew from "../components/FilterNew.component";
 
 const Recipes = () => {
   const { t } = useTranslation();
@@ -19,6 +20,13 @@ const Recipes = () => {
     ability: null,
     showOnlyUndiscovered: false,
   });
+
+  const toggleOnlyNew = () => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      showOnlyUndiscovered: !prevFilters.showOnlyUndiscovered,
+    }));
+  };
 
   // Get all commands available for the current character
   const characterCommands = useMemo(
@@ -41,7 +49,7 @@ const Recipes = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", p: 3 }}>
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+      <Box sx={{ display: "flex", gap: 4, mb: 2, alignItems: "center" }}>
         <Box sx={{ flex: 1 }}>
           <SearchBox
             value={searchQuery}
@@ -49,6 +57,11 @@ const Recipes = () => {
             placeholder={t("labels.searchCommands")}
           />
         </Box>
+        <FilterNew
+          isFiltering={filters.showOnlyUndiscovered}
+          onToggle={toggleOnlyNew}
+          sx={{ mb: 2 }}
+        />
         <Filters onFilterChange={setFilters} />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

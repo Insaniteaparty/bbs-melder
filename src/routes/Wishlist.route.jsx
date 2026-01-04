@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { commands } from "../model/Commands.model";
 import { useCommands } from "../contexts/Commands.context";
 import { useWishlist } from "../contexts/Wishlist.context";
+import { useDrawer } from "../contexts/Drawer.context";
 
 import { canMakeRecipe } from "../utils/recipe.utils";
 import { familyMapper } from "../model/Crystals.model";
@@ -21,6 +22,7 @@ import {
 import SearchBox from "../components/SearchBox.component";
 import CommandCard from "../components/CommandCard.component";
 import Filters from "../components/Filters.component";
+import FilterNew from "../components/FilterNew.component";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { clip } from "../theme/shapes.theme";
@@ -32,6 +34,7 @@ const Wishlist = () => {
   const { t } = useTranslation();
   const { isCommandDiscovered, getCommandCount } = useCommands();
   const { ingredientCounts, wishlistCommands } = useWishlist();
+  const { isDrawerOpen } = useDrawer();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [recipeSearchQuery, setRecipeSearchQuery] = useState("");
@@ -40,6 +43,14 @@ const Wishlist = () => {
     ability: null,
     showOnlyUndiscovered: false,
   });
+
+  const toggleOnlyNew = () => {
+    setRecipeFilters((prev) => ({
+      ingredient: prev.ingredient,
+      ability: prev.ability,
+      showOnlyUndiscovered: !prev.showOnlyUndiscovered,
+    }));
+  };
 
   // Memoize translated names for left panel (inventory)
   const localizedIngredientCounts = useMemo(
@@ -198,7 +209,7 @@ const Wishlist = () => {
         }}
       >
         {/* Search and Filter Controls */}
-        <Box sx={{ display: "flex", gap: 2, mb: 3, alignItems: "flex-start" }}>
+        <Box sx={{ display: "flex", gap: 4, mb: 3, alignItems: "flex-start" }}>
           <Box sx={{ flex: 1 }}>
             <SearchBox
               value={recipeSearchQuery}
@@ -207,13 +218,20 @@ const Wishlist = () => {
               compact
             />
           </Box>
+          <FilterNew
+            isFiltering={recipeFilters.showOnlyUndiscovered}
+            onToggle={toggleOnlyNew}
+          />
           <Filters onFilterChange={setRecipeFilters} />
         </Box>
 
         <Grid container spacing={2}>
           {Object.entries(filteredWishlistCommands).map(
             ([commandName, recipes]) => (
-              <Grid key={commandName} size={{ xs: 12, md: 6, lg: 4 }}>
+              <Grid
+                key={commandName}
+                size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 4 }}
+              >
                 <CommandCard
                   command={commands[commandName]}
                   canMakeRecipe={(recipe) => {

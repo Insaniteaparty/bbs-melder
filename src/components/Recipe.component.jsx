@@ -21,6 +21,7 @@ import { Star, StarBorder } from "@mui/icons-material";
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { underline } from "../theme/shapes.theme";
 import { useWishlist } from "../contexts/Wishlist.context";
+import NotDiscovered from "./NotDiscovered.component";
 
 const accentColor = "#df961e";
 
@@ -350,7 +351,12 @@ const Recipe = ({ recipe, isPopup = false, value, onChange, commandName }) => {
                     }
                   >
                     {/* Always show full label in dropdown */}
-                    {option.crystalLabel} - {option.abilityLabel}
+                    <Typography flex={1}>
+                      {option.crystalLabel} - {option.abilityLabel}
+                    </Typography>
+                    {getAbilityCount(option.abilityName) === 0 && (
+                      <NotDiscovered sx={{ transform: "scale(0.8)" }} />
+                    )}
                   </MenuItem>
                 ))}
               </Select>
