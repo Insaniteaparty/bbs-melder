@@ -256,16 +256,6 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
-  [CommandName.BarrierSurge]: new Command(
-    CommandName.BarrierSurge,
-    CommandType.Attack,
-    [Character.Aqua],
-    [
-      new Recipe([CommandName.FireDash, CommandName.Barrier], FamilyType.D),
-      new Recipe([CommandName.StunEdge, CommandName.Barrier], FamilyType.K),
-    ]
-  ),
-
   [CommandName.MeteorCrash]: new Command(
     CommandName.MeteorCrash,
     CommandType.Attack,
@@ -276,26 +266,6 @@ const commands: Record<CommandName, Command> = {
         FamilyType.D
       ),
       new Recipe([CommandName.Blitz, CommandName.Quake], FamilyType.N),
-    ]
-  ),
-
-  [CommandName.WishingEdge]: new Command(
-    CommandName.WishingEdge,
-    CommandType.Attack,
-    [Character.Aqua],
-    [
-      new Recipe(
-        [CommandName.StrikeRaid, CommandName.BarrierSurge],
-        FamilyType.O
-      ),
-      new Recipe(
-        [CommandName.BarrierSurge, CommandName.StunEdge],
-        FamilyType.K
-      ),
-      new Recipe(
-        [CommandName.StunEdge, CommandName.BindingStrike],
-        FamilyType.J
-      ),
     ]
   ),
 
@@ -454,6 +424,16 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.BarrierSurge]: new Command(
+    CommandName.BarrierSurge,
+    CommandType.Attack,
+    [Character.Aqua],
+    [
+      new Recipe([CommandName.FireDash, CommandName.Barrier], FamilyType.D),
+      new Recipe([CommandName.StunEdge, CommandName.Barrier], FamilyType.K),
+    ]
+  ),
+
   [CommandName.ThunderSurge]: new Command(
     CommandName.ThunderSurge,
     CommandType.Attack,
@@ -568,7 +548,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.TimeSplicer]: new Command(
     CommandName.TimeSplicer,
     CommandType.Attack,
-    [Character.Ventus],
+    [Character.Ventus, Character.Aqua],
     [
       new Recipe([CommandName.AerialSlam, CommandName.Stopga], FamilyType.F),
       new Recipe(
@@ -598,6 +578,26 @@ const commands: Record<CommandName, Command> = {
         [CommandName.StrikeRaid, CommandName.Poison],
         FamilyType.D,
         95
+      ),
+    ]
+  ),
+
+  [CommandName.WishingEdge]: new Command(
+    CommandName.WishingEdge,
+    CommandType.Attack,
+    [Character.Aqua],
+    [
+      new Recipe(
+        [CommandName.StrikeRaid, CommandName.BarrierSurge],
+        FamilyType.O
+      ),
+      new Recipe(
+        [CommandName.BarrierSurge, CommandName.StunEdge],
+        FamilyType.K
+      ),
+      new Recipe(
+        [CommandName.StunEdge, CommandName.BindingStrike],
+        FamilyType.J
       ),
     ]
   ),
@@ -1586,6 +1586,30 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
+  [CommandName.Cartwheel]: new Command(
+    CommandName.Cartwheel,
+    CommandType.Movement,
+    [Character.Aqua]
+  ),
+
+  [CommandName.Firewheel]: new Command(
+    CommandName.Firewheel,
+    CommandType.Movement,
+    [Character.Aqua],
+    [
+      new Recipe([CommandName.Firaga, CommandName.Cartwheel], FamilyType.B),
+      new Recipe(
+        [CommandName.FissionFiraga, CommandName.Cartwheel],
+        FamilyType.B
+      ),
+      new Recipe(
+        [CommandName.FireSurge, CommandName.Cartwheel],
+        FamilyType.C,
+        90
+      ),
+    ]
+  ),
+
   [CommandName.AirSlide]: new Command(
     CommandName.AirSlide,
     CommandType.Movement,
@@ -1631,34 +1655,10 @@ const commands: Record<CommandName, Command> = {
     ]
   ),
 
-  [CommandName.Cartwheel]: new Command(
-    CommandName.Cartwheel,
-    CommandType.Movement,
-    [Character.Aqua]
-  ),
-
-  [CommandName.Firewheel]: new Command(
-    CommandName.Firewheel,
-    CommandType.Movement,
-    [Character.Aqua],
-    [
-      new Recipe([CommandName.Firaga, CommandName.Cartwheel], FamilyType.B),
-      new Recipe(
-        [CommandName.FissionFiraga, CommandName.Cartwheel],
-        FamilyType.B
-      ),
-      new Recipe(
-        [CommandName.FireSurge, CommandName.Cartwheel],
-        FamilyType.C,
-        90
-      ),
-    ]
-  ),
-
   [CommandName.HomingSlide]: new Command(
     CommandName.HomingSlide,
     CommandType.Movement,
-    [Character.Ventus],
+    [Character.Ventus, Character.Aqua],
     [
       new Recipe([CommandName.SlidingDash, CommandName.Magnera], FamilyType.P),
       new Recipe([CommandName.SlidingDash, CommandName.AirSlide], FamilyType.C),
@@ -1695,14 +1695,14 @@ const commands: Record<CommandName, Command> = {
   [CommandName.Block]: new Command(
     CommandName.Block,
     CommandType.Defense,
-    [Character.Terra, Character.Ventus, Character.Aqua],
+    [Character.Terra, Character.Ventus],
     []
   ),
 
   [CommandName.RenewalBlock]: new Command(
     CommandName.RenewalBlock,
     CommandType.Defense,
-    [Character.Terra, Character.Ventus, Character.Aqua],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.Curaga, CommandName.Block], FamilyType.P),
       new Recipe([CommandName.Esuna, CommandName.Block], FamilyType.C),
@@ -1712,13 +1712,13 @@ const commands: Record<CommandName, Command> = {
   [CommandName.FocusBlock]: new Command(
     CommandName.FocusBlock,
     CommandType.Defense,
-    [Character.Terra, Character.Ventus, Character.Aqua]
+    [Character.Terra, Character.Ventus]
   ),
 
   [CommandName.StunBlock]: new Command(
     CommandName.StunBlock,
     CommandType.Defense,
-    [Character.Terra, Character.Ventus, Character.Aqua],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.StunEdge, CommandName.Block], FamilyType.L),
       new Recipe([CommandName.Thundaga, CommandName.Block], FamilyType.I),
@@ -1728,7 +1728,7 @@ const commands: Record<CommandName, Command> = {
   [CommandName.PoisonBlock]: new Command(
     CommandName.PoisonBlock,
     CommandType.Defense,
-    [Character.Terra, Character.Ventus, Character.Aqua],
+    [Character.Terra, Character.Ventus],
     [
       new Recipe([CommandName.PoisonEdge, CommandName.Block], FamilyType.H, 80),
       new Recipe([CommandName.Poison, CommandName.Block], FamilyType.P, 80),
