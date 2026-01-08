@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { commands } from "../model/Commands.model";
+import { commands, orderedCommandNames } from "../model/Commands.model";
 import { useDrawer } from "../contexts/Drawer.context";
 import { useCharacter } from "../contexts/Character.context";
 import { useCommands } from "../contexts/Commands.context";
@@ -60,9 +60,9 @@ const Planner = () => {
   // Memoize commands available for the current character
   const characterCommands = useMemo(
     () =>
-      Object.values(commands).filter((command) =>
-        command.availableTo.includes(character)
-      ),
+      orderedCommandNames
+        .map((name) => commands[name])
+        .filter((command) => command.availableTo.includes(character)),
     [character]
   );
 

@@ -3,7 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import { useCommands } from "../contexts/Commands.context";
 import { useCharacter } from "../contexts/Character.context";
-import { commands, CommandType } from "../model/Commands.model";
+import {
+  commands,
+  orderedCommandNames,
+  CommandType,
+} from "../model/Commands.model";
 
 import { getCommandTypeIcon } from "../theme/icon.theme";
 import { getGradientByCommandType } from "../theme/gradient.theme";
@@ -42,6 +46,11 @@ const Discovered = () => {
     [t]
   );
 
+  const orderedCommands = useMemo(
+    () => orderedCommandNames.map((name) => commands[name]),
+    []
+  );
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
       {Object.values(CommandType)
@@ -59,7 +68,7 @@ const Discovered = () => {
               {getCommandTypeLabel(type)}
             </Typography>
             <Grid container spacing={1}>
-              {Object.values(commands)
+              {orderedCommands
                 .filter(
                   (command) =>
                     command.type === type &&
