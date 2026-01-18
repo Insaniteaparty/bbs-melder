@@ -180,7 +180,7 @@ export default {
     [CommandName.Mini]: "Mini",
     [CommandName.Blackout]: "Blackout",
     [CommandName.Ignite]: "Ignite",
-    [CommandName.Confuse]: "Confusion",
+    [CommandName.Confuse]: "Confuse",
     [CommandName.Bind]: "Bind",
     [CommandName.Poison]: "Poison",
     [CommandName.Slow]: "Slow",
